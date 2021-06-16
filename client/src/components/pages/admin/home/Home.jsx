@@ -1,5 +1,5 @@
 import React from 'react'
-import FeaturedInfo from '../../featuredInfo/FeaturedInfo'
+import FeaturedInfo from '../../../featuredInfo/FeaturedInfo'
 import './home.css'
 function Home() {
     return (

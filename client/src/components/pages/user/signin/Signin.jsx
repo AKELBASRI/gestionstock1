@@ -1,9 +1,17 @@
-import React from 'react'
+import React,{useState} from 'react'
 import './signin.css'
 function Signin() {
+    const[user,setUser]=useState({
+        Mle:'',
+        password:''
+    })
+    const handleChange=(e)=>{
+        setUser({...user,[e.target.id]:e.target.value})
+    }
     return (
+        
         <div>
-           {/* <div className="container-fluid px-1 px-md-5 px-lg-1 px-xl-5 py-5 mx-auto"> */}
+          {JSON.stringify(user)}
            <div className="">
     <div className="card  border-0">
         <div className="row d-flex">
@@ -19,10 +27,11 @@ function Signin() {
                  
                     <div className="row px-3"> <label className="mb-1">
                             <h6 className="mb-0 text-sm">Matricule</h6>
-                        </label> <input className="mb-4" type="text" name="email" placeholder="Matricule"/> </div>
+                        </label> 
+                        <input className="mb-4" type="text" id="Mle" placeholder="Matricule" onChange={handleChange}/> </div>
                     <div className="row px-3"> <label className="mb-1">
                             <h6 className="mb-0 text-sm">Mot de passe</h6>
-                        </label> <input type="password" name="password" placeholder="Mot de passe"/> </div>
+                        </label> <input type="password" id="password" onChange={handleChange} placeholder="Mot de passe"/> </div>
                     <div className="row px-3 mb-4">
                        
                     </div>
