@@ -1,21 +1,27 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import "./topbar.css"
 import {NotificationsNone,Settings} from '@material-ui/icons';
 import {GiHamburgerMenu} from 'react-icons/gi'
+
 import {GrClose} from 'react-icons/gr'
 
 import { useDispatch,useSelector } from "react-redux";
-import { showorhidesidebar, showsidebar } from '../../actions/showorhideAction';
+import { showorhidesidebar } from '../../actions/showorhideAction';
 function Topbar() {
     const dispatch=useDispatch();
-    const[showSidebar,setShowSidebar]=useState(true);
+   
+    // const [showSidebar,setShowSidebar,ref]=useStateRef(false)
+    const showsidebar = useSelector((state) => state.showorhidereducers);
+    
     return (
         <div className="topbar">
             <div className="topbarWrapper">
-                
+            
             <div className="topLeft">
-                {!showSidebar ? <GrClose className="header" onClick={()=>{setShowSidebar(!showSidebar);dispatch(showorhidesidebar(showSidebar))}}/> : <GiHamburgerMenu className="header" onClick={()=>{setShowSidebar(!showSidebar);dispatch(showorhidesidebar(showSidebar))}}/>}
+           { showsidebar ? <GrClose className="header" onClick={()=>{dispatch(showorhidesidebar(false))}}/> : 
+                <GiHamburgerMenu className="header" onClick={()=>{dispatch(showorhidesidebar(true))}}/>}
                 
+                <GiHamburgerMenu className="mobilehumberger" onClick={()=>{dispatch(showorhidesidebar(true))}}/>
                 
                 {/* <span className="logo">Gestion Stock</span> */}
             </div>

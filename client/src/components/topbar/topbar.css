@@ -54,4 +54,18 @@
 .header{
     color:#555;
     font-size: 40px;
+
+}
+.mobilehumberger{
+    display: none;
+}
+@media screen and (max-width: 500px) {
+    .header{
+        display: none;
+    
+    }
+    .mobilehumberger{
+        display:block;
+        font-size: 40px;
+    }
 }

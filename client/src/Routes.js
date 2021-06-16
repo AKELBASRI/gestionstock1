@@ -5,6 +5,7 @@ import Home from './components/pages/home/Home';
 import Sidebar from './components/sidebar/Sidebar';
 import Topbar from './components/topbar/Topbar';
 import './app.css'
+import Signin from './components/pages/admin/signin/Signin';
 function Routes() {
     
     return (
@@ -19,6 +20,7 @@ function Routes() {
                     <Topbar/>
                     <Route path='/'exact component={Home}/>
                     <Route path='/aboutus'exact component={AboutUs}/>
+                    <Route path="/signin" exact component={Signin} />
                     </div> 
                     </React.Fragment>
                 </Switch>

@@ -5,28 +5,28 @@ function FeaturedInfo() {
     return (
         <div className="featured">
             <div className="featuredItem">
-                <span className="featuredTitle">Revenue</span>
+                <span className="featuredTitle">Nombre Total des Micro-ordinateurs</span>
                 <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">$2,415</span>
-                    <span className="featuredMoneyRate">-11,4 <ArrowDownward /></span>
+                    <span className="featuredMoney">12</span>
+                    {/* <span className="featuredMoneyRate">-11,4 <ArrowDownward /></span> */}
                 </div>
-                <span className="featuredSub">Compared to last month</span>
+                {/* <span className="featuredSub">Compared to last month</span> */}
             </div>
             <div className="featuredItem">
-                <span className="featuredTitle">Sales</span>
+                <span className="featuredTitle">Nombre Total des imprimantes</span>
                 <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">$4,415</span>
-                    <span className="featuredMoneyRate">-1,4 <ArrowDownward /></span>
+                    <span className="featuredMoney">16</span>
+                    {/* <span className="featuredMoneyRate">-1,4 <ArrowDownward /></span> */}
                 </div>
-                <span className="featuredSub">Compared to last month</span>
+                {/* <span className="featuredSub">Compared to last month</span> */}
             </div>
             <div className="featuredItem">
-                <span className="featuredTitle">Cost</span>
+                <span className="featuredTitle">Nombre Total des scanners </span>
                 <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">$2,415</span>
-                    <span className="featuredMoneyRate">11,4 <ArrowUpward /></span>
+                    <span className="featuredMoney">12</span>
+                    {/* <span className="featuredMoneyRate">11,4 <ArrowUpward /></span> */}
                 </div>
-                <span className="featuredSub">Compared to last month</span>
+                {/* <span className="featuredSub">Compared to last month</span> */}
             </div>
         </div>
     )

@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "l'application permet de gerer le stock de la radeeo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "AHMED KHALIL EL BASRI",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dateformat": "^4.5.1",
+    "dotenv": "^8.5.1",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "express-validator": "^5.3.1",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2",
+    "sequelize-auto": "^0.8.2"
+  }
+}

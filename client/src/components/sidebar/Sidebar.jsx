@@ -68,15 +68,22 @@
 // }
 
 // export default Sidebar
-import React,{useEffect} from 'react';
+import React,{useState} from 'react';
 import { Link ,withRouter} from 'react-router-dom';
 import './sidebar.css'
 import logo from '../logo_radeeo.jpg'
-import { useSelector } from "react-redux"
+import { useSelector,useDispatch } from "react-redux"
 import {FiHome} from 'react-icons/fi';
 import {BsPersonFill} from 'react-icons/bs';
+import {CgMenuGridR} from 'react-icons/cg'
+import {RiComputerFill} from 'react-icons/ri'
+import {VscChromeClose} from 'react-icons/vsc'
+import {AiFillPrinter} from 'react-icons/ai'
+import { showorhidesidebar } from '../../actions/showorhideAction';
 
 const Sidebar = (props) => {
+    
+    const dispatch=useDispatch();
     const showsidebar = useSelector((state) => state.showorhidereducers);
     const isActive=(history,path)=>{
         if(history.location.pathname===path){
@@ -89,8 +96,9 @@ const Sidebar = (props) => {
     return (
         <div className={`SideBar ${showsidebar?'active':''}`}>
             <div className="wrapper">
-            <img src={logo} alt="logo" className='logo' />
-            <span className="brand">Gestion Stock</span>
+            <img src={logo} alt="logo" className='Logo' />
+            <span className="Brand">Gestion Stock</span>
+            <span className='Close'><VscChromeClose onClick={()=>{dispatch(showorhidesidebar(false))}} /> </span>
             </div>
             <ul>
                 <li>
@@ -98,12 +106,18 @@ const Sidebar = (props) => {
                     Home</Link>
                 </li>
                 <li>
-                    <Link className={isActive(props.history,'/aboutus')}   to='/aboutus'><BsPersonFill/>
-                    About us</Link>
+                    <Link className={isActive(props.history,'/categories')}   to='/categories'><CgMenuGridR/>
+                    Catégories</Link>
                 </li>
                 <li>
-                    <a href='/'> Contact us</a>
+                    <Link className={isActive(props.history,'/ordinateurs')}   to='/ordinateurs'><RiComputerFill/>
+                    Ordinateurs</Link>
                 </li>
+                <li>
+                    <Link className={isActive(props.history,'/imprimantes')}   to='/imprimantes'><AiFillPrinter/>
+                    Imprimantes</Link>
+                </li>
+           
             </ul>
         </div>
       );
