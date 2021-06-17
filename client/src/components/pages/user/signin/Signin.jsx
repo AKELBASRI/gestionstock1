@@ -5,6 +5,7 @@ import toastr from 'toastr';
 import "toastr/build/toastr.css"
 import logo from '../../../logo_radeeo.jpg'
 import hero from '../../../hero.png'
+import Layout from '../../Layout/Layout';
 
 function Signin(props) {
     const[user,setUser]=useState({
@@ -48,7 +49,7 @@ function Signin(props) {
         
         <div>
         
-        
+        <Layout>
     <div className="card  border-0">
         <div className="row d-flex">
             <div className="col-lg-6">
@@ -85,13 +86,13 @@ function Signin(props) {
             </div>
          
         </div>
-        <div className="bg-blue py-4 ">
+        {/* <div className="bg-blue py-4 ">
             <div className="footer ml-4 ml-sm-5 mb-2 text-center"><small>Copyright &copy; 2021.  RADEEO S.S.I. Tous droits réservés.<br/>Gestion Stock V1.0 by Ahmed Khalil El Basri.</small></div> 
              
            
-        </div> 
+        </div>  */}
     </div>
-    
+    </Layout>
 
 </div>
   

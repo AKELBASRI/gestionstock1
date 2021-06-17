@@ -52,7 +52,7 @@
 { 
     position: absolute;
     padding: 0 30px;
-    height: 100vh;
+    height: 100%;
     overflow: 'scroll initial';
     width: 230px;
     background-color: #011627;

@@ -74,13 +74,13 @@ import './sidebar.css'
 import logo from '../logo_radeeo.jpg'
 import { useSelector,useDispatch } from "react-redux"
 import {FiHome} from 'react-icons/fi';
-import {BsPersonFill} from 'react-icons/bs';
 import {CgMenuGridR} from 'react-icons/cg'
-import {RiComputerFill} from 'react-icons/ri'
+import {HiOutlineDesktopComputer} from 'react-icons/hi'
 import {VscChromeClose} from 'react-icons/vsc'
-import {AiFillPrinter} from 'react-icons/ai'
-import { showorhidesidebar } from '../../actions/showorhideAction';
 
+import { showorhidesidebar } from '../../actions/showorhideAction';
+import {MdPerson}from 'react-icons/md'
+import { isAuthenticated } from '../../auth/helpers';
 const Sidebar = (props) => {
     
     const dispatch=useDispatch();
@@ -94,6 +94,8 @@ const Sidebar = (props) => {
     }
  
     return (
+        <div>
+            {isAuthenticated ?(
         <div className={`SideBar ${showsidebar?'active':''}`}>
             <div className="wrapper">
             <img src={logo} alt="logo" className='Logo' />
@@ -110,15 +112,16 @@ const Sidebar = (props) => {
                     Catégories</Link>
                 </li>
                 <li>
-                    <Link className={isActive(props.history,'/ordinateurs')}   to='/ordinateurs'><RiComputerFill/>
-                    Ordinateurs</Link>
+                    <Link className={isActive(props.history,'/saisiemtrl')}   to='/saisiemtrl'><HiOutlineDesktopComputer/>
+                    Saisie Matériel Informatique</Link>
                 </li>
                 <li>
-                    <Link className={isActive(props.history,'/imprimantes')}   to='/imprimantes'><AiFillPrinter/>
-                    Imprimantes</Link>
+                    <Link className={isActive(props.history,'/listusers')}   to='/listusers'><MdPerson/>
+                    Gestion Admins</Link>
                 </li>
-           
             </ul>
+        </div>
+        ):""}
         </div>
       );
     }

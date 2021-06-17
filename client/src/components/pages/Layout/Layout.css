@@ -1,5 +1,20 @@
-.bg-blue1 {
+.bg-blue {
     color: #fff;
     background-color: #011627;
-    margin-top: calc(100vh - 309px) ;
+   
+    margin-top: calc(100% - 60%) ;
+}
+
+.bg-blue2 {
+    color: #fff;
+    background-color: #011627;
+    margin-top: calc(100% - 89%);
+}
+
+@media screen and (max-width: 1024px) {
+    .bg-blue {
+        color: #fff;
+        background-color: #011627;
+        margin-top: 100%  ;
+    }
 }

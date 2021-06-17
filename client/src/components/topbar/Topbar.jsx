@@ -20,6 +20,7 @@ function Topbar(props) {
             });
             localStorage.removeItem("jwt_info")
             props.history.push('/signin')
+            dispatch(showorhidesidebar(false))
         })
         .catch()
     }

@@ -1,27 +1,33 @@
 import React from 'react'
 import {BrowserRouter,Switch,Route} from 'react-router-dom';
-import AboutUs from './components/pages/AboutUs/AboutUs';
+
 import Home from './components/pages/admin/home/Home';
 import Sidebar from './components/sidebar/Sidebar';
 import Topbar from './components/topbar/Topbar';
 import PrivateRoute from './auth/PrivateRoute'
+import AuthRoute from './auth/AuthRoute'
 import './app.css'
 import Signin from './components/pages/user/signin/Signin';
+import ListUsers from './components/pages/admin/user/ListUsers';
+import categories from './components/pages/admin/categories/Categories';
 function Routes() {
     
     return (
         <BrowserRouter >
         <React.Fragment>
-            <div className="rowFlex">
+            <div className="row">
             <Sidebar/>
             
                 <Switch>
                 <React.Fragment>
-                <div className="Columnflex">
+                <div className="d-flex flex-column col p-0">
+                
                     <Topbar/>
                     <PrivateRoute path='/'exact component={Home}/>
-                    <Route path='/aboutus'exact component={AboutUs}/>
-                    <Route path="/signin" exact component={Signin} />
+                    
+                    <PrivateRoute path='/listusers'exact component={ListUsers}/>
+                    <PrivateRoute path='/categories'exact component={categories}/>
+                    <AuthRoute path="/signin" exact component={Signin} />
                     </div> 
                     </React.Fragment>
                 </Switch>
