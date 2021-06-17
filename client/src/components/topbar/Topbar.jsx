@@ -2,19 +2,36 @@ import React,{useState,useEffect} from 'react'
 import "./topbar.css"
 import {NotificationsNone,Settings} from '@material-ui/icons';
 import {GiHamburgerMenu} from 'react-icons/gi'
-
+import {BiLogOut} from "react-icons/bi";
 import {GrClose} from 'react-icons/gr'
-
+import {Link,withRouter} from 'react-router-dom';
+import toastr from 'toastr';
+import "toastr/build/toastr.css"
 import { useDispatch,useSelector } from "react-redux";
 import { showorhidesidebar } from '../../actions/showorhideAction';
-function Topbar() {
+import { API_URL } from '../../config';
+import {isAuthenticated} from "../../auth/helpers"
+
+function Topbar(props) {
+    const signout=()=>{
+        fetch(`${API_URL}/signout`).then(()=>{
+            toastr.info("utilisateur est deconnecté",'À la prochaine',{
+                positionClass:"toast-top-right"
+            });
+            localStorage.removeItem("jwt_info")
+            props.history.push('/signin')
+        })
+        .catch()
+    }
     const dispatch=useDispatch();
    
     // const [showSidebar,setShowSidebar,ref]=useStateRef(false)
     const showsidebar = useSelector((state) => state.showorhidereducers);
     
     return (
+        
         <div className="topbar">
+            {isAuthenticated() ? (
             <div className="topbarWrapper">
             
             <div className="topLeft">
@@ -23,23 +40,23 @@ function Topbar() {
                 
                 <GiHamburgerMenu className="mobilehumberger" onClick={()=>{dispatch(showorhidesidebar(true))}}/>
                 
-                {/* <span className="logo">Gestion Stock</span> */}
+               
             </div>
             <div className="topRight">
-                <div className="topbarIconContainer">
+                {/* <div className="topbarIconContainer">
                     <NotificationsNone />
                     <span className="topIconBadge">2</span>
-                </div>
-                <div className="topbarIconContainer">
+                </div> */}
+                {/* <div className="topbarIconContainer">
                     <Settings />
-                </div>
-                <img src="https://images.pexels.com/photos/1627936/pexels-photo-1627936.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" className="topAvatar"/>
-            
+                </div> */}
+                
+                <BiLogOut className="logout" onClick={signout}/>
             </div>
             </div>
-           
+           ):""}
         </div>
     )
 }
 
-export default Topbar
+export default withRouter(Topbar)

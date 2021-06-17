@@ -13,20 +13,19 @@ body {
 }
 
 .logo {
-    width: 200px;
-    height: 100px;
+    width: 70px;
+    height: 90px;
     margin-top: 20px;
-    margin-left: 35px
+    margin-left: 300px
 }
 
 .image {
-    width: 360px;
-    height: 280px
+    margin-top: -30px;
+    width: 500px;
+    height: 400px
 }
 
-.border-line {
-    border-right: 1px solid #EEEEEE
-}
+
 
 
 .line {
@@ -106,16 +105,22 @@ a {
 .bg-blue {
     color: #fff;
     background-color: #011627;
-    margin-top: calc(100vh - 522px);
+    margin-top: calc(100vh - 754px) !important;
 }
+ .title{
+    font-size: 20px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
 
 @media screen and (max-width: 991px) {
     .logo {
-        margin-left: 0px
+        margin-left: 30px
     }
 
     .image {
-        width: 300px;
+        width: 270px;
         height: 220px
     }
 
@@ -127,4 +132,13 @@ a {
         border-top: 1px solid #EEEEEE !important;
         margin: 0px 15px
     }
+    .footer{
+        margin-left: 0px !important;
+    }
+ 
+.bg-blue {
+   
+    
+    margin-top: calc(100vh - 550px) !important;
+}
 }
