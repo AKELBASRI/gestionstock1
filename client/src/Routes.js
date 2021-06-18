@@ -15,23 +15,23 @@ function Routes() {
     return (
         <BrowserRouter >
         <React.Fragment>
-            <div className="row">
-            <Sidebar/>
+            {/* <div className="row"> */}
+            {/* <Sidebar/> */}
             
                 <Switch>
                 <React.Fragment>
-                <div className="d-flex flex-column col p-0">
+                {/* <div className="d-flex flex-column col p-0"> */}
                 
                     <Topbar/>
                     <PrivateRoute path='/'exact component={Home}/>
                     
-                    <PrivateRoute path='/listusers'exact component={ListUsers}/>
+                    <PrivateRoute path='/admin/listusers'exact component={ListUsers}/>
                     <PrivateRoute path='/categories'exact component={categories}/>
                     <AuthRoute path="/signin" exact component={Signin} />
-                    </div> 
+                    {/* </div>  */}
                     </React.Fragment>
                 </Switch>
-                </div>
+                {/* </div> */}
                 </React.Fragment>
         </BrowserRouter>
     )

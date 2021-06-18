@@ -2,19 +2,40 @@
     color: #fff;
     background-color: #011627;
    
-    margin-top: calc(100% - 60%) ;
+    margin-top: calc(100% - 52%) ;
 }
 
 .bg-blue2 {
     color: #fff;
     background-color: #011627;
-    margin-top: calc(100% - 89%);
+    margin-top: calc(100% - 80%);
 }
 
-@media screen and (max-width: 1024px) {
+/* @media screen and (max-width: 1024px) {
     .bg-blue {
         color: #fff;
         background-color: #011627;
         margin-top: 100%  ;
     }
 }
+
+
+  #main {
+    transition: margin-left .5s;
+    padding: 0px !important;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  } */
+  
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 728px) {
+  #main  {
+    margin-left: 90px !important;
+  }
+
+}
+
+ 

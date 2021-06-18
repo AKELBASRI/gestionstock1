@@ -36,9 +36,10 @@ function Topbar(props) {
             <div className="topbarWrapper">
             
             <div className="topLeft">
-           { showsidebar ? <GrClose className="header" onClick={()=>{dispatch(showorhidesidebar(false))}}/> : 
-                <GiHamburgerMenu className="header" onClick={()=>{dispatch(showorhidesidebar(true))}}/>}
-                
+           {/* { showsidebar ? <GrClose className="header" onClick={()=>{dispatch(showorhidesidebar(false))}}/> : 
+                <GiHamburgerMenu className="header" onClick={()=>{dispatch(showorhidesidebar(true))}}/>
+                }
+                 */}
                 <GiHamburgerMenu className="mobilehumberger" onClick={()=>{dispatch(showorhidesidebar(true))}}/>
                 
                
