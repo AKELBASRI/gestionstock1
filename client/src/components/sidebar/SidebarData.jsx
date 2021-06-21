@@ -6,8 +6,14 @@ import * as RiIcons from 'react-icons/ri';
 
 export const SidebarData = [
   {
-    title: 'Administration',
+    title: 'Home',
     path: '/',
+    icon: "fas fa-dice-d6"
+  },
+  {
+    
+    title: 'Administration',
+    path: '#',
     icon: "fas fa-dice-d6",
     iconClosed: <span className="fas fa-caret-down caret"></span>,
     iconOpened: <span className="fas fa-caret-up caret"></span>,
@@ -20,7 +26,7 @@ export const SidebarData = [
       },
       {
         title: 'Gestion agents',
-        path: '/admin/revenue',
+        path: '/admin/agents',
         icon: "fas fa-dice-d6"
       }
     ]
@@ -38,7 +44,11 @@ export const SidebarData = [
 
   {
     title: 'Affectation Materiels',
-    path: '/support',
-    icon: "fas fa-dice-d6"
+    path: '/affctmtrl',
+    icon: "fas fa-dice-d6",
+    iconClosed: <span className="fas fa-caret-down caret"></span>,
+    iconOpened: <span className="fas fa-caret-up caret"></span>,
+   
   }
+
 ];

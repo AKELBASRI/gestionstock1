@@ -33,7 +33,10 @@ function Signin(props) {
             }
             else{
                 localStorage.setItem('jwt_info',JSON.stringify(res));
-                props.history.push('/');
+                props.history.push({
+                    pathname: '/',
+                    state: { state: true }
+                  })
                 toastr.info("Authentification réussie",'Bienvenue',{
                     positionClass:"toast-top-right"
                 });

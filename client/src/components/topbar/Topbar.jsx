@@ -20,7 +20,7 @@ function Topbar(props) {
             });
             localStorage.removeItem("jwt_info")
             props.history.push('/signin')
-            dispatch(showorhidesidebar(false))
+            dispatch(showorhidesidebar(true))
         })
         .catch()
     }
@@ -40,7 +40,7 @@ function Topbar(props) {
                 <GiHamburgerMenu className="header" onClick={()=>{dispatch(showorhidesidebar(true))}}/>
                 }
                  */}
-                <GiHamburgerMenu className="mobilehumberger" onClick={()=>{dispatch(showorhidesidebar(true))}}/>
+                {/* <GiHamburgerMenu className="mobilehumberger" onClick={()=>{dispatch(showorhidesidebar(true))}}/> */}
                 
                
             </div>

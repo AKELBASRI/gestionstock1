@@ -1,12 +1,12 @@
 import React from 'react'
 import {BrowserRouter,Switch,Route} from 'react-router-dom';
-
 import Home from './components/pages/admin/home/Home';
 import Sidebar from './components/sidebar/Sidebar';
 import Topbar from './components/topbar/Topbar';
 import PrivateRoute from './auth/PrivateRoute'
 import AuthRoute from './auth/AuthRoute'
 import './app.css'
+// import './app'
 import Signin from './components/pages/user/signin/Signin';
 import ListUsers from './components/pages/admin/user/ListUsers';
 import categories from './components/pages/admin/categories/Categories';
@@ -16,7 +16,7 @@ function Routes() {
         <BrowserRouter >
         <React.Fragment>
             {/* <div className="row"> */}
-            {/* <Sidebar/> */}
+            <Sidebar/>
             
                 <Switch>
                 <React.Fragment>

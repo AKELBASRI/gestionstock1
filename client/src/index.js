@@ -10,9 +10,9 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducers, composeEnhancers(applyMiddleware(thunk)));
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
+  
     <Routes />
-    </React.StrictMode>
+   
     </Provider>,
   document.getElementById('root')
 );

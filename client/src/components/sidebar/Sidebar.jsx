@@ -14,11 +14,14 @@ import {MdPerson}from 'react-icons/md'
 import { isAuthenticated } from '../../auth/helpers';
 import $ from 'jquery';
 import { SidebarData } from './SidebarData';
+import useStateRef from 'react-usestateref'
 import SubMenu from './SubMenu';
+import Media from 'react-media'
 const Sidebar = (props) => {
-    const[state,setstate]=useState(false)
+    // const[state,setstate]=useState(true)
     const dispatch=useDispatch();
-   
+    // const [state,setstate,ref]=useStateRef(true)
+    const state = useSelector((state) => state.showorhidereducers);
     const isActive=(history,path)=>{
         if(history.location.pathname===path){
             return "active"
@@ -29,9 +32,9 @@ const Sidebar = (props) => {
     
     const openNav=() =>{
         
-        setstate(true)
-        
-          
+       console.log("ok")
+          dispatch(showorhidesidebar(true))
+         
             if (
               document.getElementById("mySidenav") &&
               document.getElementById("main")
@@ -40,14 +43,17 @@ const Sidebar = (props) => {
               document.getElementById("main").style.marginLeft = "277px";
               document.getElementById("mySidenav").classList.remove("active")
             }
+          }
+           
         
           
-      }
+      
       
       const closeNav=() =>{
        
-        setstate(false)
-        if (
+        
+        dispatch(showorhidesidebar(false))
+          if (
             document.getElementById("mySidenav") &&
             document.getElementById("main")
           ) {
@@ -55,27 +61,54 @@ const Sidebar = (props) => {
             document.getElementById("main").style.marginLeft = "90px";
             document.getElementById("mySidenav").classList.add("active")
           }
+       
+       
       }
-      useEffect(()=>{
-        openNav()
-    },[])
+   const sidenavdesktop=()=>{
+     return(
+    <div id="mySidenav" className={`sidenav`}>
+    <span className="titleapp">Gestion Stock</span>
+    {state ?   <span className="closebtn" onClick={closeNav}>&times;</span> :
+    <GiHamburgerMenu className="humberger"  onClick={openNav}/>}
+ {SidebarData.map((item,index)=>{
+   return <SubMenu item={item} key={index} state={state} props={props} />
+ })}
+
+
+</div>
+     );
+   }
+   const sidenavmobile=()=>{
+     
+    return(
+      <div id="mySidenav" className={`sidenav`}>
+      <span className="titleapp">Gestion Stock</span>
+      {state ?   <span className="closebtn" onClick={closeNav}>&times;</span> :
+      <GiHamburgerMenu className="humberger"  onClick={openNav}/>}
+   {SidebarData.map((item,index)=>{
+     return <SubMenu item={item} key={index} state={state} props={props} />
+   })}
+
+</div>
+    );
+  }
+  useEffect(()=>{
+    if (window.matchMedia("(min-width: 728px)").matches) {
+      /* the view port is at least 400 pixels wide */
+      openNav()
+    } else {
+      /* the view port is less than 400 pixels wide */
+      closeNav()
+    }
+  },[])
     return (
         <div>
             {isAuthenticated() ?(
-                         <div>
-                          
-                        <div id="mySidenav" className="sidenav">
-                        <span className="titleapp">Gestion Stock</span>
-                        {state ?   <span className="closebtn" onClick={closeNav}>&times;</span> :
-                        <GiHamburgerMenu className="humberger"  onClick={openNav}/>}
-                     {SidebarData.map((item,index)=>{
-                       return <SubMenu item={item} key={index} />
-                     })}
-            
-                                    
-                    </div>
+                        
+                       
+                       sidenavdesktop()
                            
-        </div>
+       
         ):""}
         </div>
       );

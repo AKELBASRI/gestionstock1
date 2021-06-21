@@ -1,3 +1,6 @@
-.MuiPaper-elevation2 {
+/* .MuiPaper-elevation2 {
     box-shadow: none ! important;
+    } */
+    .MuiPaper-elevation4 {
+        box-shadow: none ! important;
     }

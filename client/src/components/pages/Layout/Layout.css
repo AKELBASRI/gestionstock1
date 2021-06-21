@@ -2,13 +2,20 @@
     color: #fff;
     background-color: #011627;
    
-    margin-top: calc(100% - 52%) ;
+    margin-top: calc(100vh - 50px);
 }
 
 .bg-blue2 {
     color: #fff;
     background-color: #011627;
     margin-top: calc(100% - 80%);
+}
+@media screen and (max-width: 280px) {
+  .bg-blue {
+    position: absolute;
+    z-index: 52551515151;
+    
+  }
 }
 
 /* @media screen and (max-width: 1024px) {
@@ -31,11 +38,6 @@
   } */
   
 /* On screens that are 600px or less, set the background color to olive */
-@media screen and (max-width: 728px) {
-  #main  {
-    margin-left: 90px !important;
-  }
 
-}
 
- 
+

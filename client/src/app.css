@@ -17,3 +17,23 @@
     padding-right:0;
     padding-left:0;
 } */
+
+#main{
+    margin-left: 270px ;
+  }
+
+  #mainsignin{
+      margin-left: 0px;
+  }
+  @media screen and (max-width: 728px) {
+    #main  {
+      margin-left: 90px !important;
+    }
+  
+  }
+  @media screen and (max-width: 280px) {
+    #main {
+      margin-left: 30px !important;
+    }
+  }
+  

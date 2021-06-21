@@ -19,8 +19,8 @@
     color:#555;
 } */
 .topRight{
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
 }
 .topbarIconContainer{
     position: relative;
@@ -54,15 +54,19 @@
 .logout{
     font-size: 30px;
     color:#555 ;
+    cursor: pointer;
+}
+.logout svg{
+    position: absolute;
+    cursor: pointer;
+    top:0px
 }
 .header{
     color:#555;
     font-size: 40px;
 
 }
-.mobilehumberger{
-    display: none;
-}
+
 @media screen and (max-width: 500px) {
     .header{
         display: none;

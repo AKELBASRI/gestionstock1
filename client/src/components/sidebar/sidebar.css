@@ -13,12 +13,10 @@
  }
  
 
-
-
  .sidenav {
     z-index: 123548451235 !important;
     height: 100%;
-    width: 0;
+    width: 277px;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -63,13 +61,23 @@
   .sidenav ul ul li a{
     font-size: 17px;
     color: #e6e6e6;
-    padding-left: 50px;
+    padding-left: 40px;
   }
+  .sidenav.active ul ul li a{
+    padding-left: 20px;
+  }
+
   .sidenav.active  ul li a span.title,
+  .sidenav.active ul li a span.caret ,
   .sidenav.active .titleapp span.title,
   .sidenav.active .titleapp
   {
     display: none;
+  }
+
+  .sidenav.active  ul ul li a span.title{
+    display: block;
+    transition: all 1s ease;
   }
   .sidenav ul li a span.title,
   .sidenav.active .titleapp span.title
@@ -81,8 +89,18 @@
    .sidenav ul ul{
     position: static;
     display: block;
+    transition: all 1s ease;
   }
- 
+  .sidenav.active ul.showleft
+ {
+  position: fixed !important;
+  display: block !important;
+  left: 90px;
+  transform: translateY(-40%);
+ background-color:#011627 ;
+
+  /* top: 60px; */
+ }
   .sidenav .closebtn,.humberger {
     position: absolute;
     top: 10px;
@@ -93,71 +111,10 @@
     cursor: pointer;
   }
 
- /*
-  * off canvas sidebar
-  * --------------------------------------------------
-  */
 
-/*   
- @media screen and (max-width: 768px) {
-     #sidebar {
-         min-width: 44px;
-     }
-     
-     #main {
-         width: 1%;
-         left: 0;
-     }
-     
-     #sidebar .visible-xs {
-        display:inline !important;
-     }
-     
-     .row-offcanvas {
-        position: relative;
-        -webkit-transition: all 0.4s ease-in-out;
-        -moz-transition: all 0.4s ease-in-out;
-        transition: all 0.4s ease-in-out;
-     }
-     
-     .row-offcanvas-left.active {
-        left: 45%;
-     }
-     
-     .row-offcanvas-left.active .sidebar-offcanvas {
-        left: -45%;
-        position: absolute;
-        top: 0;
-        width: 45%;
-     }
- } 
+  @media screen and (min-width: 728px) {
+    .sidenav.active{
+      width: 90px;
+    }
   
-  
- @media screen and (min-width: 768px) {
-   .row-offcanvas {
-     position: relative;
-     -webkit-transition: all 0.25s ease-out;
-     -moz-transition: all 0.25s ease-out;
-     transition: all 0.25s ease-out;
-   }
- 
-   .row-offcanvas-left.active {
-     left: 3%;
-   }
- 
-   .row-offcanvas-left.active .sidebar-offcanvas {
-     left: -3%;
-     position: absolute;
-     top: 0;
-     width: 3%;
-     text-align: center;
-     min-width:42px;
-   }
-   
-   #main {
-     left: 0;
-   }
- }
-  */
-
-  
+  }
