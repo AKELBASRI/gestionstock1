@@ -22,17 +22,22 @@ const Sidebar = (props) => {
     const dispatch=useDispatch();
     // const [state,setstate,ref]=useStateRef(true)
     const state = useSelector((state) => state.showorhidereducers);
-    const isActive=(history,path)=>{
-        if(history.location.pathname===path){
-            return "active"
-        }else{
-            return ""
+    const keys=SidebarData.map(function(item,key){
+      return{key:key,close:null,item:item}
+    })
+    const onOpen=(key)=>{
+      
+      keys.forEach(x=>{
+        
+        if(x.key!==key && x.close !==null){
+         
+          x.close();
         }
+      })
     }
-    
     const openNav=() =>{
         
-       console.log("ok")
+      //  console.log("ok")
           dispatch(showorhidesidebar(true))
          
             if (
@@ -70,28 +75,18 @@ const Sidebar = (props) => {
     <span className="titleapp">Gestion Stock</span>
     {state ?   <span className="closebtn" onClick={closeNav}>&times;</span> :
     <GiHamburgerMenu className="humberger"  onClick={openNav}/>}
- {SidebarData.map((item,index)=>{
+ {/* {SidebarData.map((item,index)=>{
    return <SubMenu item={item} key={index} state={state} props={props} />
+ })} */}
+{keys.map((item,index)=>{
+ 
+   return <SubMenu onOpen={onOpen} item1={item} key={index} state={state} props={props} />
  })}
-
 
 </div>
      );
    }
-   const sidenavmobile=()=>{
-     
-    return(
-      <div id="mySidenav" className={`sidenav`}>
-      <span className="titleapp">Gestion Stock</span>
-      {state ?   <span className="closebtn" onClick={closeNav}>&times;</span> :
-      <GiHamburgerMenu className="humberger"  onClick={openNav}/>}
-   {SidebarData.map((item,index)=>{
-     return <SubMenu item={item} key={index} state={state} props={props} />
-   })}
 
-</div>
-    );
-  }
   useEffect(()=>{
     if (window.matchMedia("(min-width: 728px)").matches) {
       /* the view port is at least 400 pixels wide */
