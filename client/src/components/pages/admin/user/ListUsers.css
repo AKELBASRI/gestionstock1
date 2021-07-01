@@ -4,3 +4,12 @@
     .MuiPaper-elevation4 {
         box-shadow: none ! important;
     }
+
+   
+    @media screen and (max-width: 727px) {
+        .MuiToolbar-root.MuiToolbar-regular.MuiTablePagination-toolbar
+        {
+        display: flex;
+        flex-direction: column;
+        }
+    }
