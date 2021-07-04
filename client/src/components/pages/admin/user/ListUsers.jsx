@@ -1,8 +1,7 @@
 import React,{useEffect} from 'react'
-import MaterialTable from 'material-table'
+
 import { useDispatch,useSelector } from "react-redux";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+
 import { getusers } from '../../../../actions/getUserAction';
 import './ListUsers.css'
 import Layout from '../../Layout/Layout';

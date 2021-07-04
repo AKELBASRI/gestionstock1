@@ -35,18 +35,7 @@ export const SidebarData = [
     iconClosed: <span className="fas fa-caret-down caret"></span>,
     iconOpened: <span className="fas fa-caret-up caret"></span>,
 
-    subNav: [
-      {
-        title: 'Gestion des admins',
-        path: '/admin/listusers',
-        icon: "fas fa-dice-d6"
-      },
-      {
-        title: 'Gestion agents',
-        path: '/admin/agents',
-        icon: "fas fa-dice-d6"
-      }
-    ]
+
   },
   {
     title: 'Saisie Materiels',

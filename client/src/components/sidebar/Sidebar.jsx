@@ -1,5 +1,5 @@
 
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useRef} from 'react';
 import { Link ,withRouter} from 'react-router-dom';
 import './sidebar.css'
 import logo from '../logo_radeeo.jpg'
@@ -21,6 +21,7 @@ const Sidebar = (props) => {
     // const[state,setstate]=useState(true)
     const dispatch=useDispatch();
     // const [state,setstate,ref]=useStateRef(true)
+    const sidebar=useRef(null)
     const state = useSelector((state) => state.showorhidereducers);
     const keys=SidebarData.map(function(item,key){
       return{key:key,close:null,item:item}
@@ -41,12 +42,13 @@ const Sidebar = (props) => {
           dispatch(showorhidesidebar(true))
          
             if (
-              document.getElementById("mySidenav") &&
-              document.getElementById("main")
+            sidebar
             ) {
-              document.getElementById("mySidenav").style.width = "277px";
-              document.getElementById("main").style.marginLeft = "277px";
-              document.getElementById("mySidenav").classList.remove("active")
+          
+              sidebar.current.style.width="277px";
+              
+              sidebar.current.classList.remove('active');
+              
             }
           }
            
@@ -59,19 +61,18 @@ const Sidebar = (props) => {
         
         dispatch(showorhidesidebar(false))
           if (
-            document.getElementById("mySidenav") &&
-            document.getElementById("main")
+            sidebar
           ) {
-            document.getElementById("mySidenav").style.width = "90px";
-            document.getElementById("main").style.marginLeft = "90px";
-            document.getElementById("mySidenav").classList.add("active")
+    
+            sidebar.current.style.width="90px";
+            sidebar.current.classList.add('active');
           }
        
        
       }
    const sidenavdesktop=()=>{
      return(
-    <div id="mySidenav" className={`sidenav`}>
+    <div id="mySidenav" className={`sidenav`} ref={sidebar}>
     <span className="titleapp">Gestion Stock</span>
     {state ?   <span className="closebtn" onClick={closeNav}>&times;</span> :
     <GiHamburgerMenu className="humberger"  onClick={openNav}/>}
