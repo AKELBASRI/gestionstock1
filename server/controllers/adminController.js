@@ -10,7 +10,7 @@ exports.getOneUser = (req, res) => {
   };
 
 exports.createUser=(req,res)=>{
-    admin.findOne({where: {Mle: req.body.Mle}}).then((result)=>{
+  models.admin.findOne({where: {Mle: req.body.Mle}}).then((result)=>{
     if (result) {
       res.status(409).json({error: 'Matricule existe deja !'});
     } else {
@@ -19,12 +19,10 @@ exports.createUser=(req,res)=>{
       const user = {
         Mle: req.body.Mle,
         password: hash,
-        codesce: req.body.codesce,
-        nom:req.body.nom,
-        Email:req.body.Email,
-        changepwd:req.body.changepwd
+        nom:req.body.nom
+        
       };
-      admin.user
+      models.admin
           .create(user)
           .then((result) => {
             res
