@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 
 import { useDispatch,useSelector } from "react-redux";
 
@@ -6,10 +6,15 @@ import { getusers } from '../../../../actions/getUserAction';
 import './ListUsers.css'
 import Layout from '../../Layout/Layout';
 import MUIDataTable from "mui-datatables";
+import ChangePasswordModal from './ChangePasswordModal'
 function ListUsers() {
     const dispatch=useDispatch();
+    const [user,setUser]=useState({})
     const listusers = useSelector((state) => state.usersReducer);
-    
+    const[showEditAddModal,setshowEditAddModal]=useState(false);
+    const[showPasswordModal,setshowpasswordmodal]=useState(false);
+    const handleClose = () => {setshowpasswordmodal(false);setshowEditAddModal(false)};
+    const handleShowPassword = (user) => {setshowpasswordmodal(true);setUser(user)}
     useEffect(()=>{
         dispatch(getusers());
     },[dispatch])
@@ -22,7 +27,7 @@ function ListUsers() {
                                      // > */}
                                  <i className="fas fa-pencil-alt"></i>
                               </button>
-                              <button type="button" className="btn btn-secondary btn-sm px-3"  onClick={()=>null
+                              <button type="button" className="btn btn-secondary btn-sm px-3"  onClick={()=> handleShowPassword(listusers[dataIndex])
                          // {
                          //    handleShowPassword(data)
                           
@@ -142,6 +147,7 @@ function ListUsers() {
       //   />
       // </div>
        )}
+        <ChangePasswordModal usernormal={user} show={showPasswordModal} handleClose={handleClose} />
        </Layout>
      
     )
