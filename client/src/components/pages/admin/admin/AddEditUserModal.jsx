@@ -86,7 +86,7 @@ function AddEditUserModal({Mle,show,handleClose}) {
     }
     const UpdateUser=()=>{
       const{user,token}=isAuthenticated()
-      fetch(`${API_URL}/user/updateuser/${user.Mle}`,{
+      fetch(`${API_URL}/admin/update/${user.Mle}`,{
          method:"PUT",
          headers:{
              "Accept":"application/json",
@@ -96,6 +96,7 @@ function AddEditUserModal({Mle,show,handleClose}) {
          body:JSON.stringify(normaluser)
      }).then(res=>res.json())
      .then(res=>{
+       console.log(res)
          if(res.error){
              toastr.warning(res.error,"S'il vous plaît Veuillez vérifier le Formulaire",{
                  positionClass:"toast-bottom-left"

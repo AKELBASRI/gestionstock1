@@ -9,7 +9,7 @@ exports.getOneUser = (req, res) => {
     });
   };
 
-exports.createUser=(req,res)=>{
+exports.createAdmin=(req,res)=>{
   models.admin.findOne({where: {Mle: req.body.Mle}}).then((result)=>{
     if (result) {
       res.status(409).json({error: 'Matricule existe deja !'});
@@ -43,7 +43,7 @@ exports.createUser=(req,res)=>{
   });
 }
 
-exports.getusers=(req,res)=>{
+exports.getadmins=(req,res)=>{
    
     models.admin.findAll({attributes: ['nom', 'Mle']}).
     then(users=>
@@ -64,7 +64,7 @@ exports.updatepassword=(req,res)=>{
               });
 }
 
-exports.updateUser=(req,res)=>{
+exports.updateAdmin=(req,res)=>{
   
   models.admin.update(req.body,{where: {Mle: req.body.Mle}})
               .then((result) => {
@@ -76,7 +76,7 @@ exports.updateUser=(req,res)=>{
                 res.status(500).json({error: 'Something went wrong'+ error});
               });
 }
-exports.deleteUser=(req,res)=>{
+exports.deleteadmin=(req,res)=>{
   
      models.admin.destroy({where: {Mle: req.body.Mle}})
      .then((result) => {
