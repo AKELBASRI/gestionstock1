@@ -1,13 +1,16 @@
 import React,{useEffect,useState} from 'react'
 
 import { useDispatch,useSelector } from "react-redux";
+import { confirmAlert } from 'react-confirm-alert'; 
 
-import { getusers } from '../../../../actions/getUserAction';
 import './ListAdmins.css'
+import './DeleteAdmin.css'
 import Layout from '../../Layout/Layout';
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from './ChangePasswordModal'
 import AddEditUserModal from './AddEditUserModal';
+import { getusers } from '../../../../actions/getUserAction';
+import handleClickDelete from './DeleteAdmin';
 function ListUsers() {
     const dispatch=useDispatch();
     const [user,setUser]=useState({})
@@ -20,28 +23,49 @@ function ListUsers() {
     useEffect(()=>{
         dispatch(getusers());
     },[dispatch])
+    const Actiongetusers=()=>{
+      dispatch(getusers());
+    }
+    const Delete=(user)=>{
+       
+      confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className='custom-ui'>
+                <h1>Vous êtes sure ?</h1>
+                <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
+                <button onClick={onClose}>Non</button>
+                <button
+                  onClick={() => {
+                    handleClickDelete(user,Actiongetusers);
+                    dispatch(getusers());
+                    onClose();
+                    
+                  }}
+                >
+                  Oui, Supprimer !
+                </button>
+              </div>
+            );
+          }
+        });
+  }
     const buttons=(dataIndex, rowIndex)=>{
       return(
       <div className="row">
        
         <button type="button" className="btn btn-success btn-sm px-3" onClick={ ()=>   handleShowEditAddModal(listusers[dataIndex])}>
-                                    {/* handleShowEditAddModal(data)}
-                                     // > */}
+                                   
                                  <i className="fas fa-pencil-alt"></i>
                               </button>
                               <button type="button" className="btn btn-secondary btn-sm px-3"  onClick={()=> handleShowPassword(listusers[dataIndex])
-                         // {
-                         //    handleShowPassword(data)
-                          
-                         //     }
+                      
                              } >
                         <i className="fas fa-key"></i>
                         </button>
         
-                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=>null}>
-                  {/* {
-      //                  Delete(data)}
-      //              }> */}
+                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listusers[dataIndex]))}>
+                  
                         <i className="fas fa-times"></i>
                     </button>
        
@@ -97,58 +121,7 @@ function ListUsers() {
              {listusers && (
                <MUIDataTable title={"Liste des admins"} data={listusers} columns={columns} options={options} />
                
-      //       <div style={{ maxWidth: '100%' }}>
-      //   <MaterialTable
-      //     columns={[
-      //       { title: 'Nom', field: 'nom' },
-      //       { title: 'Mle', field: 'Mle' },
-          
-            
-      //       { title: 'Actions', field: 'Actions' },
-      //     ]}
-      //     data={listusers}
-          
-      //     components={{
-          
-      //       Row: ({ data }) => {
-      //         return (
-      //           <TableRow>
-      //             <TableCell >{data.nom}</TableCell>
-      //             <TableCell >{data.Mle}</TableCell>
-                  
-      //             <TableCell> <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=>null}>
-      //              {/* {
-      //                  Delete(data)}
-      //              }> */}
-      //                   <i className="fas fa-times"></i>
-      //                   </button>
-                  
-      //                   <button type="button" className="btn btn-success btn-sm px-3" onClick={ ()=>  null}>
-      //                       {/* handleShowEditAddModal(data)}
-      //                       // > */}
-      //                   <i className="fas fa-pencil-alt"></i>
-      //                   </button>
-      //                   <button type="button" className="btn btn-secondary btn-sm px-3"  onClick={()=>null
-      //                   // {
-      //                   //    handleShowPassword(data)
-                          
-      //                   //     }
-      //                       } >
-      //                   <i className="fas fa-key"></i>
-      //                   </button></TableCell>
-      //           </TableRow>
-      //         );
-      //       },
-          
-          
-      //     }}
-          
-      //     options={{
-      //       showTitle: false,
-      //  }}
-       
-      //   />
-      // </div>
+     
        )}
         <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau admin</button>        
         <ChangePasswordModal usernormal={user} show={showPasswordModal} handleClose={handleClose} />

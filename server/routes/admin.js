@@ -8,6 +8,7 @@ const router = express.Router();
  router.put("/updatepassword/:mle",requireSignIn,isAuth,updatepassword)
  router.post('/create/:mle',requireSignIn,isAuth,createAdmin);
  router.put('/update/:mle',requireSignIn,isAuth,updateAdmin);
+ router.delete('/delete/:mle',requireSignIn,isAuth,deleteadmin);
 router.param("mle", userById);
 
 module.exports = router;
