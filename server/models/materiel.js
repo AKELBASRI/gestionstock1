@@ -52,8 +52,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'service',
-        key: 'idservice'
+        model: 'services',
+        key: 'id'
       }
     },
     mleagent: {
@@ -85,17 +85,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "fk_service_idx",
-        using: "BTREE",
-        fields: [
-          { name: "idservice" },
-        ]
-      },
-      {
         name: "fk_mleagent_idx",
         using: "BTREE",
         fields: [
           { name: "mleagent" },
+        ]
+      },
+      {
+        name: "fk_idservice_idx",
+        using: "BTREE",
+        fields: [
+          { name: "idservice" },
         ]
       },
     ]

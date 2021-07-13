@@ -25,6 +25,11 @@ export const SidebarData = [
         title: 'Gestion des agents',
         path: '/admin/agents',
         icon: "fas fa-dice-d6"
+      },
+      {
+        title: 'Gestion des services',
+        path: '/admin/services',
+        icon: "fas fa-dice-d6"
       }
     ]
   },
