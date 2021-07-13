@@ -8,7 +8,7 @@ import AuthRoute from './auth/AuthRoute'
 import './app.css'
 // import './app'
 import Signin from './components/pages/user/signin/Signin';
-import ListUsers from './components/pages/admin/user/ListUsers';
+import ListUsers from './components/pages/admin/admin/ListAdmins';
 import categories from './components/pages/admin/categories/Categories';
 function Routes() {
     

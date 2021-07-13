@@ -3,16 +3,18 @@ import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from "react-redux";
 
 import { getusers } from '../../../../actions/getUserAction';
-import './ListUsers.css'
+import './ListAdmins.css'
 import Layout from '../../Layout/Layout';
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from './ChangePasswordModal'
+import AddEditUserModal from './AddEditUserModal';
 function ListUsers() {
     const dispatch=useDispatch();
     const [user,setUser]=useState({})
     const listusers = useSelector((state) => state.usersReducer);
     const[showEditAddModal,setshowEditAddModal]=useState(false);
     const[showPasswordModal,setshowpasswordmodal]=useState(false);
+    const handleShowEditAddModal=(user)=>{ setshowEditAddModal(true);setUser(user)}
     const handleClose = () => {setshowpasswordmodal(false);setshowEditAddModal(false)};
     const handleShowPassword = (user) => {setshowpasswordmodal(true);setUser(user)}
     useEffect(()=>{
@@ -22,7 +24,7 @@ function ListUsers() {
       return(
       <div className="row">
        
-        <button type="button" className="btn btn-success btn-sm px-3" onClick={ ()=>  console.log(listusers[dataIndex].nom)}>
+        <button type="button" className="btn btn-success btn-sm px-3" onClick={ ()=>   handleShowEditAddModal(listusers[dataIndex])}>
                                     {/* handleShowEditAddModal(data)}
                                      // > */}
                                  <i className="fas fa-pencil-alt"></i>
@@ -94,6 +96,7 @@ function ListUsers() {
             <Layout >
              {listusers && (
                <MUIDataTable title={"Liste des admins"} data={listusers} columns={columns} options={options} />
+               
       //       <div style={{ maxWidth: '100%' }}>
       //   <MaterialTable
       //     columns={[
@@ -147,7 +150,9 @@ function ListUsers() {
       //   />
       // </div>
        )}
+        <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau admin</button>        
         <ChangePasswordModal usernormal={user} show={showPasswordModal} handleClose={handleClose} />
+        <AddEditUserModal Mle={user.Mle} show={showEditAddModal} handleClose={handleClose} />
        </Layout>
      
     )
