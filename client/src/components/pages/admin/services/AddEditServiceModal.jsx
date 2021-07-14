@@ -14,7 +14,7 @@ function AddEditServiceModal({ CodeSce,show,handleClose}) {
     const [nservice,setService]=useState({
       
         id:'',
-        Libelle:'',
+        service_name:'',
       
     })
     const dispatch=useDispatch();
@@ -28,7 +28,7 @@ function AddEditServiceModal({ CodeSce,show,handleClose}) {
           },[service])
     const [errors,setErrors]=useState({})
     const validate=()=>{
-        if(!nservice.Libelle){
+        if(!nservice.service_name){
           setErrors({Libelle:"Veuilez Entrer le nom du service "})
           setIsValid(false)
         }
@@ -139,10 +139,10 @@ function AddEditServiceModal({ CodeSce,show,handleClose}) {
            <Modal.Body>
              
              <Form.Group  >
-                       
+                      
                
                <Form.Label>Libelle </Form.Label>
-               <Form.Control value={nservice.service_name || '' } onChange={handleChange}   type="text" placeholder="Libelle" id="Libelle" />
+               <Form.Control value={nservice.service_name || '' } onChange={handleChange}   type="text" placeholder="Libelle" id="service_name" />
                <div className="text-danger">{errors.Libelle}</div>
               
               

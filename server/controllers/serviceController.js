@@ -3,10 +3,10 @@ const Joi = require("joi");
 exports.saveService=(req,res)=>{
     const service={
        
-        service_name:req.body.Libelle.trim(),
+        service_name:req.body.service_name.trim(),
        
     }
-    models.services.findOne({where: {service_name: req.body.Libelle.trim()}}).then((result)=>{
+    models.services.findOne({where: {service_name: req.body.service_name.trim()}}).then((result)=>{
         if (result) {
           res.status(403).json({error: 'Service existe deja !'});
           
@@ -14,7 +14,7 @@ exports.saveService=(req,res)=>{
          else {
            
             const schema = Joi.object({
-                Libelle: Joi.string().trim().required()
+                service_name: Joi.string().trim().required()
                 
             });
             const { error } = schema.validate(req.body);
