@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
  const adminRoutes = require("./routes/admin");
-// const serviceRoutes=require("./routes/service")
+ const serviceRoutes=require("./routes/service")
 // const dossierRoute=require("./routes/dossier");
  const authRoutes=require("./routes/auth");
 const expressValidator = require('express-validator');
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(expressValidator());
 app.use("/api", authRoutes);
- app.use("/api/admin", adminRoutes);
-// app.use("/api/service",serviceRoutes)
+app.use("/api/admin", adminRoutes);
+app.use("/api/service",serviceRoutes)
 
 module.exports = app;

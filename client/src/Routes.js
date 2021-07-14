@@ -10,6 +10,7 @@ import './app.css'
 import Signin from './components/pages/user/signin/Signin';
 import ListUsers from './components/pages/admin/admin/ListAdmins';
 import categories from './components/pages/admin/categories/Categories';
+import ListServices from './components/pages/admin/services/ListServices';
 function Routes() {
     
     return (
@@ -27,7 +28,10 @@ function Routes() {
                     
                     <PrivateRoute path='/admin/listusers'exact component={ListUsers}/>
                     <PrivateRoute path='/categories'exact component={categories}/>
+                    <PrivateRoute path='/admin/services'exact component={ListServices}/>
+                   
                     <AuthRoute path="/signin" exact component={Signin} />
+
                     {/* </div>  */}
                     </React.Fragment>
                 </Switch>
