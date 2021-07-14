@@ -7,6 +7,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { getservices } from '../../../../actions/getserviceAction';
 import { confirmAlert } from 'react-confirm-alert'; 
 import AddEditServiceModal from './AddEditServiceModal';
+import handleClickDelete from './DeleteService';
 function ListServices() {
     const dispatch=useDispatch();
     const listservices = useSelector((state) => state.serviceReducer);
@@ -17,7 +18,10 @@ function ListServices() {
         dispatch(getservices());
     },[dispatch])
     const handleClose = () => {setshowEditAddModal(false)};
-    const Delete=(user)=>{
+    const actiongetservices=()=>{
+        dispatch(getservices());
+     }
+    const Delete=(service)=>{
        
         confirmAlert({
             customUI: ({ onClose }) => {
@@ -28,7 +32,7 @@ function ListServices() {
                   <button onClick={onClose}>Non</button>
                   <button
                     onClick={() => {
-                    //   handleClickDelete(user,Actiongetusers);
+                      handleClickDelete(service,actiongetservices);
                       dispatch(getservices());
                       onClose();
                       
