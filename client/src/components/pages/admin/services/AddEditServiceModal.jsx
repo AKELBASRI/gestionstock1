@@ -75,7 +75,7 @@ function AddEditServiceModal({ CodeSce,show,handleClose}) {
     }
     const updateService=()=>{
         const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/service/updateservice/${user.Mle}`,{
+        fetch(`${API_URL}/service/update/${user.Mle}`,{
         method:"PUT",
         headers:{
             "Accept":"application/json",
@@ -93,10 +93,10 @@ function AddEditServiceModal({ CodeSce,show,handleClose}) {
         else{
             dispatch(getservices());
             //props.history.push('/');
-            toastr.success(`Le service ${service.Libelle}  est modifié avec succés `,'Modification Service',{
+            toastr.success(`Le service ${service.service_name}  est modifié avec succés `,'Modification Service',{
                 positionClass:"toast-bottom-left"
             });
-            setService({Libelle:''})
+            setService({service_name:''})
             
             handleClose()
             
