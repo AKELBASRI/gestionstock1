@@ -11,6 +11,7 @@ import Signin from './components/pages/user/signin/Signin';
 import ListUsers from './components/pages/admin/admin/ListAdmins';
 import categories from './components/pages/admin/categories/Categories';
 import ListServices from './components/pages/admin/services/ListServices';
+import ListAgents from './components/pages/admin/agents/ListAgents';
 function Routes() {
     
     return (
@@ -29,6 +30,7 @@ function Routes() {
                     <PrivateRoute path='/admin/listusers'exact component={ListUsers}/>
                     <PrivateRoute path='/categories'exact component={categories}/>
                     <PrivateRoute path='/admin/services'exact component={ListServices}/>
+                    <PrivateRoute path='/admin/agents'exact component={ListAgents}/>
                    
                     <AuthRoute path="/signin" exact component={Signin} />
 
