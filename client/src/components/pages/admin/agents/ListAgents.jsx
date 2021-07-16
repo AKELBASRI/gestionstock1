@@ -13,6 +13,7 @@ import MUIDataTable from "mui-datatables";
 // import handleClickDelete from './DeleteAdmin';
 import { getagents } from '../../../../actions/getagentsAction';
 import AddEditAgentModal from './AddEditAgentModal';
+import handleClickDelete from './DeleteAgent';
 function ListAgents() {
     const dispatch=useDispatch();
     const [user,setUser]=useState({})
@@ -61,7 +62,7 @@ function ListAgents() {
                 <button onClick={onClose}>Non</button>
                 <button
                   onClick={() => {
-                    // handleClickDelete(user,Actiongetusers);
+                    handleClickDelete(user,Actiongetagents);
                     dispatch(getagents());
                     onClose();
                     

@@ -114,7 +114,7 @@ function AddEditAgentModal({Mle,show,handleClose}) {
     }
     const UpdateUser=()=>{
       const{user,token}=isAuthenticated()
-      fetch(`${API_URL}/agents/updateuser/${user.Mle}`,{
+      fetch(`${API_URL}/agents/update/${user.Mle}`,{
          method:"PUT",
          headers:{
              "Accept":"application/json",
@@ -132,7 +132,7 @@ function AddEditAgentModal({Mle,show,handleClose}) {
          else{
             
              //props.history.push('/');
-             toastr.success(`L'utilisateur ${normaluser.nom}  est modifié avec succés `,'Modification Utilisateur',{
+             toastr.success(`L'agent matricule ${normaluser.agent_number}  est modifié avec succés `,'Modification Utilisateur',{
                  positionClass:"toast-bottom-left"
              });
              setUser({  agent_number:'',agent_full_name:'', agent_email:'',agency_id:'',service_id:''})

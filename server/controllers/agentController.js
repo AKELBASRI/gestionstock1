@@ -70,3 +70,30 @@ exports.createAgent=(req,res)=>{
     });
     
   }
+
+
+  exports.deleteagent=(req,res)=>{
+  
+    models.agents.destroy({where: {agent_number: req.body.agent_number}})
+    .then((result) => {
+    res.status(201)
+    .json({message: "l'agent a été supprimé avec succés ", user: result});
+   })
+   .catch((error) => {
+   console.log(error);
+   res.status(500).json({error: 'Something went wrong'+ error});
+   });
+   
+}
+exports.updateAgent=(req,res)=>{
+  
+    models.agents.update(req.body,{where: {agent_number: req.body.agent_number}})
+                .then((result) => {
+                  res.status(201)
+                      .json({message: "l'agent a été modifié avec succés ", user: result});
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res.status(500).json({error: 'Something went wrong'+ error});
+                });
+  }
