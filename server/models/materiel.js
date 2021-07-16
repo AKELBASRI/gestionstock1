@@ -38,11 +38,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     idtype: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'typemateriel',
+        key: 'id'
+      }
     },
     idagence: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'agencies',
+        key: 'id'
+      }
     },
     idservice: {
       type: DataTypes.INTEGER,
@@ -54,7 +62,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     mleagent: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'agents',
+        key: 'agent_number'
+      }
     }
   }, {
     sequelize,
@@ -74,6 +86,27 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "idservice" },
+        ]
+      },
+      {
+        name: "fk_agenceid_idx",
+        using: "BTREE",
+        fields: [
+          { name: "idagence" },
+        ]
+      },
+      {
+        name: "fk_typeid_idx",
+        using: "BTREE",
+        fields: [
+          { name: "idtype" },
+        ]
+      },
+      {
+        name: "fk_agentid_idx",
+        using: "BTREE",
+        fields: [
+          { name: "mleagent" },
         ]
       },
     ]

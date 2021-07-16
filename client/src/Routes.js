@@ -9,9 +9,10 @@ import './app.css'
 // import './app'
 import Signin from './components/pages/user/signin/Signin';
 import ListUsers from './components/pages/admin/admin/ListAdmins';
-import categories from './components/pages/admin/categories/Categories';
+
 import ListServices from './components/pages/admin/services/ListServices';
 import ListAgents from './components/pages/admin/agents/ListAgents';
+import ListeCategories from './components/pages/admin/categories/ListeCategories';
 function Routes() {
     
     return (
@@ -28,7 +29,7 @@ function Routes() {
                     <PrivateRoute path='/'exact component={Home}/>
                     
                     <PrivateRoute path='/admin/listusers'exact component={ListUsers}/>
-                    <PrivateRoute path='/categories'exact component={categories}/>
+                    <PrivateRoute path='/categories'exact component={ListeCategories}/>
                     <PrivateRoute path='/admin/services'exact component={ListServices}/>
                     <PrivateRoute path='/admin/agents'exact component={ListAgents}/>
                    

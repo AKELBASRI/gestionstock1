@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('typemateriel', {
-    idtypemateriel: {
+    id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -9,11 +9,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     type: {
       type: DataTypes.STRING(200),
-      allowNull: true
+      allowNull: false
     },
     inventoryornot: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: false
     }
   }, {
     sequelize,
@@ -25,7 +25,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "idtypemateriel" },
+          { name: "id" },
         ]
       },
     ]

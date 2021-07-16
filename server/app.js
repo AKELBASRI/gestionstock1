@@ -4,6 +4,7 @@ const cors = require("cors");
  const serviceRoutes=require("./routes/service")
  const agenciesRoutes=require("./routes/agencies")
  const agentRoutes=require("./routes/agents")
+ const categoryRoutes=require("./routes/category")
 // const dossierRoute=require("./routes/dossier");
  const authRoutes=require("./routes/auth");
 const expressValidator = require('express-validator');
@@ -23,4 +24,5 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/service",serviceRoutes)
 app.use("/api/agencies",agenciesRoutes)
 app.use("/api/agents",agentRoutes)
+app.use("/api/category",categoryRoutes)
 module.exports = app;

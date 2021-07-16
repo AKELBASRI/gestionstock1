@@ -16,10 +16,16 @@ function initModels(sequelize) {
 
   agents.belongsTo(agencies, { as: "agency", foreignKey: "agency_id"});
   agencies.hasMany(agents, { as: "agents", foreignKey: "agency_id"});
+  materiel.belongsTo(agencies, { as: "idagence_agency", foreignKey: "idagence"});
+  agencies.hasMany(materiel, { as: "materiels", foreignKey: "idagence"});
+  materiel.belongsTo(agents, { as: "mleagent_agent", foreignKey: "mleagent"});
+  agents.hasMany(materiel, { as: "materiels", foreignKey: "mleagent"});
   agents.belongsTo(services, { as: "service", foreignKey: "service_id"});
   services.hasMany(agents, { as: "agents", foreignKey: "service_id"});
   materiel.belongsTo(services, { as: "idservice_service", foreignKey: "idservice"});
   services.hasMany(materiel, { as: "materiels", foreignKey: "idservice"});
+  materiel.belongsTo(typemateriel, { as: "idtype_typemateriel", foreignKey: "idtype"});
+  typemateriel.hasMany(materiel, { as: "materiels", foreignKey: "idtype"});
 
   return {
     admin,

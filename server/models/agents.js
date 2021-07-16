@@ -1,12 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('agents', {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
     creation_time: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -20,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
     agent_number: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: "agent_number"
+      primaryKey: true
     },
     agent_full_name: {
       type: DataTypes.STRING(30),
@@ -80,7 +74,7 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id" },
+          { name: "agent_number" },
         ]
       },
       {
