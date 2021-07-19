@@ -8,6 +8,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { getservices } from '../../../../actions/getserviceAction'
 import { isAuthenticated } from '../../../../auth/helpers';
 import { API_URL } from '../../../../config';
+import Switch from "@material-ui/core/Switch";
 function AddEditCategoryModal({ CodeSce,show,handleClose}) {
     const [isvalid,setIsValid,ref]=useStateRef(true)
     const [ncategory,setCategory]=useState({
@@ -18,7 +19,7 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
       
     })
     const dispatch=useDispatch();
-    const category = useSelector((state) =>CodeSce? state.serviceReducer.find((p)=>p.id===CodeSce):null);
+    const category = useSelector((state) =>CodeSce? state.categoryReducer.find((p)=>p.id===CodeSce):null);
     useEffect(()=>{
             if(category){
                 setCategory(category)
@@ -150,7 +151,8 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
                <Form.Control value={ncategory.type || '' } onChange={handleChange}   type="text" placeholder="Nom" id="type" />
                <div className="text-danger">{errors.type}</div>
                <Form.Label>Inventory ou non </Form.Label>
-               <InputGroup.Checkbox value={ncategory.inventoryornot || '' } onChange={handleChange}   type="text" placeholder="" id="inventoryornot" />
+               {/* <InputGroup.Checkbox value={ncategory.inventoryornot || '' } onChange={handleChange}   type="text" placeholder="" id="inventoryornot" /> */}
+               <Switch checked={ncategory.inventoryornot || false} onChange={handleChange} id='inventoryornot'/>
                <div className="text-danger">{errors.type}</div>
               
              </Form.Group>
