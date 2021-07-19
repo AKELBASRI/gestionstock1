@@ -9,6 +9,7 @@ import { getservices } from '../../../../actions/getserviceAction'
 import { isAuthenticated } from '../../../../auth/helpers';
 import { API_URL } from '../../../../config';
 import Switch from "@material-ui/core/Switch";
+import { getcategories } from '../../../../actions/getCategoryAction';
 function AddEditCategoryModal({ CodeSce,show,handleClose}) {
     const [isvalid,setIsValid,ref]=useStateRef(true)
     const [ncategory,setCategory]=useState({
@@ -18,6 +19,7 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
         inventoryornot:''
       
     })
+    const [checked, setChecked] = React.useState(true);
     const dispatch=useDispatch();
     const category = useSelector((state) =>CodeSce? state.categoryReducer.find((p)=>p.id===CodeSce):null);
     useEffect(()=>{
@@ -95,7 +97,7 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
             });
         }
         else{
-            dispatch(getservices());
+            dispatch(getcategories());
             //props.history.push('/');
             toastr.success(`category ${category.type}  est modifié avec succés `,'Modification Service',{
                 positionClass:"toast-bottom-left"
@@ -127,8 +129,8 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
         
     }
     const handleChange=(e)=>{
-   
-        setCategory({...ncategory,[e.target.id]:e.target.value})
+        const value = e.target.id === "inventoryornot" ? e.target.checked : e.target.value;
+        setCategory({...ncategory,[e.target.id]:value})
        
       }
     
@@ -151,13 +153,13 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
                <Form.Control value={ncategory.type || '' } onChange={handleChange}   type="text" placeholder="Nom" id="type" />
                <div className="text-danger">{errors.type}</div>
                <Form.Label>Inventory ou non </Form.Label>
-               {/* <InputGroup.Checkbox value={ncategory.inventoryornot || '' } onChange={handleChange}   type="text" placeholder="" id="inventoryornot" /> */}
-               <Switch checked={ncategory.inventoryornot || false} onChange={handleChange} id='inventoryornot'/>
+             
+               <Switch value="active" checked={ncategory.inventoryornot || false} value={checked} onChange={handleChange} id='inventoryornot'/>
                <div className="text-danger">{errors.type}</div>
               
              </Form.Group>
              
-             
+             {JSON.stringify(ncategory)}
           
            </Modal.Body>
            <Modal.Footer>
