@@ -21,7 +21,7 @@ function Layout({children,props}) {
     }
     useEffect(()=>{
         if(state){
-            main.current.style.marginLeft = "277px";
+            main.current.style.marginLeft = "307px";
         }else{
             main.current.style.marginLeft = "90px";
         }

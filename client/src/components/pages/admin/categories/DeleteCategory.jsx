@@ -10,17 +10,17 @@ import { API_URL } from '../../../../config';
 
 
 
-    const handleClickDelete=(usernormal,Actiongetusers)=>{
+    const handleClickDelete=(category,Actiongetcategories)=>{
     
       const{user,token}=isAuthenticated()
-      fetch(`${API_URL}/agents/delete/${user.Mle}`,{
+      fetch(`${API_URL}/category/deletecategory/${user.Mle}`,{
          method:"DELETE",
          headers:{
              "Accept":"application/json",
              "Content-Type":"application/json",
              "Authorization":`Bearer ${token}`
          },
-         body:JSON.stringify({agent_number:usernormal.agent_number})
+         body:JSON.stringify({id:category.id})
      }).then(res=>res.json())
      .then(res=>{
          if(res.error){
@@ -31,10 +31,10 @@ import { API_URL } from '../../../../config';
          else{
             
              //props.history.push('/');
-             toastr.success(`L'agent ${usernormal.nom}  est supprimé avec succés `,'Suppression Agent',{
+             toastr.success(`La category type ${category.type}  est supprimé avec succés `,'Suppression Agent',{
                  positionClass:"toast-bottom-left"
              });
-             Actiongetusers()
+             Actiongetcategories()
          }
      })
      .catch(err=>{

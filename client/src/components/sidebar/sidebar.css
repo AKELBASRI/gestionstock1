@@ -16,7 +16,7 @@
  .sidenav {
     z-index: 1234 !important;
     height: 100%;
-    width: 277px;
+    width: 307px;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -59,7 +59,7 @@
     color: white;
    }
   .sidenav ul ul li a{
-    font-size: 17px;
+    font-size: 13px;
     color: #e6e6e6;
     padding-left: 40px;
   }

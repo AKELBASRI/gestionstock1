@@ -1,4 +1,3 @@
-
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 
@@ -10,17 +9,17 @@ import { API_URL } from '../../../../config';
 
 
 
-    const handleClickDelete=(agent,Actiongetagents)=>{
+    const handleClickDelete=(fournisseur,actiongetfournisseurs)=>{
     
       const{user,token}=isAuthenticated()
-      fetch(`${API_URL}/agents/delete/${user.Mle}`,{
+      fetch(`${API_URL}/fournisseurs/delete/${user.Mle}`,{
          method:"DELETE",
          headers:{
              "Accept":"application/json",
              "Content-Type":"application/json",
              "Authorization":`Bearer ${token}`
          },
-         body:JSON.stringify({agent_number:agent.agent_number})
+         body:JSON.stringify({idFournisseur:fournisseur.idFournisseur})
      }).then(res=>res.json())
      .then(res=>{
          if(res.error){
@@ -31,10 +30,10 @@ import { API_URL } from '../../../../config';
          else{
             
              //props.history.push('/');
-             toastr.success(`L'agent ${agent.nom}  est supprimé avec succés `,'Suppression Agent',{
+             toastr.success(`Le fournisseur ${fournisseur.NomFournisseur}  est supprimé avec succés `,'Suppression Service',{
                  positionClass:"toast-bottom-left"
              });
-             Actiongetagents()
+             actiongetfournisseurs()
          }
      })
      .catch(err=>{

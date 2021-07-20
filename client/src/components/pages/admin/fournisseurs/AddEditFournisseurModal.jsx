@@ -1,5 +1,5 @@
 import React ,{useState,useEffect} from 'react'
-import {Button,Modal,Form,InputGroup} from 'react-bootstrap'
+import {Button,Modal,Form} from 'react-bootstrap'
 import useStateRef from 'react-usestateref'
 
 import toastr from 'toastr';
@@ -8,31 +8,29 @@ import { useDispatch,useSelector } from "react-redux";
 import { getservices } from '../../../../actions/getserviceAction'
 import { isAuthenticated } from '../../../../auth/helpers';
 import { API_URL } from '../../../../config';
-import Switch from "@material-ui/core/Switch";
-import { getcategories } from '../../../../actions/getCategoryAction';
-function AddEditCategoryModal({ CodeSce,show,handleClose}) {
+import { getFournisseurs } from '../../../../actions/getFournisseur';
+
+function AddEditFournisseurModal({ id,show,handleClose}) {
     const [isvalid,setIsValid,ref]=useStateRef(true)
-    const [ncategory,setCategory]=useState({
+    const [nFournisseur,setFournisseur]=useState({
       
-        idtypemateriel:'',
-        type:'',
-        inventoryornot:false
+       
+        NomFournisseur:'',
       
     })
-    const [checked, setChecked] = React.useState(true);
     const dispatch=useDispatch();
-    const category = useSelector((state) =>CodeSce? state.categoryReducer.find((p)=>p.id===CodeSce):null);
+    const fournisseur = useSelector((state) =>id? state.fournisseurReducer.find((p)=>p.idFournisseur===id):null);
     useEffect(()=>{
-            if(category){
-                setCategory(category)
+            if(fournisseur){
+                setFournisseur(fournisseur)
             }else{
-                setCategory({inventoryornot:false})
+                setFournisseur({})
             }
-          },[category])
+          },[fournisseur])
     const [errors,setErrors]=useState({})
     const validate=()=>{
-        if(!ncategory.type){
-          setErrors({type:"Veuilez Entrer le nom du category "})
+        if(!nFournisseur.NomFournisseur){
+          setErrors({Libelle:"Veuilez Entrer le nom du fournisseur "})
           setIsValid(false)
         }
         
@@ -42,16 +40,16 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
        }
         return ref.current
     }
-    const AddCategory=()=>{
+    const AddFournisseur=()=>{
         const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/category/create/${user.Mle}`,{
+        fetch(`${API_URL}/fournisseurs/create/${user.Mle}`,{
            method:"POST",
            headers:{
                "Accept":"application/json",
                "Content-Type":"application/json",
                "Authorization":`Bearer ${token}`
            },
-           body:JSON.stringify(ncategory)
+           body:JSON.stringify(nFournisseur)
        }).then(res=>res.json())
        .then(res=>{
            if(res.error){
@@ -62,14 +60,11 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
            else{
               
                //props.history.push('/');
-               toastr.success(`Le service ${ncategory.type}  est crée avec succés `,'Nouveau Service',{
+               toastr.success(`Le Fournisseur ${nFournisseur.NomFournisseur}  est crée avec succés `,'Nouveau Service',{
                    positionClass:"toast-bottom-left"
                });
-               setCategory({  idtypemateriel:'',
-               type:'',
-               inventoryornot:''
-             })
-               dispatch(getcategories());
+               setFournisseur({NomFournisseur:''})
+               dispatch(getFournisseurs());
                handleClose()
            }
        })
@@ -79,16 +74,16 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
            });
        })
     }
-    const updateCategory=()=>{
+    const updateService=()=>{
         const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/category/update/${user.Mle}`,{
+        fetch(`${API_URL}/fournisseurs/update/${user.Mle}`,{
         method:"PUT",
         headers:{
             "Accept":"application/json",
             "Content-Type":"application/json",
             "Authorization":`Bearer ${token}`
         },
-        body:JSON.stringify(ncategory)
+        body:JSON.stringify(nFournisseur)
     }).then(res=>res.json())
     .then(res=>{
         if(res.error){
@@ -97,14 +92,12 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
             });
         }
         else{
-            dispatch(getcategories());
+            dispatch(getFournisseurs());
             //props.history.push('/');
-            toastr.success(`category ${category.type}  est modifié avec succés `,'Modification Service',{
+            toastr.success(`Le fournisseur ${nFournisseur.NomFournisseur}  est modifié avec succés `,'Modification Service',{
                 positionClass:"toast-bottom-left"
             });
-            setCategory({ idtypemateriel:'',
-            type:'',
-            inventoryornot:''})
+            setFournisseur({NomFournisseur:''})
             
             handleClose()
             
@@ -119,18 +112,18 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
     const Submit=(e)=>{
         e.preventDefault();
         if(validate()){
-            if(!CodeSce){
-               AddCategory();
+            if(!id){
+                AddFournisseur();
             }
             else{
-                updateCategory();
+                updateService();
             }
         }
         
     }
     const handleChange=(e)=>{
-        const value = e.target.id === "inventoryornot" ? e.target.checked : e.target.value;
-        setCategory({...ncategory,[e.target.id]:value})
+   
+        setFournisseur({...nFournisseur,[e.target.id]:e.target.value})
        
       }
     
@@ -142,24 +135,21 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
            <Modal show={show} onHide={handleClose}>
            <Modal.Header closeButton>
            
-             <Modal.Title>{category ? `Modification  du category : ${category.type} ` :'Ajout Category' }</Modal.Title>
+             <Modal.Title>{fournisseur ? `Modification  du Fournisseur : ${fournisseur.NomFournisseur} ` :'Ajout Fournisseur' }</Modal.Title>
            </Modal.Header>
            <Modal.Body>
              
              <Form.Group  >
                       
                
-               <Form.Label>Nom </Form.Label>
-               <Form.Control value={ncategory.type || '' } onChange={handleChange}   type="text" placeholder="Nom" id="type" />
-               <div className="text-danger">{errors.type}</div>
-               <Form.Label>Inventory ou non </Form.Label>
-             
-               <Switch value="active" checked={ncategory.inventoryornot || false} value={checked} onChange={handleChange} id='inventoryornot'/>
-               <div className="text-danger">{errors.type}</div>
+               <Form.Label>Nom Fournisseur: </Form.Label>
+               <Form.Control value={nFournisseur.NomFournisseur || '' } onChange={handleChange}   type="text" placeholder="Nom Fournisseur" id="NomFournisseur" />
+               <div className="text-danger">{errors.Libelle}</div>
+              
               
              </Form.Group>
              
-             {JSON.stringify(ncategory)}
+             
           
            </Modal.Body>
            <Modal.Footer>
@@ -168,7 +158,7 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
                Close
              </Button>
              <Button variant="primary" onClick={Submit} >
-             {CodeSce!==undefined ? 'Modifier':'Ajout' }
+             {id!==undefined ? 'Modifier':'Ajout' }
              </Button>
        
            </Modal.Footer>
@@ -178,5 +168,4 @@ function AddEditCategoryModal({ CodeSce,show,handleClose}) {
     )
 }
 
-
-export default AddEditCategoryModal
+export default AddEditFournisseurModal

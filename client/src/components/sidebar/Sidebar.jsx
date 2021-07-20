@@ -45,7 +45,7 @@ const Sidebar = (props) => {
             sidebar
             ) {
           
-              sidebar.current.style.width="277px";
+              sidebar.current.style.width="307px;";
               
               sidebar.current.classList.remove('active');
               

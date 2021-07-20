@@ -30,7 +30,13 @@ export const SidebarData = [
         title: 'Gestion des services',
         path: '/admin/services',
         icon: "fas fa-dice-d6"
-      }
+      },
+      {
+        title: 'Gestion des Fournisseurs',
+        path: '/admin/fournisseurs',
+        icon: "fas fa-dice-d6"
+      },
+
     ]
   },
   {
