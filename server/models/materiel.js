@@ -25,7 +25,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     IDFournisseur: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'fournisseur',
+        key: 'idFournisseur'
+      }
     },
     Affecter: {
       type: DataTypes.BOOLEAN,
@@ -107,6 +111,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "mleagent" },
+        ]
+      },
+      {
+        name: "fk_idfournisseur_idx",
+        using: "BTREE",
+        fields: [
+          { name: "IDFournisseur" },
         ]
       },
     ]

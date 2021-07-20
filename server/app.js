@@ -6,7 +6,7 @@ const cors = require("cors");
  const agentRoutes=require("./routes/agents")
  const categoryRoutes=require("./routes/category")
  const fournisseurRoutes=require("./routes/fournisseur")
-// const dossierRoute=require("./routes/dossier");
+ const materielRoutes=require("./routes/materiel");
  const authRoutes=require("./routes/auth");
 const expressValidator = require('express-validator');
 // Import Routes
@@ -27,4 +27,5 @@ app.use("/api/agencies",agenciesRoutes)
 app.use("/api/agents",agentRoutes)
 app.use("/api/category",categoryRoutes)
 app.use("/api/fournisseurs",fournisseurRoutes)
+app.use("/api/materiels",materielRoutes)
 module.exports = app;

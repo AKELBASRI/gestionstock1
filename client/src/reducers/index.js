@@ -5,13 +5,15 @@ import {serviceReducer} from "./serviceReducer"
 import {agentsReducer} from './agentsReducer'
 import {categoryReducer} from './categoryReducer'
 import {fournisseurReducer} from './fournisseurReducer'
+import {MaterielReducer} from './materielReducer'
 const rootReducers = combineReducers({
     showorhidereducers,
     usersReducer,
     serviceReducer,
     agentsReducer,
     categoryReducer,
-    fournisseurReducer
+    fournisseurReducer,
+    MaterielReducer
 
 });
 export default rootReducers;
