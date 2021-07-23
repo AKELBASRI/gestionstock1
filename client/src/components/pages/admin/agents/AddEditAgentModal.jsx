@@ -228,8 +228,8 @@ function AddEditAgentModal({Mle,show,handleClose}) {
             <select value={normaluser.service_id || ''} id="service_id" onChange={handleChange} className="form-control" aria-label="Default select example">
                             <option value="" >Selectionner un service</option>
                          
-                                {services && services.map((category,i)=>(
-                               <option value={category.id}>{category.service_name}</option>
+                                {services && services.map((service,i)=>(
+                               <option value={service.id}>{service.service_name}</option>
                                ))}
             </select>
             <div className="text-danger">{errors.service}</div>

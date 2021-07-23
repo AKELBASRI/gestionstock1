@@ -1,5 +1,7 @@
 const models = require('../models');
 const Joi = require("joi");
+
+const dateFormat = require('dateformat');
 exports.saveMateriel=(req,res)=>{
     let current = new Date();
     const materiel={
@@ -10,6 +12,7 @@ exports.saveMateriel=(req,res)=>{
         IDFournisseur:req.body.IDFournisseur,
         datesaisie:dateFormat(current,"yyyy-mm-dd"),
         idtype:req.body.idtype
+       
 
     }
     models.materiel.findOne({where: {marque: req.body.marque.trim()}}).then((result)=>{
@@ -18,10 +21,16 @@ exports.saveMateriel=(req,res)=>{
           
         }
          else {
-           
+            const Joi = require('joi')
+            .extend(require('@joi/date'));
+        
+       
             const schema = Joi.object({
+                idservice:Joi.number(),
+                garentie: Joi.string(),
+                numeroinventaire: Joi.string(),
                 marque: Joi.string().required(),
-                datereceptionprovisoire:Joi.Date().required(),
+                datereceptionprovisoire:Joi.date().required().format('YYYY-MM-DD').utc(),
                 IDFournisseur:Joi.number().required(),
                 idtype:Joi.number().required(),
             });
@@ -31,7 +40,7 @@ exports.saveMateriel=(req,res)=>{
                 error: error.details[0].message,
                 });
             }else{
-                models.services.create(materiel).then((result)=>{
+                models.materiel.create(materiel).then((result)=>{
                     res.status(201).json({message:'Le materiel a été crée avec succés',service:result})
                 })
                 .catch((error)=>{
