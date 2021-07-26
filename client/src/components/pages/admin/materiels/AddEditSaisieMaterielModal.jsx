@@ -9,22 +9,23 @@ import { API_URL } from '../../../../config';
 import { isAuthenticated } from '../../../../auth/helpers';
 import { getMateriels } from '../../../../actions/getMaterielsActions';
 function AddEditSaisieMaterielModal({id,show,handleClose}) {
- 
-    const[agencies,setAgencies]=useState([])
+
     const[categories,setCategories]=useState([])
     const[Fournisseurs,setFournisseur]=useState([])
     const [isvalid,setIsValid,ref]=useStateRef(true)
+    const [isvalid2,setShowInventory,showInventory]=useStateRef(true);
     const [errors,setErrors]=useState({})
-    
-    const [material,setMaterial]=useState({
+  
+    const [isvalid1,setMaterial,material]=useStateRef({
         marque:'',
         numeroinventaire:'',
         garentie:'',
         datereceptionprovisoire:'',
         IDFournisseur:'',
-        idtype:''
+        idtype:'',
+       
     })
-   
+    const [Qte,setQte]=useState(0)
     const dispatch=useDispatch();
     const material1 = useSelector((state) =>id ? state.MaterielReducer.find((p)=>p.agent_number===id):null);
     useEffect(()=>{
@@ -43,38 +44,63 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
         }
       
     },[material1])
+    const handleQte=(e)=>{
+        setQte(e.target.value)
+    }
     const handleChange=(e)=>{
-   
-        setMaterial({...material,[e.target.id]:e.target.value})
+        
+       
+        setMaterial({...material.current,[e.target.id]:e.target.value})
+        const catselected=categories.find((cat)=>cat.id===parseInt(material.current.idtype));
+        if(catselected){
+            if(!catselected.inventoryornot)
+            {
+               
+                setShowInventory(false)
+                setMaterial({...material.current,numeroinventaire:''})
+                
+               
+            }else{
+                setShowInventory(true)
+                
+            }
+        }
        
       }
     
       const validate=()=>{
-        if(!material.marque){
-          setErrors({marque:"Veuilez Entrer la marque "})
-          setIsValid(false)
-        }
+       
     
-        else if(!material.numeroinventaire){
-          setErrors({numeroinventaire:"Veuillez saisir le numero d'invetaire "})
+         if((!material.current.numeroinventaire)&&(showInventory.current)){
+          setErrors({numeroinventaire:"Veuillez saisir le numero d'inventaire "})
           setIsValid(false)
-        }
-        else if(!material.garentie){
+          
+        } 
+         else if(!material.current.idtype){
+            setErrors({idtype:'Veuillez selectionner le type '})
+            setIsValid(false)
+          }
+          else if(!Qte &&(!showInventory.current)){
+            setErrors({Qte:'Veuillez saisir quantité'})
+            setIsValid(false)
+          }
+        else if(!material.current.marque){
+            setErrors({marque:"Veuilez Entrer la marque "})
+            setIsValid(false)
+          }
+        else if(!material.current.garentie){
             setErrors({garentie:"Veuillez saisir la garentie "})
             setIsValid(false)
           }
-        else if(!material.datereceptionprovisoire){
+        else if(!material.current.datereceptionprovisoire){
             setErrors({datereceptionprovisoire:'Veuillez saisir la date de reception provisoire '})
             setIsValid(false)
           }
-        else if(!material.IDFournisseur){
+        else if(!material.current.IDFournisseur){
             setErrors({IDFournisseur:'Veuillez selectionner le Fournisseur '})
             setIsValid(false)
           }
-        else if(!material.idtype){
-          setErrors({idtype:'Veuillez selectionner le type '})
-          setIsValid(false)
-        }
+       
       
        else{
            setIsValid(true)
@@ -119,45 +145,55 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
      })
     }
     const AjoutMateriel=()=>{
-     
-      const{user,token}=isAuthenticated()
-      fetch(`${API_URL}/materiels/create/${user.Mle}`,{
-          method:"POST",
-          headers:{
-              "Accept":"application/json",
-              "Content-Type":"application/json",
-              "Authorization":`Bearer ${token}`
-          },
-          body:JSON.stringify(material)
-      }).then(res=>res.json())
-      .then(res=>{
-          if(res.error){
-              toastr.warning(res.error,"S'il vous plaît Veuillez vérifier le Formulaire",{
-                  positionClass:"toast-bottom-left"
-              });
-          }
-          else{
-              
-              handleClose()
-              //props.history.push('/');
-              toastr.success(`Le Materiel ${material.marque}  est crée avec succés `,'Nouveau Materiel',{
-                  positionClass:"toast-bottom-left"
-              });
-              setMaterial({ marque:'',
-              numeroinventaire:'',
-              garentie:'',
-              datereceptionprovisoire:'',
-              IDFournisseur:'',
-              idtype:''})
-              dispatch(getMateriels());
-          }
-      })
-      .catch(err=>{
-          toastr.error(err,"Erreur du serveur",{
-              positionClass:"toast-bottom-left"
-          });
-      })
+        const marque=material.current.marque
+         for (let i = 0; i < Qte; i++) {
+                const{user,token}=isAuthenticated()
+                fetch(`${API_URL}/materiels/create/${user.Mle}`,{
+                    method:"POST",
+                    headers:{
+                        "Accept":"application/json",
+                        "Content-Type":"application/json",
+                        "Authorization":`Bearer ${token}`
+                    },
+                    body:JSON.stringify(material.current)
+                }).then(res=>res.json())
+                .then(res=>{
+                    if(res.error){
+                        toastr.warning(res.error,"S'il vous plaît Veuillez vérifier le Formulaire",{
+                            positionClass:"toast-bottom-left"
+                        });
+                    }
+                    else{
+                        
+                        handleClose()
+                       
+                        //props.history.push('/');
+                        toastr.success(`Le Materiel ${marque}  est crée avec succés `,'Nouveau Materiel',{
+                            positionClass:"toast-bottom-left"
+                        });
+                        
+                        dispatch(getMateriels());
+                    }
+                })
+                .catch(err=>{
+                    toastr.error(err,"Erreur du serveur",{
+                        positionClass:"toast-bottom-left"
+                    });
+            })
+            if(i===Qte-1){
+                setMaterial({
+                marque:'',
+                numeroinventaire:'',
+                garentie:'',
+                datereceptionprovisoire:'',
+                IDFournisseur:'',
+                idtype:''})
+                setQte('')
+            }
     }
+
+     }
+   
     const getCategories=()=>{
         const{user,token}=isAuthenticated()
         fetch(`${API_URL}/category/allcategories/${user.Mle}`,{
@@ -208,48 +244,65 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
         <Modal.Body>
           
           <Form.Group  >
+                    
                     {JSON.stringify(material)}
+            <Form.Label>Type </Form.Label>
+            <select value={material.current.idtype || ''} id="idtype" onChange={handleChange} className="form-control" aria-label="Default select example">
+                            <option value="" >Selectionner le type du materiel</option>
+                         
+                                {categories && categories.map((category,i)=>(
+                               <option key={i} value={category.id}>{category.type}</option>
+                               ))}
+            </select>
+            
+            <div className="text-danger">{errors.idtype}</div>
+            {showInventory.current && (
+             <div>
+                  <Form.Label>Numero Inventaire</Form.Label>
+            <Form.Control value={material.current.numeroinventaire || '' } onChange={handleChange}   type="text" placeholder="Numero Inventaire" id="numeroinventaire" />
+            <div className="text-danger">{errors.numeroinventaire}</div>
+           
+       
+            </div>
+            )}
+            {!showInventory.current &&(
+                <div>
+                     <Form.Label>Quantité</Form.Label>
+                     <Form.Control value={Qte || '' } onChange={handleQte}   type="text" placeholder="Quantité" id="Qte" />
+                     <div className="text-danger">{errors.Qte}</div>
+                </div>
+            )}
+            <div className="my-2"></div>
+           
+         
             
             <Form.Label>Marque : </Form.Label>
-            <Form.Control value={material.marque || '' } onChange={handleChange}   type="text" placeholder="Marque" id="marque" />
+            <Form.Control value={material.current.marque || '' } onChange={handleChange}   type="text" placeholder="Marque" id="marque" />
             <div className="text-danger">{errors.marque}</div>
-         
-            <Form.Label>Numero Inventaire</Form.Label>
-            <Form.Control value={material.numeroinventaire || '' } onChange={handleChange}   type="text" placeholder="Numero Inventaire" id="numeroinventaire" />
-            <div className="text-danger">{errors.numeroinventaire}</div>
-            
+      
             <Form.Label>Garentie</Form.Label>
-            <select value={material.garentie || ''} id="garentie" onChange={handleChange} className="form-control" aria-label="Default select example">
+            <select value={material.current.garentie || ''} id="garentie" onChange={handleChange} className="form-control" aria-label="Default select example">
                             <option value="" >Selectionner la garentie</option>
-                            <option value="1" >1 an</option>
-                            <option value="2" >2 ans</option>
-                            <option value="3" >3 ans</option>
+                            <option  key="1"  value="1" >1 an</option>
+                            <option  key="2" value="2" >2 ans</option>
+                            <option key="3" value="3" >3 ans</option>
                                
             </select>
             <div className="text-danger">{errors.garentie}</div>
             <div className="my-2"></div>
             <Form.Label>Date Reception Provisoire : </Form.Label>
-            <Form.Control value={material.datereceptionprovisoire || '' } onChange={handleChange}   type="date" placeholder="Date reception provisoire" id="datereceptionprovisoire" />
+            <Form.Control value={material.current.datereceptionprovisoire || '' } onChange={handleChange}   type="date" placeholder="Date reception provisoire" id="datereceptionprovisoire" />
             <div className="text-danger">{errors.datereceptionprovisoire}</div>
 
 
-            <Form.Label>Type </Form.Label>
-            <select value={material.idtype || ''} id="idtype" onChange={handleChange} className="form-control" aria-label="Default select example">
-                            <option value="" >Selectionner le type du materiel</option>
-                         
-                                {categories && categories.map((category,i)=>(
-                               <option value={category.id}>{category.type}</option>
-                               ))}
-            </select>
-            <div className="text-danger">{errors.idtype}</div>
-            <div className="my-2"></div>
+           
           
             <Form.Label>Fournisseur </Form.Label>
-            <select value={material.IDFournisseur || ''} id="IDFournisseur" onChange={handleChange} className="form-control" aria-label="Default select example">
+            <select value={material.current.IDFournisseur || ''} id="IDFournisseur" onChange={handleChange} className="form-control" aria-label="Default select example">
                             <option value="" >Selectionner le Fournisseur</option>
                          
                                 {Fournisseurs && Fournisseurs.map((fournisseur,i)=>(
-                               <option value={fournisseur.idFournisseur}>{fournisseur.NomFournisseur}</option>
+                               <option key={i} value={fournisseur.idFournisseur}>{fournisseur.NomFournisseur}</option>
                                ))}
             </select>
             <div className="text-danger">{errors.IDFournisseur}</div>

@@ -28,7 +28,7 @@ exports.saveMateriel=(req,res)=>{
             const schema = Joi.object({
                 idservice:Joi.number(),
                 garentie: Joi.string(),
-                numeroinventaire: Joi.string(),
+                numeroinventaire: Joi.optional().allow(''),
                 marque: Joi.string().required(),
                 datereceptionprovisoire:Joi.date().required().format('YYYY-MM-DD').utc(),
                 IDFournisseur:Joi.number().required(),

@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from 'react'
+import React,{useState,useEffect,useRef,useCallback} from 'react'
 import { isAuthenticated } from '../../../auth/helpers'
 import { useSelector,useDispatch } from "react-redux"
 import { BrowserRouter, Link,withRouter } from 'react-router-dom';
@@ -11,7 +11,7 @@ import "./Layout.css"
 import Sidebar from '../../sidebar/Sidebar';
 function Layout({children,props}) {
     const state = useSelector((state) => state.showorhidereducers);
-    const main=useRef(null)
+   
     const isActive=(history,path)=>{
         if(history.location.pathname===path){
             return "active"
@@ -19,13 +19,37 @@ function Layout({children,props}) {
             return ""
         }
     }
-    useEffect(()=>{
-        if(state){
-            main.current.style.marginLeft = "307px";
-        }else{
-            main.current.style.marginLeft = "90px";
-        }
-    },[state])
+    function useHookWithRefCallback() {
+        const ref = useRef(null)
+        const setRef = useCallback(node => {
+         if(ref && ref.current) {
+          
+            if(state){
+
+                ref.current.style.marginLeft = "307px";
+            }
+            else{
+             
+                ref.current.style.marginLeft = "90px";
+               
+           }
+         }
+          
+          if (node) {
+            // Check if a node is actually passed. Otherwise node would be null.
+            // You can now do what you need to, addEventListeners, measure, etc.
+          
+          }
+          
+          // Save a reference to the node
+          ref.current = node
+        }, [])
+        
+        return [setRef]
+      }
+
+    
+ 
     //  const openNav=() =>{
     //     setstate(true)
     //     if (
@@ -47,13 +71,14 @@ function Layout({children,props}) {
     //         document.getElementById("main").style.marginLeft = "50px";
     //       }
     //   }
- 
+    const [ref] = useHookWithRefCallback()
     return (
+       
       <div>
     
-       
+ 
         {/* <div id={`${isAuthenticated() ? `main`:`mainsignin`}> */}
-        <div id={`${isAuthenticated() ? `main`:`mainsignin`}`} ref={main}> 
+        <div id={`${isAuthenticated() ? `main`:`mainsignin`}`} ref={ ref}> 
         <div className="mx-5">{children}</div>
               <div className={`${isAuthenticated() ?`bg-blue  `:`bg-blue2`} py-4`}>
             <div className="footer ml-4 ml-sm-5 mb-2 text-center">

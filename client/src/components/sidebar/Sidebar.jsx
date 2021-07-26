@@ -1,5 +1,5 @@
 
-import React,{useState,useEffect,useRef} from 'react';
+import React,{useState,useEffect,useRef,useCallback} from 'react';
 import { Link ,withRouter} from 'react-router-dom';
 import './sidebar.css'
 import logo from '../logo_radeeo.jpg'
@@ -42,10 +42,10 @@ const Sidebar = (props) => {
           dispatch(showorhidesidebar(true))
          
             if (
-            sidebar
+              sidebar 
             ) {
           
-              sidebar.current.style.width="307px;";
+              sidebar.current.style.width="307px";
               
               sidebar.current.classList.remove('active');
               
@@ -87,8 +87,35 @@ const Sidebar = (props) => {
 </div>
      );
    }
-
-  useEffect(()=>{
+   function useHookWithRefCallback() {
+    const ref = useRef(null)
+    const setRef = useCallback(node => {
+     if(ref && ref.current) {
+      
+        if (window.matchMedia("(min-width: 728px)").matches) {
+          openNav(ref)
+           
+        }
+        else{
+         
+           closeNav(ref)
+           
+       }
+     }
+      
+      if (node) {
+        // Check if a node is actually passed. Otherwise node would be null.
+        // You can now do what you need to, addEventListeners, measure, etc.
+      
+      }
+      
+      // Save a reference to the node
+      ref.current = node
+    }, [])
+    
+    return [setRef]
+  }
+   useEffect(()=>{
     if (window.matchMedia("(min-width: 728px)").matches) {
       /* the view port is at least 400 pixels wide */
       openNav()
@@ -97,6 +124,9 @@ const Sidebar = (props) => {
       closeNav()
     }
   },[])
+
+  const [ref] = useHookWithRefCallback()
+
     return (
         <div>
             {isAuthenticated() ?(
