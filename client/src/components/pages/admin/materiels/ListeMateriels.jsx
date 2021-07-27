@@ -7,7 +7,7 @@ import '../admin/ListAdmins.css'
 import '../admin/DeleteAdmin.css'
 import Layout from '../../Layout/Layout';
 import MUIDataTable from "mui-datatables";
-
+import Switch from "@material-ui/core/Switch";
 
 import { getMateriels } from '../../../../actions/getMaterielsActions';
 import AddEditSaisieMaterielModal from './AddEditSaisieMaterielModal';
@@ -77,13 +77,13 @@ function ListMateriels() {
       return(
       <div className="row">
        
-        <button type="button" className="btn btn-success btn-sm px-3" onClick={ ()=>   handleShowEditAddModal(listmateriels[dataIndex])}>
+        <button type="button" className="btn btn-success btn-sm px-3" onClick={ ()=>   handleShowEditAddModal(listmateriels1[dataIndex])}>
                                    
                                  <i className="fas fa-pencil-alt"></i>
                               </button>
                             
         
-                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listmateriels[dataIndex]))}>
+                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listmateriels1[dataIndex]))}>
                   
                         <i className="fas fa-times"></i>
                     </button>
@@ -95,57 +95,126 @@ function ListMateriels() {
      
     {
         
-        label: "Mle",
-        name: "agent_number",
+        label: "id",
+        name: "idmateriel",
         options: {
             filter: true,
+            display:false
         }
         },
       
     {
-        label: "Nom",
-        name: "agent_full_name",
+        label: "Marque",
+        name: "marque",
         options: {
           filter: true,
         }
     },
     {
-        label: "Email",
-        name: "agent_email",
+        label: "Numero Inventaire",
+        name: "numeroinventaire",
         options: {
             filter: true,
         }
         },
         {
-            label: "Service",
-            name: "service_id",
-            options: {
-                filter: true,
-                display: false,
-            }
+          label: "Garentie",
+          name: "garentie",
+          options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+              return <div>
+                {value==1?value+" an":value+" ans"}
+              </div>;
+          }
+        
+          },
             },
             {
-                label: "Agence",
-                name: "agency_id",
+              label: "Date reception provisoire",
+              name: "datereceptionprovisoire",
+              options: {
+                  filter: true,
+                  
+              }
+              },
+              {
+                label: "Affecter",
+                name: "Affecter",
+                options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return <div>
+                        <Switch checked={value}/>
+                    </div>;
+                }
+              }
+                },
+                {
+                  label: "idtype",
+                  name: "idtype",
+                  options: {
+                  filter: true,
+                  sort: false,
+                  display:false
+                }
+                  },
+                  {
+                    label: "IDFournisseur",
+                    name: "IDFournisseur",
+                    options: {
+                    filter: true,
+                    sort: false,
+                    display:false
+                  }
+                    },
+          
+        
+              {
+                  label: "idservice",
+                  name: "idservice",
+                  options: {
+                    filter: true,
+                    display:false
+                  }
+              },
+              {
+                label: "agency_id",
+                name: "idagence",
                 options: {
                     filter: true,
                     display: false,
                 }
                 },
-    {
-        label: "Service",
-        name: "service.service_name",
-        options: {
-          filter: true,
-        }
-    },
-    {
-        label: "agence",
-        name: "agency.agency_name",
-        options: {
-          filter: true,
-        }
-    },
+                {
+                  label: "Agent",
+                  name: "agent.agent_full_name",
+                  options: {
+                      filter: true,
+                      
+                  }
+                  },
+                  {
+                    label: "Category",
+                    name: "typemateriel.type",
+                    options: {
+                        filter: true,
+                        
+                    }
+                    },
+                    {
+                      label: "Fournisseur",
+                      name: "fournisseur.NomFournisseur",
+                      options: {
+                          filter: true,
+                          
+                      }
+                      },
+                
+                   
+ 
       {
         name: "Actions",
         options: {
@@ -176,15 +245,15 @@ function ListMateriels() {
         
             <Layout >
                  <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau Materiel</button>  ,    
-             {/* {listagentsf && (
+             {listmateriels && (
                 
-               <MUIDataTable title={"Liste des agents"} data={listmateriels} columns={columns} options={options} />
+               <MUIDataTable title={"Liste des Materiels"} data={listmateriels} columns={columns} options={options} />
                
      
-       )} */}
+       )}
         
         {/* <ChangePasswordModal usernormal={user} show={showPasswordModal} handleClose={handleClose} />*/}
-        <AddEditSaisieMaterielModal Mle={materiel.idmateriel} show={showEditAddModal} handleClose={handleClose} /> 
+        <AddEditSaisieMaterielModal codemtrl={materiel.idmateriel} show={showEditAddModal} handleClose={handleClose} /> 
        </Layout>
      
     )

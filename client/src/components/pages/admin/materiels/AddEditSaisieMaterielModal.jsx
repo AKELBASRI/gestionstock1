@@ -8,7 +8,7 @@ import useStateRef from 'react-usestateref'
 import { API_URL } from '../../../../config';
 import { isAuthenticated } from '../../../../auth/helpers';
 import { getMateriels } from '../../../../actions/getMaterielsActions';
-function AddEditSaisieMaterielModal({id,show,handleClose}) {
+function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
 
     const[categories,setCategories]=useState([])
     const[Fournisseurs,setFournisseur]=useState([])
@@ -27,8 +27,9 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
     })
     const [Qte,setQte]=useState(0)
     const dispatch=useDispatch();
-    const material1 = useSelector((state) =>id ? state.MaterielReducer.find((p)=>p.agent_number===id):null);
+    const material1 = useSelector((state) =>codemtrl ? state.MaterielReducer.find((p)=>p.idmateriel===codemtrl):null);
     useEffect(()=>{
+       
         getCategories()
         getFournisseur()
         if(material1){
@@ -42,15 +43,13 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
           IDFournisseur:'',
           idtype:''})
         }
+        checkenventoryornot()
       
     },[material1])
     const handleQte=(e)=>{
         setQte(e.target.value)
     }
-    const handleChange=(e)=>{
-        
-       
-        setMaterial({...material.current,[e.target.id]:e.target.value})
+    const checkenventoryornot=()=>{
         const catselected=categories.find((cat)=>cat.id===parseInt(material.current.idtype));
         if(catselected){
             if(!catselected.inventoryornot)
@@ -65,6 +64,12 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
                 
             }
         }
+    }
+    const handleChange=(e)=>{
+        
+       
+        setMaterial({...material.current,[e.target.id]:e.target.value})
+        checkenventoryornot()
        
       }
     
@@ -80,7 +85,7 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
             setErrors({idtype:'Veuillez selectionner le type '})
             setIsValid(false)
           }
-          else if(!Qte &&(!showInventory.current)){
+          else if(!Qte &&(!showInventory.current) && (!material1)){
             setErrors({Qte:'Veuillez saisir quantité'})
             setIsValid(false)
           }
@@ -111,15 +116,16 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
  
     
     const UpdateMateriel=()=>{
+      console.log("ok")  
       const{user,token}=isAuthenticated()
-      fetch(`${API_URL}/agents/update/${user.Mle}`,{
+      fetch(`${API_URL}/materiels/update/${user.Mle}`,{
          method:"PUT",
          headers:{
              "Accept":"application/json",
              "Content-Type":"application/json",
              "Authorization":`Bearer ${token}`
          },
-         body:JSON.stringify(material)
+         body:JSON.stringify(material.current)
      }).then(res=>res.json())
      .then(res=>{
          if(res.error){
@@ -130,10 +136,16 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
          else{
             
              //props.history.push('/');
-             toastr.success(`L'agent matricule ${material.agent_number}  est modifié avec succés `,'Modification Utilisateur',{
-                 positionClass:"toast-bottom-left"
-             });
-             setMaterial({  agent_number:'',agent_full_name:'', agent_email:'',agency_id:'',service_id:''})
+             toastr.success(`Le Materiel ${material.current.marque}  est été modifié avec succés `,'Modification Materiel',{
+                positionClass:"toast-bottom-left"
+            });
+             setMaterial({
+                marque:'',
+                numeroinventaire:'',
+                garentie:'',
+                datereceptionprovisoire:'',
+                IDFournisseur:'',
+                idtype:''})
              dispatch(getMateriels());
              handleClose()
          }
@@ -256,7 +268,7 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
             </select>
             
             <div className="text-danger">{errors.idtype}</div>
-            {showInventory.current && (
+            {showInventory.current  && (
              <div>
                   <Form.Label>Numero Inventaire</Form.Label>
             <Form.Control value={material.current.numeroinventaire || '' } onChange={handleChange}   type="text" placeholder="Numero Inventaire" id="numeroinventaire" />
@@ -265,7 +277,7 @@ function AddEditSaisieMaterielModal({id,show,handleClose}) {
        
             </div>
             )}
-            {!showInventory.current &&(
+            {!showInventory.current &&  !codemtrl &&(
                 <div>
                      <Form.Label>Quantité</Form.Label>
                      <Form.Control value={Qte || '' } onChange={handleQte}   type="text" placeholder="Quantité" id="Qte" />

@@ -58,10 +58,44 @@ exports.saveMateriel=(req,res)=>{
         });
       });
 }
-
+exports.updateMateriel=(req,res)=>{
+  
+    models.materiel.update(req.body,{where: {idmateriel: req.body.idmateriel}})
+                .then((result) => {
+                  res.status(201)
+                      .json({message: "le materiel a été modifié avec succés ", materiel: result});
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res.status(500).json({error: 'Something went wrong'+ error});
+                });
+  }
 
 exports.getallmateriels=(req,res)=>{
-    models.materiel.findAll().
+    models.agents.hasMany(models.materiel,{foreignKey: 'mleagent', sourceKey: 'agent_number'});
+    models.materiel.belongsTo(models.agents,{foreignKey: 'mleagent', sourceKey: 'agent_number'});
+    
+    models.agencies.hasMany(models.materiel,{foreignKey: 'idagence', sourceKey: 'id'});
+    models.materiel.belongsTo(models.agencies,{foreignKey: 'idagence', sourceKey: 'id'});
+
+    models.typemateriel.hasMany(models.materiel,{foreignKey: 'idtype', sourceKey: 'id'});
+    models.materiel.belongsTo(models.typemateriel,{foreignKey: 'idtype', sourceKey: 'idtype'});
+
+    models.services.hasMany(models.materiel,{foreignKey: 'idservice', sourceKey: 'id'});
+    models.materiel.belongsTo(models.services,{foreignKey: 'idservice', sourceKey: 'idservice'});
+
+    models.fournisseur.hasMany(models.materiel,{foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur'});
+    models.materiel.belongsTo(models.fournisseur,{foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur'});
+
+
+    models.materiel.findAll({attributes: ['idmateriel', 'marque','numeroinventaire','garentie','datereceptionprovisoire','Affecter','idtype','IDFournisseur'],
+    include:[
+        {model:models.services,attributes:['service_name']},
+        {model:models.agencies,attributes:['agency_name']},
+        {model:models.agents,attributes:['agent_full_name']},
+        {model:models.typemateriel,attributes:['type']},
+        {model:models.fournisseur,attributes:['NomFournisseur']}
+    ]}).
     then(materiels=>
         res.status(200).json(materiels)
         )
