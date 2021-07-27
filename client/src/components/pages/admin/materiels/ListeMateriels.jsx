@@ -11,6 +11,7 @@ import Switch from "@material-ui/core/Switch";
 
 import { getMateriels } from '../../../../actions/getMaterielsActions';
 import AddEditSaisieMaterielModal from './AddEditSaisieMaterielModal';
+import handleClickDelete from './DeleteMateriel';
 
 function ListMateriels() {
     const dispatch=useDispatch();
@@ -60,7 +61,7 @@ function ListMateriels() {
                 <button onClick={onClose}>Non</button>
                 <button
                   onClick={() => {
-                    // handleClickDelete(materiel,ActiongetMateriels);
+                    handleClickDelete(materiel,ActiongetMateriels);
                     dispatch(getMateriels());
                     onClose();
                     

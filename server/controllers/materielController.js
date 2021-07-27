@@ -102,3 +102,17 @@ exports.getallmateriels=(req,res)=>{
     .catch(error=>res.status(500).json(error));
     
 }
+
+exports.deletemateriel=(req,res)=>{
+  
+    models.materiel.destroy({where: {idmateriel: req.body.idmateriel}})
+    .then((result) => {
+    res.status(201)
+    .json({message: "le materiel a été supprimé avec succés ", materiel: result});
+   })
+   .catch((error) => {
+   console.log(error);
+   res.status(500).json({error: 'Something went wrong'+ error});
+   });
+   
+}
