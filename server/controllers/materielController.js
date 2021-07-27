@@ -88,7 +88,7 @@ exports.getallmateriels=(req,res)=>{
     models.materiel.belongsTo(models.fournisseur,{foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur'});
 
 
-    models.materiel.findAll({attributes: ['idmateriel', 'marque','numeroinventaire','garentie','datereceptionprovisoire','Affecter','idtype','IDFournisseur'],
+    models.materiel.findAll({attributes: ['idmateriel', 'marque','numeroinventaire','garentie','datereceptionprovisoire','Affecter','idtype','IDFournisseur','idagence','mleagent','idservice'],
     include:[
         {model:models.services,attributes:['service_name']},
         {model:models.agencies,attributes:['agency_name']},
@@ -116,3 +116,21 @@ exports.deletemateriel=(req,res)=>{
    });
    
 }
+
+exports.AffecterMaterielle=(req,res)=>{
+    const materielaffct={
+        idagence:req.body.idagence,
+        mleagent:req.body.mleagent,
+        idservice:req.body.idservice,
+        Affecter:true
+    }
+    models.materiel.update(materielaffct,{where: {idmateriel: req.body.idmateriel}})
+                .then((result) => {
+                  res.status(201)
+                      .json({message: "le materiel a été affecté avec succés ", materiel: result});
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res.status(500).json({error: 'Something went wrong'+ error});
+                });
+  }

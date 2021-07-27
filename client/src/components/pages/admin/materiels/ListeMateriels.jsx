@@ -12,17 +12,18 @@ import Switch from "@material-ui/core/Switch";
 import { getMateriels } from '../../../../actions/getMaterielsActions';
 import AddEditSaisieMaterielModal from './AddEditSaisieMaterielModal';
 import handleClickDelete from './DeleteMateriel';
+import AffecterMaterielModal from './AffecterMaterielModal';
 
 function ListMateriels() {
     const dispatch=useDispatch();
     const [materiel,setMateriel]=useState({})
     const listmateriels1 = useSelector((state) => state.MaterielReducer);
-    
+    const[showAffctMaterielModal,setshowAffctMaterielModal]=useState(false)
     const[showEditAddModal,setshowEditAddModal]=useState(false);
    
     const handleShowEditAddModal=(materiel)=>{ setshowEditAddModal(true);setMateriel(materiel)}
-    const handleClose = () => {setshowEditAddModal(false)};
-    
+    const handleClose = () => {setshowEditAddModal(false);setshowAffctMaterielModal(false)};
+    const handleShowAffctMateriel=(materiel)=>{setshowAffctMaterielModal(true);setMateriel(materiel)}
     useEffect(()=>{
         dispatch(getMateriels());
     },[dispatch])
@@ -88,6 +89,10 @@ function ListMateriels() {
                   
                         <i className="fas fa-times"></i>
                     </button>
+                    <button type="button" className="btn btn-primary btn-sm px-3" onClick={()=> handleShowAffctMateriel((listmateriels1[dataIndex]))}>
+                  
+                    <i class="fas fa-link"></i>
+              </button>
        
       </div>
       );
@@ -171,7 +176,33 @@ function ListMateriels() {
                     display:false
                   }
                     },
-          
+                    {
+                      label: "idagence",
+                      name: "idagence",
+                      options: {
+                      filter: true,
+                      sort: false,
+                      display:false
+                    }
+                      },
+                      {
+                        label: "mleagent",
+                        name: "mleagent",
+                        options: {
+                        filter: true,
+                        sort: false,
+                        display:false
+                      }
+                        },
+                        {
+                          label: "idservice",
+                          name: "idservice",
+                          options: {
+                          filter: true,
+                          sort: false,
+                          display:false
+                        }
+                          },
         
               {
                   label: "idservice",
@@ -252,8 +283,8 @@ function ListMateriels() {
                
      
        )}
+        <AffecterMaterielModal codemtrl={materiel.idmateriel} show={showAffctMaterielModal} handleClose={handleClose}/>
         
-        {/* <ChangePasswordModal usernormal={user} show={showPasswordModal} handleClose={handleClose} />*/}
         <AddEditSaisieMaterielModal codemtrl={materiel.idmateriel} show={showEditAddModal} handleClose={handleClose} /> 
        </Layout>
      

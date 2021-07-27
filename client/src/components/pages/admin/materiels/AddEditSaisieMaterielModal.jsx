@@ -17,12 +17,12 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
     const [errors,setErrors]=useState({})
   
     const [isvalid1,setMaterial,material]=useStateRef({
-        marque:'',
-        numeroinventaire:'',
-        garentie:'',
-        datereceptionprovisoire:'',
-        IDFournisseur:'',
-        idtype:'',
+        // marque:'',
+        // numeroinventaire:'',
+        // garentie:'',
+        // datereceptionprovisoire:'',
+        // IDFournisseur:'',
+        // idtype:'',
        
     })
     const [Qte,setQte]=useState(0)
@@ -116,7 +116,7 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
  
     
     const UpdateMateriel=()=>{
-      console.log("ok")  
+      
       const{user,token}=isAuthenticated()
       fetch(`${API_URL}/materiels/update/${user.Mle}`,{
          method:"PUT",
@@ -257,7 +257,7 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
           
           <Form.Group  >
                     
-                    {JSON.stringify(material)}
+                  
             <Form.Label>Type </Form.Label>
             <select value={material.current.idtype || ''} id="idtype" onChange={handleChange} className="form-control" aria-label="Default select example">
                             <option value="" >Selectionner le type du materiel</option>

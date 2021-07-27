@@ -55,8 +55,8 @@ export const SidebarData = [
   },
 
   {
-    title: 'Affectation Materiels',
-    path: '/affctmtrl',
+    title: 'Liste des Designations',
+    path: '/listdesignation',
     icon: "fas fa-dice-d6",
     iconClosed: <span className="fas fa-caret-down caret"></span>,
     iconOpened: <span className="fas fa-caret-up caret"></span>,
