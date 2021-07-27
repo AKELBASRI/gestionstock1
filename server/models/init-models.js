@@ -2,6 +2,7 @@ var DataTypes = require("sequelize").DataTypes;
 var _admin = require("./admin");
 var _agencies = require("./agencies");
 var _agents = require("./agents");
+var _designation = require("./designation");
 var _fournisseur = require("./fournisseur");
 var _materiel = require("./materiel");
 var _services = require("./services");
@@ -11,6 +12,7 @@ function initModels(sequelize) {
   var admin = _admin(sequelize, DataTypes);
   var agencies = _agencies(sequelize, DataTypes);
   var agents = _agents(sequelize, DataTypes);
+  var designation = _designation(sequelize, DataTypes);
   var fournisseur = _fournisseur(sequelize, DataTypes);
   var materiel = _materiel(sequelize, DataTypes);
   var services = _services(sequelize, DataTypes);
@@ -28,6 +30,8 @@ function initModels(sequelize) {
   services.hasMany(agents, { as: "agents", foreignKey: "service_id"});
   materiel.belongsTo(services, { as: "idservice_service", foreignKey: "idservice"});
   services.hasMany(materiel, { as: "materiels", foreignKey: "idservice"});
+  designation.belongsTo(typemateriel, { as: "idtype_typemateriel", foreignKey: "idtype"});
+  typemateriel.hasMany(designation, { as: "designations", foreignKey: "idtype"});
   materiel.belongsTo(typemateriel, { as: "idtype_typemateriel", foreignKey: "idtype"});
   typemateriel.hasMany(materiel, { as: "materiels", foreignKey: "idtype"});
 
@@ -35,6 +39,7 @@ function initModels(sequelize) {
     admin,
     agencies,
     agents,
+    designation,
     fournisseur,
     materiel,
     services,
