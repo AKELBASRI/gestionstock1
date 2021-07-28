@@ -1,52 +1,41 @@
-import React,{useState,useEffect,useRef,useCallback} from 'react'
+import React from 'react'
 import { isAuthenticated } from '../../../auth/helpers'
 import { useSelector,useDispatch } from "react-redux"
-import { BrowserRouter, Link,withRouter } from 'react-router-dom';
-import {FiHome} from 'react-icons/fi';
-import {CgMenuGridR} from 'react-icons/cg'
-import {HiOutlineDesktopComputer} from 'react-icons/hi'
-import {VscChromeClose} from 'react-icons/vsc'
-import {MdPerson}from 'react-icons/md'
+import { withRouter } from 'react-router-dom';
 import "./Layout.css"
-import Sidebar from '../../sidebar/Sidebar';
+
 function Layout({children,props}) {
     const state = useSelector((state) => state.showorhidereducers);
-   
-    const isActive=(history,path)=>{
-        if(history.location.pathname===path){
-            return "active"
-        }else{
-            return ""
-        }
-    }
-    function useHookWithRefCallback() {
-        const ref = useRef(null)
-        const setRef = useCallback(node => {
-         if(ref && ref.current) {
+    
+  
+    // function useHookWithRefCallback() {
+    //     const ref = useRef(null)
+    //     const setRef = useCallback(node => {
+    //      if(ref && ref.current) {
           
-            if(state){
-
-                ref.current.style.marginLeft = "307px";
-            }
-            else{
-             
-                ref.current.style.marginLeft = "90px";
+    //         if(state){
+    //             console.log("ok")
+    //             // ref.current.style.marginLeft = "307px";
+    //         }
+    //         else{
+    //           console.log("ko")
+    //             // ref.current.style.marginLeft = "90px";
                
-           }
-         }
+    //        }
+    //      }
           
-          if (node) {
-            // Check if a node is actually passed. Otherwise node would be null.
-            // You can now do what you need to, addEventListeners, measure, etc.
+    //       if (node) {
+    //         // Check if a node is actually passed. Otherwise node would be null.
+    //         // You can now do what you need to, addEventListeners, measure, etc.
           
-          }
+    //       }
           
-          // Save a reference to the node
-          ref.current = node
-        }, [])
+    //       // Save a reference to the node
+    //       ref.current = node
+    //     }, [])
         
-        return [setRef]
-      }
+    //     return [setRef]
+    //   }
 
     
  
@@ -71,14 +60,14 @@ function Layout({children,props}) {
     //         document.getElementById("main").style.marginLeft = "50px";
     //       }
     //   }
-    const [ref] = useHookWithRefCallback()
+    // const [ref] = useHookWithRefCallback()
+
     return (
        
       <div>
-    
- 
-        {/* <div id={`${isAuthenticated() ? `main`:`mainsignin`}> */}
-        <div id={`${isAuthenticated() ? `main`:`mainsignin`}`} ref={ ref}> 
+  
+
+        <div id={isAuthenticated() && (isAuthenticated() && state ? 'main':state ?'mainsignin':'mainclose') }> 
         <div className="mx-5">{children}</div>
               <div className={`${isAuthenticated() ?`bg-blue  `:`bg-blue2`} py-4`}>
             <div className="footer ml-4 ml-sm-5 mb-2 text-center">

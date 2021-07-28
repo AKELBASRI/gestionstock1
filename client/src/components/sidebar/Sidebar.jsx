@@ -42,7 +42,7 @@ const Sidebar = (props) => {
           dispatch(showorhidesidebar(true))
          
             if (
-              sidebar 
+              sidebar.current
             ) {
           
               sidebar.current.style.width="307px";
@@ -61,7 +61,7 @@ const Sidebar = (props) => {
         
         dispatch(showorhidesidebar(false))
           if (
-            sidebar
+            sidebar.current
           ) {
     
             sidebar.current.style.width="90px";
