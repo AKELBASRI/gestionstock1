@@ -15,6 +15,7 @@ import ListAgents from './components/pages/admin/agents/ListAgents';
 import ListeCategories from './components/pages/admin/categories/ListeCategories';
 import ListeFournisseur from './components/pages/admin/fournisseurs/ListeFournisseurs';
 import ListMateriels from './components/pages/admin/materiels/ListeMateriels';
+import ListeDesignation from './components/pages/admin/designations/ListeDesignation';
 function Routes() {
     
     return (
@@ -36,7 +37,7 @@ function Routes() {
                     <PrivateRoute path='/admin/agents'exact component={ListAgents}/>
                     <PrivateRoute path='/admin/fournisseurs'exact component={ListeFournisseur}/>
                     <PrivateRoute path='/addmtrl'exact component={ListMateriels}/>
-                   
+                    <PrivateRoute path='/listdesignation'exact component={ListeDesignation}/>
                     <AuthRoute path="/signin" exact component={Signin} />
 
                     {/* </div>  */}

@@ -6,6 +6,7 @@ import {agentsReducer} from './agentsReducer'
 import {categoryReducer} from './categoryReducer'
 import {fournisseurReducer} from './fournisseurReducer'
 import {MaterielReducer} from './materielReducer'
+import {designationReducer} from './designationsReducer'
 const rootReducers = combineReducers({
     showorhidereducers,
     usersReducer,
@@ -13,7 +14,8 @@ const rootReducers = combineReducers({
     agentsReducer,
     categoryReducer,
     fournisseurReducer,
-    MaterielReducer
+    MaterielReducer,
+    designationReducer
 
 });
 export default rootReducers;
