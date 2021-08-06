@@ -24,6 +24,8 @@ function initModels(sequelize) {
   agencies.hasMany(materiel, { as: "materiels", foreignKey: "idagence"});
   materiel.belongsTo(agents, { as: "mleagent_agent", foreignKey: "mleagent"});
   agents.hasMany(materiel, { as: "materiels", foreignKey: "mleagent"});
+  materiel.belongsTo(designation, { as: "iddesignation_designation", foreignKey: "iddesignation"});
+  designation.hasMany(materiel, { as: "materiels", foreignKey: "iddesignation"});
   materiel.belongsTo(fournisseur, { as: "IDFournisseur_fournisseur", foreignKey: "IDFournisseur"});
   fournisseur.hasMany(materiel, { as: "materiels", foreignKey: "IDFournisseur"});
   agents.belongsTo(services, { as: "service", foreignKey: "service_id"});

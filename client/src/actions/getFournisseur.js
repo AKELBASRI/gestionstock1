@@ -4,7 +4,7 @@ import { API_URL } from "../config";
 export const getFournisseurs = () => async (dispatch) => {
     try{
         const {user,token}=isAuthenticated();
-        fetch(`${API_URL}/fournisseurs/all/${user.Mle}`,{
+        return fetch(`${API_URL}/fournisseurs/all/${user.Mle}`,{
             method:"GET",
             headers:{
                 "Accept":"application/json",

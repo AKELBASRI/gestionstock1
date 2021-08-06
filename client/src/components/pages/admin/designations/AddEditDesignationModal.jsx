@@ -11,6 +11,7 @@ import { API_URL } from '../../../../config';
 
 
 import { getDesignation } from '../../../../actions/getDesignationAction';
+import { getCategories } from '../../../../core/ApiCore';
 function AddEditDesignationModal({ iddesignation,show,handleClose}) {
     const [isvalid,setIsValid,ref]=useStateRef(true)
     const [errors,setErrors]=useState({})
@@ -24,7 +25,7 @@ function AddEditDesignationModal({ iddesignation,show,handleClose}) {
     const dispatch=useDispatch();
     const designation = useSelector((state) =>iddesignation? state.designationReducer.find((p)=>p.idDesignation===iddesignation):null);
     useEffect(()=>{
-            getCategories()
+        getCategories().then((res)=>setCategories(res)).catch((err) => console.log(err));
             if(designation){
                 setDesignation(designation)
             }else{
@@ -47,19 +48,7 @@ function AddEditDesignationModal({ iddesignation,show,handleClose}) {
        }
         return ref.current
     }
-    const getCategories=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/category/allcategories/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setCategories(res)})
-        .catch(error=>console.error(error))
-    }
+
     const AddDesignation=()=>{
         const{user,token}=isAuthenticated()
         fetch(`${API_URL}/designations/create/${user.Mle}`,{

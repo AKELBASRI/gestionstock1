@@ -91,7 +91,7 @@ function ListMateriels() {
                     </button>
                     <button type="button" className="btn btn-primary btn-sm px-3" onClick={()=> handleShowAffctMateriel((listmateriels1[dataIndex]))}>
                   
-                    <i class="fas fa-link"></i>
+                    <i className="fas fa-link"></i>
               </button>
        
       </div>
@@ -109,13 +109,15 @@ function ListMateriels() {
         }
         },
       
-    {
-        label: "Marque",
-        name: "marque",
-        options: {
+        {
+          label: "iddesignation",
+          name: "iddesignation",
+          options: {
           filter: true,
+          sort: false,
+          display:false
         }
-    },
+          },
     {
         label: "Numero Inventaire",
         name: "numeroinventaire",
@@ -167,6 +169,7 @@ function ListMateriels() {
                   display:false
                 }
                   },
+                
                   {
                     label: "IDFournisseur",
                     name: "IDFournisseur",
@@ -244,7 +247,13 @@ function ListMateriels() {
                           
                       }
                       },
-                
+                      {
+                        label: "Designation",
+                        name: "designation.designation",
+                        options: {
+                          filter: true,
+                        }
+                    },
                    
  
       {

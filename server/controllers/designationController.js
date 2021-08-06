@@ -84,3 +84,26 @@ exports.updateDesignation=(req,res)=>{
                   res.status(500).json({error: 'Something went wrong'+ error});
                 });
   }
+
+  
+
+
+exports.DesignationById = (req, res, next, idtype) => {
+    models.designation.findAll({where:{idtype}}).
+    then(
+        (designation) => {
+           
+            
+            req.designation = designation;
+            next();
+        }
+        // designations=>
+        // req.designation=designations
+        )
+    .catch(error=>res.status(500).json(error));
+  };
+exports.showDesignation = (req, res) => {
+   
+    res.status(201).json({designation:req.designation})
+    
+  };

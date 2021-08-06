@@ -7,6 +7,7 @@ import useStateRef from 'react-usestateref'
 import toastr from 'toastr';
 import "toastr/build/toastr.css"
 import { getMateriels } from '../../../../actions/getMaterielsActions';
+import { getAgencies, getAgents, getservices } from '../../../../core/ApiCore';
 function AffecterMaterielModal({codemtrl,show,handleClose}) {
     const [ListAgents,setAgents]=useState([])
     const [ListeService,setService]=useState([])
@@ -19,45 +20,7 @@ function AffecterMaterielModal({codemtrl,show,handleClose}) {
         setaffctMaterial({...affctMateriel.current,[e.target.id]:e.target.value})
         
       }
-    const getAgents=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/agents/all/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setAgents(res)})
-        .catch(error=>console.error(error))
-    }
-    const getservices=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/service/allservices/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setService(res)})
-        .catch(error=>console.error(error))
-    }
-    const getAgencies=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/agencies/all/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setAgencies(res)})
-        .catch(error=>console.error(error))
-    }
+
     const AffecterAction=()=>{
         
         const{user,token}=isAuthenticated()
@@ -94,9 +57,9 @@ function AffecterMaterielModal({codemtrl,show,handleClose}) {
        })
     }
     useEffect(()=>{
-        getservices()
-        getAgents()
-        getAgencies()
+        getservices().then((res)=>setService(res)).catch((error)=>console.log(error))
+        getAgents().then((res)=>setAgents(res)).catch((error)=>console.log(error))
+        getAgencies().then((res)=>setAgencies(res)).catch((error)=>console.log(error))
         if(material1){
            console.log(material1)
             setaffctMaterial(material1)

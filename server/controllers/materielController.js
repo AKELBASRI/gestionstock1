@@ -5,7 +5,7 @@ const dateFormat = require('dateformat');
 exports.saveMateriel=(req,res)=>{
     let current = new Date();
     const materiel={
-        marque:req.body.marque.trim(),
+        iddesignation:req.body.iddesignation,
         numeroinventaire:req.body.numeroinventaire.trim(),
         garentie:req.body.garentie,
         datereceptionprovisoire:req.body.datereceptionprovisoire,
@@ -15,7 +15,7 @@ exports.saveMateriel=(req,res)=>{
        
 
     }
-    models.materiel.findOne({where: {marque: req.body.marque.trim()}}).then((result)=>{
+    models.materiel.findOne({where: {numeroinventaire: req.body.numeroinventaire.trim()}}).then((result)=>{
         if (result) {
           res.status(403).json({error: 'materiel existe deja !'});
           
@@ -29,7 +29,7 @@ exports.saveMateriel=(req,res)=>{
                 idservice:Joi.number(),
                 garentie: Joi.string(),
                 numeroinventaire: Joi.optional().allow(''),
-                marque: Joi.string().required(),
+                iddesignation: Joi.string().required(),
                 datereceptionprovisoire:Joi.date().required().format('YYYY-MM-DD').utc(),
                 IDFournisseur:Joi.number().required(),
                 idtype:Joi.number().required(),
@@ -87,14 +87,17 @@ exports.getallmateriels=(req,res)=>{
     models.fournisseur.hasMany(models.materiel,{foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur'});
     models.materiel.belongsTo(models.fournisseur,{foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur'});
 
+    models.designation.hasMany(models.materiel,{foreignKey: 'iddesignation', sourceKey: 'idDesignation'});
+    models.materiel.belongsTo(models.designation,{foreignKey: 'iddesignation', sourceKey: 'idDesignation'});
 
-    models.materiel.findAll({attributes: ['idmateriel', 'marque','numeroinventaire','garentie','datereceptionprovisoire','Affecter','idtype','IDFournisseur','idagence','mleagent','idservice'],
+    models.materiel.findAll({attributes: ['idmateriel','iddesignation','numeroinventaire','garentie','datereceptionprovisoire','Affecter','idtype','IDFournisseur','idagence','mleagent','idservice'],
     include:[
         {model:models.services,attributes:['service_name']},
         {model:models.agencies,attributes:['agency_name']},
         {model:models.agents,attributes:['agent_full_name']},
         {model:models.typemateriel,attributes:['type']},
-        {model:models.fournisseur,attributes:['NomFournisseur']}
+        {model:models.fournisseur,attributes:['NomFournisseur']},
+        {model:models.designation,attributes:['designation']}
     ]}).
     then(materiels=>
         res.status(200).json(materiels)

@@ -7,9 +7,13 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    marque: {
-      type: DataTypes.STRING(200),
-      allowNull: true
+    iddesignation: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'designation',
+        key: 'idDesignation'
+      }
     },
     numeroinventaire: {
       type: DataTypes.STRING(90),
@@ -118,6 +122,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "idservice" },
+        ]
+      },
+      {
+        name: "iddesignation_FK",
+        using: "BTREE",
+        fields: [
+          { name: "iddesignation" },
         ]
       },
     ]

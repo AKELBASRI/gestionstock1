@@ -9,6 +9,7 @@ import useStateRef from 'react-usestateref'
 import { API_URL } from '../../../../config';
 import { isAuthenticated } from '../../../../auth/helpers';
 import { getagents } from '../../../../actions/getagentsAction';
+import { getAgencies, getservices } from '../../../../core/ApiCore';
 
 function AddEditAgentModal({Mle,show,handleClose}) {
     const[services,setservices]=useState([])
@@ -27,8 +28,8 @@ function AddEditAgentModal({Mle,show,handleClose}) {
     const dispatch=useDispatch();
     const usernormal = useSelector((state) =>Mle? state.agentsReducer.find((p)=>p.agent_number===Mle):null);
     useEffect(()=>{
-        getservices();
-        getAgencies();
+       getservices().then((res)=>setservices(res)).catch((err) => console.log(err));
+       getAgencies().then((res)=>setAgencies(res)).catch((err) => console.log(err));
         if(usernormal){
            
             setUser(usernormal)
@@ -86,32 +87,7 @@ function AddEditAgentModal({Mle,show,handleClose}) {
        }
         return ref.current
     }
-    const getAgencies=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/agencies/all/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setAgencies(res)})
-        .catch(error=>console.error(error))
-    }
-      const getservices=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/service/allservices/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setservices(res)})
-        .catch(error=>console.error(error))
-    }
+
     const UpdateUser=()=>{
       const{user,token}=isAuthenticated()
       fetch(`${API_URL}/agents/update/${user.Mle}`,{

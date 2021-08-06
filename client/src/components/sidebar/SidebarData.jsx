@@ -5,16 +5,17 @@ export const SidebarData = [
   {
     title: 'Home',
     path: '/',
-    icon: "fas fa-dice-d6"
+    icon: "fas fa-home"
+  
   },
   {
     
     title: 'Administration',
     path: '#',
-    icon: "fas fa-dice-d6",
+    icon: "fas fa-user-shield",
     iconClosed: <span className="fas fa-caret-down caret"></span>,
     iconOpened: <span className="fas fa-caret-up caret"></span>,
-
+    
     subNav: [
       {
         title: 'Gestion des admins',
@@ -42,16 +43,16 @@ export const SidebarData = [
   {
     title: 'Categories',
     path: '/categories',
-    icon: "fas fa-dice-d6",
+    icon: "fas fa-list-alt",
     iconClosed: <span className="fas fa-caret-down caret"></span>,
     iconOpened: <span className="fas fa-caret-up caret"></span>,
 
 
   },
   {
-    title: 'Saisie Materiels',
+    title: 'Saisie et Affectation Materiels',
     path: '/addmtrl',
-    icon: "fas fa-dice-d6"
+    icon: "fas fa-laptop"
   },
 
   {

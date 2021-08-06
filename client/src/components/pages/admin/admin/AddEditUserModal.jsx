@@ -10,9 +10,10 @@ import useStateRef from 'react-usestateref'
 import { API_URL } from '../../../../config';
 import { isAuthenticated } from '../../../../auth/helpers';
 import { getusers } from '../../../../actions/getUserAction';
+import { getservices } from '../../../../core/ApiCore';
 
 function AddEditUserModal({Mle,show,handleClose}) {
-    const[services,setservices]=useState([])
+    // const[services,setservices]=useState([])
     const [isvalid,setIsValid,ref]=useStateRef(true)
     const [errors,setErrors]=useState({})
     
@@ -26,7 +27,7 @@ function AddEditUserModal({Mle,show,handleClose}) {
     const dispatch=useDispatch();
     const usernormal = useSelector((state) =>Mle? state.usersReducer.find((p)=>p.Mle===Mle):null);
     useEffect(()=>{
-        getservices();
+        // getservices().then((res)=>setservices(res)).catch((err) => console.log(err));;
         if(usernormal){
            
             setUser(usernormal)
@@ -72,18 +73,7 @@ function AddEditUserModal({Mle,show,handleClose}) {
        }
         return ref.current
     }
-      const getservices=()=>{
-        fetch(`${API_URL}/service/all`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                
-            },
-        }).then(res=>res.json())
-        .then(res=>{setservices(res)})
-        .catch(error=>console.error(error))
-    }
+ 
     const UpdateUser=()=>{
       const{user,token}=isAuthenticated()
       fetch(`${API_URL}/admin/update/${user.Mle}`,{

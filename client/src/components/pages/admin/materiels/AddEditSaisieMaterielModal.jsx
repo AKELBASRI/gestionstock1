@@ -8,6 +8,7 @@ import useStateRef from 'react-usestateref'
 import { API_URL } from '../../../../config';
 import { isAuthenticated } from '../../../../auth/helpers';
 import { getMateriels } from '../../../../actions/getMaterielsActions';
+import { getCategories, getdesignationbytype, getFournisseur } from '../../../../core/ApiCore';
 function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
 
     const[categories,setCategories]=useState([])
@@ -15,28 +16,21 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
     const [isvalid,setIsValid,ref]=useStateRef(true)
     const [isvalid2,setShowInventory,showInventory]=useStateRef(true);
     const [errors,setErrors]=useState({})
-  
-    const [isvalid1,setMaterial,material]=useStateRef({
-        // marque:'',
-        // numeroinventaire:'',
-        // garentie:'',
-        // datereceptionprovisoire:'',
-        // IDFournisseur:'',
-        // idtype:'',
-       
-    })
-    const [Qte,setQte]=useState(0)
+    const [Designations,setDesignation]=useState([])
+    const [isvalid1,setMaterial,material]=useStateRef({})
+    const [Qte,setQte]=useState(1)
     const dispatch=useDispatch();
     const material1 = useSelector((state) =>codemtrl ? state.MaterielReducer.find((p)=>p.idmateriel===codemtrl):null);
     useEffect(()=>{
        
-        getCategories()
-        getFournisseur()
+       getCategories().then((res)=>setCategories(res)).catch((err) => console.log(err));
+        getFournisseur().then((res)=>setFournisseur(res)).catch((err) => console.log(err));
+       
         if(material1){
            
             setMaterial(material1)
         }else{
-          setMaterial({  marque:'',
+          setMaterial({  iddesignation:'',
           numeroinventaire:'',
           garentie:'',
           datereceptionprovisoire:'',
@@ -44,7 +38,10 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
           idtype:''})
         }
         checkenventoryornot()
-      
+        if(material1){
+            getdesignationbytype(material1.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
+            console.log(Designations)
+        }
     },[material1])
     const handleQte=(e)=>{
         setQte(e.target.value)
@@ -67,12 +64,18 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
     }
     const handleChange=(e)=>{
         
-       
-        setMaterial({...material.current,[e.target.id]:e.target.value})
+        const value = e.target.id === "Qte" ? e.target.value-1 : e.target.value;
+        setMaterial({...material.current,[e.target.id]:value})
         checkenventoryornot()
-       
+        LoadDesignations()
       }
-    
+    const LoadDesignations=()=>{
+        if(material.current.idtype!==''){
+            getdesignationbytype(material.current.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
+            console.log(Designations)
+        }
+      
+    }
       const validate=()=>{
        
     
@@ -89,8 +92,8 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
             setErrors({Qte:'Veuillez saisir quantité'})
             setIsValid(false)
           }
-        else if(!material.current.marque){
-            setErrors({marque:"Veuilez Entrer la marque "})
+        else if(!material.current.iddesignation){
+            setErrors({iddesignation:"Veuilez Entrer la designation "})
             setIsValid(false)
           }
         else if(!material.current.garentie){
@@ -135,12 +138,11 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
          }
          else{
             
-             //props.history.push('/');
              toastr.success(`Le Materiel ${material.current.marque}  est été modifié avec succés `,'Modification Materiel',{
                 positionClass:"toast-bottom-left"
             });
              setMaterial({
-                marque:'',
+                iddesignation:'',
                 numeroinventaire:'',
                 garentie:'',
                 datereceptionprovisoire:'',
@@ -157,7 +159,7 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
      })
     }
     const AjoutMateriel=()=>{
-        const marque=material.current.marque
+        const marque=material.current.iddesignation
          for (let i = 0; i < Qte; i++) {
                 const{user,token}=isAuthenticated()
                 fetch(`${API_URL}/materiels/create/${user.Mle}`,{
@@ -179,7 +181,6 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
                         
                         handleClose()
                        
-                        //props.history.push('/');
                         toastr.success(`Le Materiel ${marque}  est crée avec succés `,'Nouveau Materiel',{
                             positionClass:"toast-bottom-left"
                         });
@@ -194,7 +195,7 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
             })
             if(i===Qte-1){
                 setMaterial({
-                marque:'',
+                iddesignation:'',
                 numeroinventaire:'',
                 garentie:'',
                 datereceptionprovisoire:'',
@@ -206,38 +207,14 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
 
      }
    
-    const getCategories=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/category/allcategories/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setCategories(res)})
-        .catch(error=>console.error(error))
-    }
-    const getFournisseur=()=>{
-        const{user,token}=isAuthenticated()
-        fetch(`${API_URL}/fournisseurs/all/${user.Mle}`,{
-            method:"GET",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-                "Authorization":`Bearer ${token}`
-            },
-        }).then(res=>res.json())
-        .then(res=>{setFournisseur(res)})
-        .catch(error=>console.error(error))
-    }
+  
     const submitUser=(e)=>{
         e.preventDefault();
         if(validate()){
           if(material1){
            UpdateMateriel()
         }else{
+     
           AjoutMateriel()
              
    }
@@ -247,11 +224,12 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
     return (
      
         <div>
-           
+          
         <Modal show={show} onHide={handleClose}>
+      
         <Modal.Header closeButton>
         
-          <Modal.Title>{material1 ? `Modification  du materiel : ${material1.marque}`:'Ajout Materiel' }</Modal.Title>
+          <Modal.Title>{material1 ? `Modification  du materiel : ${material1.designation.designation}`:'Ajout Materiel' }</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           
@@ -287,11 +265,24 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
             <div className="my-2"></div>
            
          
+        
+        {
+            Designations.length>0  &&(
+                <div>
+                    <Form.Label>Designation </Form.Label>
+                        <select value={material.current.iddesignation || ''} id="iddesignation" onChange={handleChange} className="form-control" aria-label="Default select example">
+                                        <option value="" >Selectionner Designation du materiel</option>
+                                    
+                                            {Designations.map((marque,i)=>(
+                                        <option key={i} value={marque.idDesignation}>{marque.designation}</option>
+                                              ))}
+                        </select>
+                        <div className="text-danger">{errors.iddesignation}</div>
+                </div>)
+        }
             
-            <Form.Label>Marque : </Form.Label>
-            <Form.Control value={material.current.marque || '' } onChange={handleChange}   type="text" placeholder="Marque" id="marque" />
-            <div className="text-danger">{errors.marque}</div>
-      
+
+
             <Form.Label>Garentie</Form.Label>
             <select value={material.current.garentie || ''} id="garentie" onChange={handleChange} className="form-control" aria-label="Default select example">
                             <option value="" >Selectionner la garentie</option>
