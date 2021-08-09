@@ -13,6 +13,7 @@ import { getMateriels } from '../../../../actions/getMaterielsActions';
 import AddEditSaisieMaterielModal from './AddEditSaisieMaterielModal';
 import handleClickDelete from './DeleteMateriel';
 import AffecterMaterielModal from './AffecterMaterielModal';
+import { flattenObject } from '../../../../core/ApiCore';
 
 function ListMateriels() {
     const dispatch=useDispatch();
@@ -30,26 +31,7 @@ function ListMateriels() {
     const ActiongetMateriels=()=>{
       dispatch(getMateriels());
     }
-    const flattenObject = function(ob) {
-  
-        return Object.keys(ob).reduce(function(toReturn, k) {
-      
-          if (Object.prototype.toString.call(ob[k]) === '[object Date]') {
-            toReturn[k] = ob[k].toString();
-          }
-          else if ((typeof ob[k]) === 'object' && ob[k]) {
-            var flatObject = flattenObject(ob[k]);
-            Object.keys(flatObject).forEach(function(k2) {
-              toReturn[k + '.' + k2] = flatObject[k2];
-            });
-          }
-          else {
-            toReturn[k] = ob[k];
-          }
-      
-          return Object.keys(toReturn).map(function(_) { return toReturn[_]; });
-        }, {});
-      };
+    
       const listmateriels= listmateriels1.map( (_data) =>{return flattenObject(_data)});
     const Delete=(materiel)=>{
        
