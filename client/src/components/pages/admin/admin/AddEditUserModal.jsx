@@ -13,7 +13,7 @@ import { getusers } from '../../../../actions/getUserAction';
 import { getservices } from '../../../../core/ApiCore';
 
 function AddEditUserModal({Mle,show,handleClose}) {
-    // const[services,setservices]=useState([])
+  
     const [isvalid,setIsValid,ref]=useStateRef(true)
     const [errors,setErrors]=useState({})
     
@@ -27,19 +27,12 @@ function AddEditUserModal({Mle,show,handleClose}) {
     const dispatch=useDispatch();
     const usernormal = useSelector((state) =>Mle? state.usersReducer.find((p)=>p.Mle===Mle):null);
     useEffect(()=>{
-        // getservices().then((res)=>setservices(res)).catch((err) => console.log(err));;
+       
         if(usernormal){
            
             setUser(usernormal)
         }else{
-          setUser({  
-              
-        Mle:'',
-          
-          nom:'',
-          password:'',
-         
-        }
+          setUser({Mle:'',nom:'',password:''}
           )
         }
       
@@ -94,7 +87,7 @@ function AddEditUserModal({Mle,show,handleClose}) {
          }
          else{
             
-             //props.history.push('/');
+            
              toastr.success(`L'utilisateur ${normaluser.nom}  est modifié avec succés `,'Modification Utilisateur',{
                  positionClass:"toast-bottom-left"
              });
@@ -130,7 +123,7 @@ function AddEditUserModal({Mle,show,handleClose}) {
           else{
               
               handleClose()
-              //props.history.push('/');
+             
               toastr.success(`L'utilisateur ${normaluser.nom}  est crée avec succés `,'Nouveau Utilisateur',{
                   positionClass:"toast-bottom-left"
               });

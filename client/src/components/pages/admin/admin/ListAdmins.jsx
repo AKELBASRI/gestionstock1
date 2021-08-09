@@ -1,16 +1,19 @@
 import React,{useEffect,useState} from 'react'
 
 import { useDispatch,useSelector } from "react-redux";
-import { confirmAlert } from 'react-confirm-alert'; 
+ 
 
-import './ListAdmins.css'
-import './DeleteAdmin.css'
 import Layout from '../../Layout/Layout';
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from './ChangePasswordModal'
 import AddEditUserModal from './AddEditUserModal';
 import { getusers } from '../../../../actions/getUserAction';
-import handleClickDelete from './DeleteAdmin';
+
+import  styled  from 'styled-components'
+import handleClickDeleteAdmin from './DeleteAdmin';
+import { Delete } from '../../../../core/util';
+
+
 function ListUsers() {
     const dispatch=useDispatch();
     const [user,setUser]=useState({})
@@ -25,56 +28,36 @@ function ListUsers() {
     },[dispatch])
     const Actiongetusers=()=>{
       dispatch(getusers());
+     
     }
-    const Delete=(user)=>{
-       
-      confirmAlert({
-          customUI: ({ onClose }) => {
-            return (
-              <div className='custom-ui'>
-                <h1>Vous êtes sure ?</h1>
-                <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
-                <button onClick={onClose}>Non</button>
-                <button
-                  onClick={() => {
-                    handleClickDelete(user,Actiongetusers);
-                    dispatch(getusers());
-                    onClose();
-                    
-                  }}
-                >
-                  Oui, Supprimer !
-                </button>
-              </div>
-            );
-          }
-        });
-  }
+
     const buttons=(dataIndex, rowIndex)=>{
       return(
-      <div className="row">
+      <Container>
        
         <button type="button" className="btn btn-success btn-sm px-3" onClick={ ()=>   handleShowEditAddModal(listusers[dataIndex])}>
                                    
-                                 <i className="fas fa-pencil-alt"></i>
-                              </button>
-                              <button type="button" className="btn btn-secondary btn-sm px-3"  onClick={()=> handleShowPassword(listusers[dataIndex])
-                      
-                             } >
-                        <i className="fas fa-key"></i>
-                        </button>
+          <i className="fas fa-pencil-alt"></i>
+        </button>
+
+        <button type="button" className="btn btn-secondary btn-sm px-3"  onClick={()=> handleShowPassword(listusers[dataIndex]) } >
+        <i className="fas fa-key"></i>
+        </button>
+
+        <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete(listusers[dataIndex],Actiongetusers,handleClickDeleteAdmin)}>    
         
-                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listusers[dataIndex]))}>
-                  
-                        <i className="fas fa-times"></i>
-                    </button>
+        <i className="fas fa-times"></i>
+        </button>
        
-      </div>
+      </Container>
       );
     }
+ 
+      const Container = styled.div.attrs(() => ({
+        className: 'row',
+      }))``;
+
     const columns = [
-    
-    
       {
         label: "Nom",
         name: "nom",

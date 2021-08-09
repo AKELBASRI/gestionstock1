@@ -3,8 +3,7 @@ import React,{useEffect,useState} from 'react'
 import { useDispatch,useSelector } from "react-redux";
 import { confirmAlert } from 'react-confirm-alert'; 
 
-import '../admin/ListAdmins.css'
-import '../admin/DeleteAdmin.css'
+
 import Layout from '../../Layout/Layout';
 import MUIDataTable from "mui-datatables";
 
@@ -14,6 +13,8 @@ import MUIDataTable from "mui-datatables";
 import { getagents } from '../../../../actions/getagentsAction';
 import AddEditAgentModal from './AddEditAgentModal';
 import handleClickDelete from './DeleteAgent';
+import { flattenObject } from '../../../../core/ApiCore';
+import { Delete } from '../../../../core/util';
 function ListAgents() {
     const dispatch=useDispatch();
     const [user,setUser]=useState({})
@@ -30,51 +31,9 @@ function ListAgents() {
     const Actiongetagents=()=>{
       dispatch(getagents());
     }
-    const flattenObject = function(ob) {
-  
-        return Object.keys(ob).reduce(function(toReturn, k) {
-      
-          if (Object.prototype.toString.call(ob[k]) === '[object Date]') {
-            toReturn[k] = ob[k].toString();
-          }
-          else if ((typeof ob[k]) === 'object' && ob[k]) {
-            var flatObject = flattenObject(ob[k]);
-            Object.keys(flatObject).forEach(function(k2) {
-              toReturn[k + '.' + k2] = flatObject[k2];
-            });
-          }
-          else {
-            toReturn[k] = ob[k];
-          }
-      
-          return Object.keys(toReturn).map(function(_) { return toReturn[_]; });
-        }, {});
-      };
-      const listagentsf= listagents.map( (_data) =>{return flattenObject(_data)});
-    const Delete=(user)=>{
-       
-      confirmAlert({
-          customUI: ({ onClose }) => {
-            return (
-              <div className='custom-ui'>
-                <h1>Vous êtes sure ?</h1>
-                <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
-                <button onClick={onClose}>Non</button>
-                <button
-                  onClick={() => {
-                    handleClickDelete(user,Actiongetagents);
-                    dispatch(getagents());
-                    onClose();
-                    
-                  }}
-                >
-                  Oui, Supprimer !
-                </button>
-              </div>
-            );
-          }
-        });
-  }
+
+    const listagentsf= listagents.map( (_data) =>{return flattenObject(_data)});
+
     const buttons=(dataIndex, rowIndex)=>{
       return(
       <div className="row">
@@ -85,7 +44,7 @@ function ListAgents() {
                               </button>
                             
         
-                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listagents[dataIndex]))}>
+                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete(listagents[dataIndex],Actiongetagents,handleClickDelete)}> 
                   
                         <i className="fas fa-times"></i>
                     </button>
@@ -185,7 +144,6 @@ function ListAgents() {
      
        )}
         
-        {/* <ChangePasswordModal usernormal={user} show={showPasswordModal} handleClose={handleClose} />*/}
         <AddEditAgentModal Mle={user.agent_number} show={showEditAddModal} handleClose={handleClose} /> 
        </Layout>
      

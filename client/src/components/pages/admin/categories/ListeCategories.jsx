@@ -1,7 +1,5 @@
 import React,{useState,useEffect} from 'react'
 import MUIDataTable from "mui-datatables";
-import '../admin//ListAdmins.css'
-import '../admin//DeleteAdmin.css'
 import Layout from '../../Layout/Layout';
 import { useDispatch,useSelector } from "react-redux";
 import Switch from "@material-ui/core/Switch";
@@ -10,6 +8,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import handleClickDelete from './DeleteCategory';
 import AddEditCategoryModal from './AddEditCategoryModal';
 import { getcategories } from '../../../../actions/getCategoryAction';
+import { Delete } from '../../../../core/util';
 function ListeCategories() {
     const dispatch=useDispatch();
     const listcategories = useSelector((state) => state.categoryReducer);
@@ -23,30 +22,7 @@ function ListeCategories() {
     const actiongetcategories=()=>{
         dispatch(getcategories());
      }
-    const Delete=(category)=>{
-       
-        confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <div className='custom-ui'>
-                  <h1>Vous êtes sure ?</h1>
-                  <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
-                  <button onClick={onClose}>Non</button>
-                  <button
-                    onClick={() => {
-                      handleClickDelete(category,actiongetcategories);
-                      dispatch(getcategories());
-                      onClose();
-                      
-                    }}
-                  >
-                    Oui, Supprimer !
-                  </button>
-                </div>
-              );
-            }
-          });
-    }
+
     const buttons=(dataIndex, rowIndex)=>{
         return(
         <div className="row">
@@ -57,7 +33,7 @@ function ListeCategories() {
                                 </button>
                          
           
-                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listcategories[dataIndex]))}>
+                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete(listcategories[dataIndex],actiongetcategories,handleClickDelete)}>
                     
                           <i className="fas fa-times"></i>
                       </button>

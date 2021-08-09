@@ -9,7 +9,7 @@ import { API_URL } from '../../../../config';
 
 
 
-    const handleClickDelete=(usernormal,Actiongetusers)=>{
+    const handleClickDeleteAdmin=(usernormal,action)=>{
     
       const{user,token}=isAuthenticated()
       fetch(`${API_URL}/admin/delete/${user.Mle}`,{
@@ -29,11 +29,12 @@ import { API_URL } from '../../../../config';
          }
          else{
             
-             //props.history.push('/');
+            
              toastr.success(`L'utilisateur ${usernormal.nom}  est supprimé avec succés `,'Suppression Utilisateur',{
                  positionClass:"toast-bottom-left"
              });
-             Actiongetusers()
+             action()
+           
          }
      })
      .catch(err=>{
@@ -48,4 +49,4 @@ import { API_URL } from '../../../../config';
     
 
 
-export default handleClickDelete
+export default handleClickDeleteAdmin

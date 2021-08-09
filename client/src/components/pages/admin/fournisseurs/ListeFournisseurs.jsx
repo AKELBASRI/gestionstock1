@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import MUIDataTable from "mui-datatables";
-import '../admin/ListAdmins.css'
-import '../admin//DeleteAdmin.css'
+
 import Layout from '../../Layout/Layout';
 import { useDispatch,useSelector } from "react-redux";
 
@@ -11,6 +10,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import { getFournisseurs } from '../../../../actions/getFournisseur';
 import AddEditFournisseurModal from './AddEditFournisseurModal';
 import handleClickDelete from './DeleteFournisseur';
+import { Delete } from '../../../../core/util';
 function ListeFournisseur() {
     const dispatch=useDispatch();
     const listFournisseurs = useSelector((state) => state.fournisseurReducer);
@@ -24,30 +24,7 @@ function ListeFournisseur() {
     const actiongetFournisseurs=()=>{
         dispatch(getFournisseurs());
      }
-    const Delete=(fournisseur)=>{
-       
-        confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <div className='custom-ui'>
-                  <h1>Vous êtes sure ?</h1>
-                  <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
-                  <button onClick={onClose}>Non</button>
-                  <button
-                    onClick={() => {
-                      handleClickDelete(fournisseur,actiongetFournisseurs);
-                      dispatch(getFournisseurs());
-                      onClose();
-                      
-                    }}
-                  >
-                    Oui, Supprimer !
-                  </button>
-                </div>
-              );
-            }
-          });
-    }
+
     const buttons=(dataIndex, rowIndex)=>{
         return(
         <div className="row">
@@ -58,7 +35,7 @@ function ListeFournisseur() {
                                 </button>
                          
           
-                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listFournisseurs[dataIndex]))}>
+                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete(listFournisseurs[dataIndex],actiongetFournisseurs,handleClickDelete)}>
                     
                           <i className="fas fa-times"></i>
                       </button>

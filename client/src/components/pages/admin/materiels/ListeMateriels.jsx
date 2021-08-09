@@ -2,9 +2,6 @@ import React,{useEffect,useState} from 'react'
 
 import { useDispatch,useSelector } from "react-redux";
 import { confirmAlert } from 'react-confirm-alert'; 
-
-import '../admin/ListAdmins.css'
-import '../admin/DeleteAdmin.css'
 import Layout from '../../Layout/Layout';
 import MUIDataTable from "mui-datatables";
 import Switch from "@material-ui/core/Switch";
@@ -14,6 +11,7 @@ import AddEditSaisieMaterielModal from './AddEditSaisieMaterielModal';
 import handleClickDelete from './DeleteMateriel';
 import AffecterMaterielModal from './AffecterMaterielModal';
 import { flattenObject } from '../../../../core/ApiCore';
+import { Delete } from '../../../../core/util';
 
 function ListMateriels() {
     const dispatch=useDispatch();
@@ -32,31 +30,8 @@ function ListMateriels() {
       dispatch(getMateriels());
     }
     
-      const listmateriels= listmateriels1.map( (_data) =>{return flattenObject(_data)});
-    const Delete=(materiel)=>{
-       
-      confirmAlert({
-          customUI: ({ onClose }) => {
-            return (
-              <div className='custom-ui'>
-                <h1>Vous êtes sure ?</h1>
-                <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
-                <button onClick={onClose}>Non</button>
-                <button
-                  onClick={() => {
-                    handleClickDelete(materiel,ActiongetMateriels);
-                    dispatch(getMateriels());
-                    onClose();
-                    
-                  }}
-                >
-                  Oui, Supprimer !
-                </button>
-              </div>
-            );
-          }
-        });
-  }
+    const listmateriels= listmateriels1.map( (_data) =>{return flattenObject(_data)});
+
     const buttons=(dataIndex, rowIndex)=>{
       return(
       <div className="row">
@@ -67,7 +42,7 @@ function ListMateriels() {
                               </button>
                             
         
-                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listmateriels1[dataIndex]))}>
+                              <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete(listmateriels1[dataIndex],ActiongetMateriels,handleClickDelete)}>
                   
                         <i className="fas fa-times"></i>
                     </button>
@@ -100,12 +75,12 @@ function ListMateriels() {
           display:false
         }
           },
-    {
+     {
         label: "Numero Inventaire",
         name: "numeroinventaire",
         options: {
             filter: true,
-        }
+      }
         },
         {
           label: "Garentie",

@@ -1,13 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import MUIDataTable from "mui-datatables";
-import '../admin/ListAdmins.css'
-import '../admin//DeleteAdmin.css'
 import Layout from '../../Layout/Layout';
 import { useDispatch,useSelector } from "react-redux";
 import { getservices } from '../../../../actions/getserviceAction';
-import { confirmAlert } from 'react-confirm-alert'; 
+
 import AddEditServiceModal from './AddEditServiceModal';
 import handleClickDelete from './DeleteService';
+import { Delete } from '../../../../core/util';
 function ListServices() {
     const dispatch=useDispatch();
     const listservices = useSelector((state) => state.serviceReducer);
@@ -21,30 +20,7 @@ function ListServices() {
     const actiongetservices=()=>{
         dispatch(getservices());
      }
-    const Delete=(service)=>{
-       
-        confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <div className='custom-ui'>
-                  <h1>Vous êtes sure ?</h1>
-                  <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
-                  <button onClick={onClose}>Non</button>
-                  <button
-                    onClick={() => {
-                      handleClickDelete(service,actiongetservices);
-                      dispatch(getservices());
-                      onClose();
-                      
-                    }}
-                  >
-                    Oui, Supprimer !
-                  </button>
-                </div>
-              );
-            }
-          });
-    }
+
     const buttons=(dataIndex, rowIndex)=>{
         return(
         <div className="row">
@@ -55,7 +31,7 @@ function ListServices() {
                                 </button>
                          
           
-                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listservices[dataIndex]))}>
+                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete(listservices[dataIndex],actiongetservices,handleClickDelete)}>
                     
                           <i className="fas fa-times"></i>
                       </button>

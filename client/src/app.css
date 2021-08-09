@@ -18,24 +18,35 @@
     padding-left:0;
 } */
 
-#main{
-    margin-left: 270px ;
+
+  .custom-ui {
+    text-align: center;
+    width: 500px;
+    padding: 40px;
+    background: #28bae6;
+    box-shadow: 0 20px 75px rgb(0 0 0 / 23%);
+    color: #fff;
+}
+.custom-ui > button {
+    width: 160px;
+    padding: 10px;
+    border: 1px solid #fff;
+    margin: 10px;
+    cursor: pointer;
+    background: none;
+    color: #fff;
+    font-size: 14px;
+}
+
+.MuiPaper-elevation4 {
+  box-shadow: none ! important;
+}
+
+
+@media screen and (max-width: 727px) {
+  .MuiToolbar-root.MuiToolbar-regular.MuiTablePagination-toolbar
+  {
+  display: flex;
+  flex-direction: column;
   }
-  #mainclose{
-    margin-left: 90px ;
-  }
-  #mainsignin{
-      margin-left: 0px;
-  }
-  @media screen and (max-width: 728px) {
-    #main  {
-      margin-left: 90px !important;
-    }
-  
-  }
-  @media screen and (max-width: 280px) {
-    #main {
-      margin-left: 30px !important;
-    }
-  }
-  
+}

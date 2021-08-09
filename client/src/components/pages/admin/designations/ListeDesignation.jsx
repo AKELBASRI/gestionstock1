@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import MUIDataTable from "mui-datatables";
-import '../admin//ListAdmins.css'
-import '../admin//DeleteAdmin.css'
+
 import Layout from '../../Layout/Layout';
 import { useDispatch,useSelector } from "react-redux";
 
@@ -12,6 +11,8 @@ import handleClickDelete from './DeleteDesignation';
 
 import { getDesignation } from '../../../../actions/getDesignationAction';
 import AddEditDesignationModal from './AddEditDesignationModal';
+import { flattenObject } from '../../../../core/ApiCore';
+import { Delete } from '../../../../core/util';
 function ListeDesignation() {
     const dispatch=useDispatch();
     const listdesignations1 = useSelector((state) => state.designationReducer);
@@ -25,51 +26,9 @@ function ListeDesignation() {
     const actiongetDesignation=()=>{
         dispatch(getDesignation());
      }
-     const flattenObject = function(ob) {
-  
-        return Object.keys(ob).reduce(function(toReturn, k) {
-      
-          if (Object.prototype.toString.call(ob[k]) === '[object Date]') {
-            toReturn[k] = ob[k].toString();
-          }
-          else if ((typeof ob[k]) === 'object' && ob[k]) {
-            var flatObject = flattenObject(ob[k]);
-            Object.keys(flatObject).forEach(function(k2) {
-              toReturn[k + '.' + k2] = flatObject[k2];
-            });
-          }
-          else {
-            toReturn[k] = ob[k];
-          }
-      
-          return Object.keys(toReturn).map(function(_) { return toReturn[_]; });
-        }, {});
-      };
+
     const listdesignation= listdesignations1.map( (_data) =>{return flattenObject(_data)});
-    const Delete=(designation)=>{
-       console.log(designation)
-        confirmAlert({
-            customUI: ({ onClose }) => {
-              return (
-                <div className='custom-ui'>
-                  <h1>Vous êtes sure ?</h1>
-                  <p>Voulez-vous Vraiment supprimer cette utilisateur ?</p>
-                  <button onClick={onClose}>Non</button>
-                  <button
-                    onClick={() => {
-                      handleClickDelete(designation,actiongetDesignation);
-                      dispatch(getDesignation());
-                      onClose();
-                      
-                    }}
-                  >
-                    Oui, Supprimer !
-                  </button>
-                </div>
-              );
-            }
-          });
-    }
+
     const buttons=(dataIndex, rowIndex)=>{
         return(
         <div className="row">
@@ -80,7 +39,7 @@ function ListeDesignation() {
                                 </button>
                          
           
-                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete((listdesignations1[dataIndex]))}>
+                                <button type="button" className="btn btn-danger btn-sm px-3" onClick={()=> Delete(listdesignations1[dataIndex],actiongetDesignation,handleClickDelete)}>
                     
                           <i className="fas fa-times"></i>
                       </button>
