@@ -100,13 +100,15 @@ function ListeCategories() {
     return (
         <div>
                    <Layout >
+
+             <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouvelle Categorie </button>        
              {listcategories && (
                <MUIDataTable title={"Liste des categories"} data={listcategories} columns={columns} options={options} />
              
      
        )}
         
-        <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouvelle Categorie </button>        
+        
          <AddEditCategoryModal CodeSce={category.id} show={showEditAddModal} handleClose={handleClose} />
        </Layout>
         </div>

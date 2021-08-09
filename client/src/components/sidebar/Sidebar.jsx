@@ -1,27 +1,16 @@
-
 import React,{useState,useEffect,useRef,useCallback} from 'react';
 import { Link ,withRouter} from 'react-router-dom';
-import './sidebar.css'
-import logo from '../logo_radeeo.jpg'
 import { useSelector,useDispatch } from "react-redux"
-import {FiHome} from 'react-icons/fi';
-import {CgMenuGridR} from 'react-icons/cg'
-import {HiOutlineDesktopComputer} from 'react-icons/hi'
-import {VscChromeClose} from 'react-icons/vsc'
 import {GiHamburgerMenu} from 'react-icons/gi'
 import { showorhidesidebar } from '../../actions/showorhideAction';
-import {MdPerson}from 'react-icons/md'
 import { isAuthenticated } from '../../auth/helpers';
-import $ from 'jquery';
 import { SidebarData } from './SidebarData';
-import useStateRef from 'react-usestateref'
 import SubMenu from './SubMenu';
-import Media from 'react-media'
+import styled from 'styled-components'
 const Sidebar = (props) => {
-    // const[state,setstate]=useState(true)
     const dispatch=useDispatch();
-    // const [state,setstate,ref]=useStateRef(true)
     const sidebar=useRef(null)
+    const[active,setactive]=useState(false)
     const state = useSelector((state) => state.showorhidereducers);
     const keys=SidebarData.map(function(item,key){
       return{key:key,close:null,item:item}
@@ -46,7 +35,7 @@ const Sidebar = (props) => {
             ) {
           
               sidebar.current.style.width="307px";
-              
+              setactive(false)
               sidebar.current.classList.remove('active');
               
             }
@@ -66,55 +55,13 @@ const Sidebar = (props) => {
     
             sidebar.current.style.width="90px";
             sidebar.current.classList.add('active');
+            setactive(true)
           }
        
        
       }
-   const sidenavdesktop=()=>{
-     return(
-    <div id="mySidenav" className={`sidenav`} ref={sidebar}>
-    <span className="titleapp">Gestion Stock</span>
-    {state ?   <span className="closebtn" onClick={closeNav}>&times;</span> :
-    <GiHamburgerMenu className="humberger"  onClick={openNav}/>}
- {/* {SidebarData.map((item,index)=>{
-   return <SubMenu item={item} key={index} state={state} props={props} />
- })} */}
-{keys.map((item,index)=>{
- 
-   return <SubMenu onOpen={onOpen} item1={item} key={index} state={state} props={props} />
- })}
 
-</div>
-     );
-   }
-   function useHookWithRefCallback() {
-    const ref = useRef(null)
-    const setRef = useCallback(node => {
-     if(ref && ref.current) {
-      
-        if (window.matchMedia("(min-width: 728px)").matches) {
-          openNav(ref)
-           
-        }
-        else{
-         
-           closeNav(ref)
-           
-       }
-     }
-      
-      if (node) {
-        // Check if a node is actually passed. Otherwise node would be null.
-        // You can now do what you need to, addEventListeners, measure, etc.
-      
-      }
-      
-      // Save a reference to the node
-      ref.current = node
-    }, [])
-    
-    return [setRef]
-  }
+
    useEffect(()=>{
     if (window.matchMedia("(min-width: 728px)").matches) {
       /* the view port is at least 400 pixels wide */
@@ -125,18 +72,139 @@ const Sidebar = (props) => {
     }
   },[])
 
-  const [ref] = useHookWithRefCallback()
+ 
 
     return (
         <div>
             {isAuthenticated() ?(
                         
                        
-                       sidenavdesktop()
-                           
+              // <div id="mySidenav" className={`sidenav`} ref={sidebar}>
+              <SideNav ref={sidebar} active={active} >
+              <Titleapp  active={active}>Gestion Stock</Titleapp>
+              {state ?   <CloseBtn onClick={closeNav}>&times;</CloseBtn> :
+             <Humberger > <GiHamburgerMenu  onClick={openNav}/> </Humberger>}
+
+                {keys.map((item,index)=>{
+                
+                  return <SubMenu onOpen={onOpen} item1={item} key={index} state={state} props={props} />
+                })}
+
+        {/* </div> */}
+            </SideNav>               
        
         ):""}
         </div>
       );
     }
 export default withRouter( Sidebar);
+const CloseBtn=styled.div`
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    font-size: 36px;
+    margin-left: 50px;
+    color:white;
+    cursor: pointer;
+`
+const Humberger=styled(CloseBtn)`
+`
+const Titleapp=styled.div`
+      left: 30px;
+      top:23px;
+      right:19px;
+      position:fixed;
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      display:${({ active }) =>active?'none':'block' };
+      
+`
+const SideNav=styled.div`
+
+      z-index: 1234 !important;
+      height: 100%;
+      width: 307px;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #011627 !important;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 80px;
+      transition: all 0.5s ease;
+
+    a:hover,a.active {
+      background:#172b4d;
+      width: 100%;
+    }
+
+    ul li a span.caret{
+      position: absolute;
+      right: 22px;
+    }
+    ul li a{
+      color: #fff;
+      font-size: 18px;
+      padding: 20px 30px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      margin-bottom: 1px;
+      transition: all 1s ease;
+    
+    }
+
+    ul ul li a{
+      font-size: 13px;
+      color: #e6e6e6;
+      padding-left: 40px;
+    }
+
+
+   
+    ul ul{
+      position: static;
+      display: block;
+      transition: all 1s ease;
+    }
+
+
+        ul ul li a{
+        padding-left: 20px;
+        display:block !important;
+      }
+      
+        ul li a span.title,
+        ul li a span.caret ,
+      .titleapp span.title,
+      .titleapp
+      {
+        display:  ${({ active }) =>active?'none':'block' };
+      }
+      
+      ul ul li a span.title{
+        display:  ${({ active }) =>active?'none':'block' };
+        transition: all 1s ease;
+      }
+      ul li a span.title,
+      .titleapp span.title
+      
+      {
+        display:  ${({ active }) =>active?'none':'block' };
+        transition: all 0.3s ease;
+      }
+      ul.showleft
+      {
+        position: fixed !important;
+        display: block;
+        left: 90px;
+        transform: translateY(-25%);
+        background-color:#011627 ;
+        transition: all 1s ease;
+     
+      }
+ 
+
+`

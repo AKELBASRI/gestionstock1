@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
 import {Button,Modal,Form} from 'react-bootstrap'
-
-
 import toastr from 'toastr';
 import "toastr/build/toastr.css"
 import useStateRef from 'react-usestateref'

@@ -1,16 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function FeaturedItem({countype}) {
+function FeaturedItem({totalmateriel}) {
    
     return (
      
        <Featured>
         
         <Item>
-        <span >{`Nombre Total des ${countype[1]}s`}</span>
+        <span >{`Nombre Total des ${totalmateriel[1]}s`}</span>
         <FeaturedMoneyContainer>
-            <span>{countype[0]}</span>
+            <span>{totalmateriel[0]}</span>
             {/* <span className="featuredMoneyRate">-11,4 <ArrowDownward /></span> */}
         </FeaturedMoneyContainer>
         {/* <span className="featuredSub">Compared to last month</span> */}

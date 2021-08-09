@@ -101,12 +101,13 @@ function ListUsers() {
     return (
         
             <Layout >
+              <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau admin</button>        
              {listusers && (
                <MUIDataTable title={"Liste des admins"} data={listusers} columns={columns} options={options} />
                
      
        )}
-        <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau admin</button>        
+       
         <ChangePasswordModal usernormal={user} show={showPasswordModal} handleClose={handleClose} />
         <AddEditUserModal Mle={user.Mle} show={showEditAddModal} handleClose={handleClose} />
        </Layout>

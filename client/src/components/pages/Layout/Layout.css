@@ -17,7 +17,7 @@
     
   }
 }
-#main{
+/* #main{
   margin-left: 270px ;
 }
 #mainclose{
@@ -25,7 +25,7 @@
 }
 #mainsignin{
     margin-left: 0px;
-}
+} */
 @media screen and (max-width: 728px) {
   #main  {
     margin-left: 90px !important;

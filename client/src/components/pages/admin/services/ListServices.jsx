@@ -84,14 +84,16 @@ function ListServices() {
       };
     return (
         <div>
-                   <Layout >
+         
+            <Layout >
+            <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau service</button>        
              {listservices && (
                <MUIDataTable title={"Liste des services"} data={listservices} columns={columns} options={options} />
                
      
        )}
         
-        <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau service</button>        
+       
          <AddEditServiceModal CodeSce={service.id} show={showEditAddModal} handleClose={handleClose} />
        </Layout>
         </div>

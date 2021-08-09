@@ -3,16 +3,13 @@ import MUIDataTable from "mui-datatables";
 
 import Layout from '../../Layout/Layout';
 import { useDispatch,useSelector } from "react-redux";
-
-import { confirmAlert } from 'react-confirm-alert'; 
-
 import handleClickDelete from './DeleteDesignation';
-
-
 import { getDesignation } from '../../../../actions/getDesignationAction';
 import AddEditDesignationModal from './AddEditDesignationModal';
 import { flattenObject } from '../../../../core/ApiCore';
 import { Delete } from '../../../../core/util';
+
+
 function ListeDesignation() {
     const dispatch=useDispatch();
     const listdesignations1 = useSelector((state) => state.designationReducer);
@@ -54,7 +51,7 @@ function ListeDesignation() {
           label: "id",
           name: "idDesignation",
           options: {
-            filter: true,
+            filter: false,
           }
         },
         {
@@ -68,7 +65,7 @@ function ListeDesignation() {
             label: "idtype",
             name: "idtype",
             options: {
-              filter: true,
+              filter: false,
               display:false
             }
           },
@@ -110,14 +107,16 @@ function ListeDesignation() {
       };
     return (
         <div>
+         
                    <Layout >
+                   <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouvelle Designation </button>        
              {listdesignation && (
                <MUIDataTable title={"Liste des Designations"} data={listdesignation} columns={columns} options={options} />
              
      
        )}
         
-        <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouvelle Designation </button>        
+        
          <AddEditDesignationModal iddesignation={designation.idDesignation} show={showEditAddModal} handleClose={handleClose} />
          
        </Layout>

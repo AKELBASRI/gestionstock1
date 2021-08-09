@@ -3,27 +3,31 @@ import {ArrowDownward, ArrowUpward} from '@material-ui/icons'
 import { flattenObject, getCountByType } from '../../core/ApiCore';
 import FeaturedItem from './FeaturedItem';
 function FeaturedInfo() {
-    const [listCountByType,setCountType]=useState([])
+    const [listTotalCountbyType,setlistTotalCountbyType]=useState([])
     useEffect(()=>{
-        getCountByType().then((res)=>setCountType(res)).catch((err) => console.log(err));
-        console.log(listCountByType)
+        getCountByType().then((res)=>setlistTotalCountbyType(res)).catch((err) => console.log(err));
+        
     },[])
 
-    const listCountByType1= listCountByType.map( (_data) =>{return flattenObject(_data)});
+    const listTotalCountbyType1= listTotalCountbyType.map( (_data) =>{return flattenObject(_data)});
   
     return (
-        
-      <div>
-          {listCountByType1 && listCountByType1.map((countype,i)=>(
+        <div>
+        <h2><strong>Total :</strong> </h2>
+        <div className="my-2"></div>
+      <div className="d-flex">
+          {listTotalCountbyType1 && listTotalCountbyType1.map((totalmateriel,i)=>(
 
-          <FeaturedItem countype={countype} key={i} />
+          <FeaturedItem totalmateriel={totalmateriel} key={i} />
           ))
                
             
             }
            
          
-          
+        </div>
+        <div className="my-2"></div>
+        <h2><strong>Disponible :</strong> </h2>
         </div>
     )
 }

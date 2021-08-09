@@ -1,16 +1,19 @@
 import React from 'react'
 import FeaturedInfo from '../../../featuredInfo/FeaturedInfo'
 import Layout from '../../Layout/Layout'
-import LayoutRouter from '../../Layout/LayoutRouter'
-import './home.css'
+import styled from 'styled-components'
+
 function Home() {
     return (
         <Layout>
-        <div className="home">
+        <Container>
            <FeaturedInfo />
-        </div>
+        </Container>
         </Layout>
     )
 }
 
 export default Home
+const Container=styled.div`
+   flex:4;
+`

@@ -61,7 +61,7 @@ function ListMateriels() {
         label: "id",
         name: "idmateriel",
         options: {
-            filter: true,
+            filter: false,
             display:false
         }
         },
@@ -70,7 +70,7 @@ function ListMateriels() {
           label: "iddesignation",
           name: "iddesignation",
           options: {
-          filter: true,
+          filter: false,
           sort: false,
           display:false
         }
@@ -121,7 +121,7 @@ function ListMateriels() {
                   label: "idtype",
                   name: "idtype",
                   options: {
-                  filter: true,
+                  filter: false,
                   sort: false,
                   display:false
                 }
@@ -131,7 +131,7 @@ function ListMateriels() {
                     label: "IDFournisseur",
                     name: "IDFournisseur",
                     options: {
-                    filter: true,
+                    filter: false,
                     sort: false,
                     display:false
                   }
@@ -140,7 +140,7 @@ function ListMateriels() {
                       label: "idagence",
                       name: "idagence",
                       options: {
-                      filter: true,
+                      filter: false,
                       sort: false,
                       display:false
                     }
@@ -158,7 +158,7 @@ function ListMateriels() {
                           label: "idservice",
                           name: "idservice",
                           options: {
-                          filter: true,
+                          filter: false,
                           sort: false,
                           display:false
                         }
@@ -168,7 +168,7 @@ function ListMateriels() {
                   label: "idservice",
                   name: "idservice",
                   options: {
-                    filter: true,
+                    filter: false,
                     display:false
                   }
               },
@@ -176,7 +176,7 @@ function ListMateriels() {
                 label: "agency_id",
                 name: "idagence",
                 options: {
-                    filter: true,
+                    filter: false,
                     display: false,
                 }
                 },

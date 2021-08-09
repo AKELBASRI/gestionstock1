@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import { Link,withRouter } from 'react-router-dom';
-
+import styled from 'styled-components'
 function SubMenu({item1,state,props,onOpen}) {
     const [subnav, setSubnav] = useState(false);
     const showSubnav = () => setSubnav(!subnav);
@@ -50,8 +50,8 @@ function SubMenu({item1,state,props,onOpen}) {
                  
                 
                 >
-                  <span className="icon"><i className={item1.item.icon} ></i></span>
-                  <span className="title">{item1.item.title}</span>
+                  <span ><i className={item1.item.icon} ></i></span>
+                  <Title state={state} >{item1.item.title}</Title>
                   {item1.item.subNav &&(
                       item1.item.subNav && subnav
                         ? item1.item.iconOpened
@@ -64,7 +64,7 @@ function SubMenu({item1,state,props,onOpen}) {
                 {
                   subnav && 
                 
-                <ul className={state?"show":"showleft"}>
+              <ShowLeft state={state}>
 
                 
                 {subnav && item1.item.subNav && item1.item.subNav.map((item,index)=>{
@@ -72,11 +72,12 @@ function SubMenu({item1,state,props,onOpen}) {
                         <li key={index}  >
                       <Link to={item.path} style={isActive(props.history,item.path)  }   >
                       
-                      <span className="title">{item.title}</span>
+                      <SubTitle >{item.title}</SubTitle>
                     </Link></li>
                     );
                 })}
-                </ul>
+                </ShowLeft>
+                
                 }
               </li>
               
@@ -88,3 +89,29 @@ function SubMenu({item1,state,props,onOpen}) {
 }
 
 export default withRouter(SubMenu)
+
+const ShowLeft=styled.div`
+${({ state }) =>!state?`
+    position: fixed !important;
+    display: block;
+    left: 90px;
+    transform: translateY(-25%);
+    background-color:#011627 ;
+    transition: all 1s ease;
+`:''}
+   
+`
+const Title=styled.div`
+    display:  ${({ state }) =>!state?'none':'block' };
+    font-size: 16px;
+    margin-left: 20px;
+    font-weight: bold;
+
+`
+const SubTitle=styled.div`
+  
+    font-size: 17px;;
+    margin-left: 20px;
+    font-weight: bold;
+    padding-left:20px;
+`

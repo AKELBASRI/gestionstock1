@@ -107,7 +107,7 @@ function AddEditAgentModal({Mle,show,handleClose}) {
          }
          else{
             
-             //props.history.push('/');
+            
              toastr.success(`L'agent matricule ${normaluser.agent_number}  est modifié avec succés `,'Modification Utilisateur',{
                  positionClass:"toast-bottom-left"
              });
@@ -143,7 +143,7 @@ function AddEditAgentModal({Mle,show,handleClose}) {
           else{
               
               handleClose()
-              //props.history.push('/');
+          
               toastr.success(`L'utilisateur ${normaluser.nom}  est crée avec succés `,'Nouveau Utilisateur',{
                   positionClass:"toast-bottom-left"
               });

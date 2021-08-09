@@ -61,7 +61,7 @@ export const SidebarData = [
     icon: "fas fa-dice-d6",
     iconClosed: <span className="fas fa-caret-down caret"></span>,
     iconOpened: <span className="fas fa-caret-up caret"></span>,
-    
+
   }
 
 ];

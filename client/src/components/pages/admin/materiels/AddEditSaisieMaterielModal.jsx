@@ -30,21 +30,25 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
            
             setMaterial(material1)
         }else{
-          setMaterial({  iddesignation:'',
+            ResetMateriels()
+        }
+        checkenventoryornot()
+        if(material1){
+            // getdesignationbytype(material1.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
+            // console.log(Designations)
+            LoadDesignations(material1)
+        }
+    },[material1])
+    const handleQte=(e)=>{
+        setQte(e.target.value)
+    }
+    const ResetMateriels=()=>{
+        setMaterial({  iddesignation:'',
           numeroinventaire:'',
           garentie:'',
           datereceptionprovisoire:'',
           IDFournisseur:'',
           idtype:''})
-        }
-        checkenventoryornot()
-        if(material1){
-            getdesignationbytype(material1.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
-            console.log(Designations)
-        }
-    },[material1])
-    const handleQte=(e)=>{
-        setQte(e.target.value)
     }
     const checkenventoryornot=()=>{
         const catselected=categories.find((cat)=>cat.id===parseInt(material.current.idtype));
@@ -67,9 +71,9 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
         const value = e.target.id === "Qte" ? e.target.value-1 : e.target.value;
         setMaterial({...material.current,[e.target.id]:value})
         checkenventoryornot()
-        LoadDesignations()
+        LoadDesignations(material)
       }
-    const LoadDesignations=()=>{
+    const LoadDesignations=(material)=>{
         if(material.current.idtype!==''){
             getdesignationbytype(material.current.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
             console.log(Designations)
@@ -141,13 +145,7 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
              toastr.success(`Le Materiel ${material.current.marque}  est été modifié avec succés `,'Modification Materiel',{
                 positionClass:"toast-bottom-left"
             });
-             setMaterial({
-                iddesignation:'',
-                numeroinventaire:'',
-                garentie:'',
-                datereceptionprovisoire:'',
-                IDFournisseur:'',
-                idtype:''})
+             ResetMateriels()
              dispatch(getMateriels());
              handleClose()
          }
@@ -194,13 +192,7 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
                     });
             })
             if(i===Qte-1){
-                setMaterial({
-                iddesignation:'',
-                numeroinventaire:'',
-                garentie:'',
-                datereceptionprovisoire:'',
-                IDFournisseur:'',
-                idtype:''})
+                ResetMateriels()
                 setQte('')
             }
     }

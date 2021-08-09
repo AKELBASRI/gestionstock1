@@ -10,7 +10,7 @@ import useStateRef from 'react-usestateref'
 import { API_URL } from '../../../../config';
 import { isAuthenticated } from '../../../../auth/helpers';
 import { getusers } from '../../../../actions/getUserAction';
-import { getservices } from '../../../../core/ApiCore';
+
 
 function AddEditUserModal({Mle,show,handleClose}) {
   
@@ -192,7 +192,7 @@ function AddEditUserModal({Mle,show,handleClose}) {
           <Button variant="primary" onClick={submitUser} >
           {usernormal ? 'Modifier':'Ajout' }
           </Button>
-          {JSON.stringify(normaluser)}
+         
         </Modal.Footer>
      
       </Modal>

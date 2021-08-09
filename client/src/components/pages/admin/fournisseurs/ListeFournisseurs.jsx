@@ -3,10 +3,6 @@ import MUIDataTable from "mui-datatables";
 
 import Layout from '../../Layout/Layout';
 import { useDispatch,useSelector } from "react-redux";
-
-import { confirmAlert } from 'react-confirm-alert'; 
-
-
 import { getFournisseurs } from '../../../../actions/getFournisseur';
 import AddEditFournisseurModal from './AddEditFournisseurModal';
 import handleClickDelete from './DeleteFournisseur';
@@ -88,14 +84,16 @@ function ListeFournisseur() {
       };
     return (
         <div>
-                   <Layout >
+          
+              <Layout >
+              <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau Fournisseur</button>        
              {listFournisseurs && (
                <MUIDataTable title={"Liste des Fournisseurs"} data={listFournisseurs} columns={columns} options={options} />
                
      
        )}
         
-        <button className="btn btn-outline-primary my-4" onClick={handleShowEditAddModal}>nouveau Fournisseur</button>        
+        
          <AddEditFournisseurModal id={fournisseur.idFournisseur} show={showEditAddModal} handleClose={handleClose} />
        </Layout>
         </div>
