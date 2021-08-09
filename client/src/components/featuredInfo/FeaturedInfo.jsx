@@ -1,33 +1,51 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import './featuredInfo.css'
 import {ArrowDownward, ArrowUpward} from '@material-ui/icons'
+import { getCountByType } from '../../core/ApiCore';
+import FeaturedItem from './FeaturedItem';
 function FeaturedInfo() {
+    const [listCountByType,setCountType]=useState([])
+    useEffect(()=>{
+        getCountByType().then((res)=>setCountType(res)).catch((err) => console.log(err));
+        console.log(listCountByType)
+    },[])
+    const flattenObject = function(ob) {
+  
+        return Object.keys(ob).reduce(function(toReturn, k) {
+      
+          if (Object.prototype.toString.call(ob[k]) === '[object Date]') {
+            toReturn[k] = ob[k].toString();
+          }
+          else if ((typeof ob[k]) === 'object' && ob[k]) {
+            var flatObject = flattenObject(ob[k]);
+            Object.keys(flatObject).forEach(function(k2) {
+              toReturn[k + '.' + k2] = flatObject[k2];
+            });
+          }
+          else {
+            toReturn[k] = ob[k];
+          }
+      
+          return Object.keys(toReturn).map(function(_) { return toReturn[_]; });
+        }, {});
+      };
+    const listCountByType1= listCountByType.map( (_data) =>{return flattenObject(_data)});
+  
     return (
+        
         <div className="featured">
-            <div className="featuredItem">
-                <span className="featuredTitle">Nombre Total des Micro-ordinateurs</span>
-                <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">12</span>
-                    {/* <span className="featuredMoneyRate">-11,4 <ArrowDownward /></span> */}
-                </div>
-                {/* <span className="featuredSub">Compared to last month</span> */}
-            </div>
-            <div className="featuredItem">
-                <span className="featuredTitle">Nombre Total des imprimantes</span>
-                <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">16</span>
-                    {/* <span className="featuredMoneyRate">-1,4 <ArrowDownward /></span> */}
-                </div>
-                {/* <span className="featuredSub">Compared to last month</span> */}
-            </div>
-            <div className="featuredItem">
-                <span className="featuredTitle">Nombre Total des scanners </span>
-                <div className="featuredMoneyContainer">
-                    <span className="featuredMoney">12</span>
-                    {/* <span className="featuredMoneyRate">11,4 <ArrowUpward /></span> */}
-                </div>
-                {/* <span className="featuredSub">Compared to last month</span> */}
-            </div>
+        
+             
+                    {listCountByType1 && listCountByType1.map((countype,i)=>(
+
+                   <FeaturedItem countype={countype} key={i} />
+                    ))
+               
+            
+            }
+           
+         
+          
         </div>
     )
 }

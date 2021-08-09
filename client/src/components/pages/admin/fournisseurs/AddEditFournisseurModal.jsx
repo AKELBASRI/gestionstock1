@@ -5,7 +5,7 @@ import useStateRef from 'react-usestateref'
 import toastr from 'toastr';
 import "toastr/build/toastr.css"
 import { useDispatch,useSelector } from "react-redux";
-import { getservices } from '../../../../actions/getserviceAction'
+
 import { isAuthenticated } from '../../../../auth/helpers';
 import { API_URL } from '../../../../config';
 import { getFournisseurs } from '../../../../actions/getFournisseur';
@@ -74,7 +74,7 @@ function AddEditFournisseurModal({ id,show,handleClose}) {
            });
        })
     }
-    const updateService=()=>{
+    const updateFournisseur=()=>{
         const{user,token}=isAuthenticated()
         fetch(`${API_URL}/fournisseurs/update/${user.Mle}`,{
         method:"PUT",
@@ -116,7 +116,7 @@ function AddEditFournisseurModal({ id,show,handleClose}) {
                 AddFournisseur();
             }
             else{
-                updateService();
+                updateFournisseur();
             }
         }
         

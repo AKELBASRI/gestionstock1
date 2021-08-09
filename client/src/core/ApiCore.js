@@ -1,6 +1,20 @@
 import { isAuthenticated } from "../auth/helpers";
 import { API_URL } from "../config";
 
+export const getCountByType=()=>{
+    const{user,token}=isAuthenticated()
+    return fetch(`${API_URL}/designations/countMaterielbyType/${user.Mle}`,{
+         method:"GET",
+         headers:{
+             "Accept":"application/json",
+             "Content-Type":"application/json",
+             "Authorization":`Bearer ${token}`
+         },
+     }).then(res=>res.json())
+     .then(data=>data)
+     .catch(error=>console.error(error))
+}
+
 export const getAgents=()=>{
     const{user,token}=isAuthenticated()
    return fetch(`${API_URL}/agents/all/${user.Mle}`,{
