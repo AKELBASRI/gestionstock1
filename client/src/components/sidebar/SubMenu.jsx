@@ -110,7 +110,7 @@ const Title=styled.div`
 `
 const SubTitle=styled.div`
   
-    font-size: 17px;;
+    font-size: 16px;;
     margin-left: 20px;
     font-weight: bold;
     padding-left:20px;

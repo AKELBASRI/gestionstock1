@@ -1,5 +1,4 @@
 import React,{useEffect,useState} from 'react'
-import {ArrowDownward, ArrowUpward} from '@material-ui/icons'
 import { flattenObject, getTotaMaterielByType,getTotalAvailableMaterielByType } from '../../core/ApiCore';
 import FeaturedItem from './FeaturedItem';
 function FeaturedInfo() {
@@ -12,37 +11,35 @@ function FeaturedInfo() {
 
     const listTotalCountbyType1= listTotalCountbyType.map( (_data) =>{return flattenObject(_data)});
     const listTotalAvailableByType1= listTotalAvailableByType.map( (_data) =>{return flattenObject(_data)});
-  
+    const FeaturedItemList=(title,total,color)=>{
+        return(
+        <div>
+            <h3><strong>{title}</strong> </h3>
+            <div className="my-2"></div>
+                <div className="d-flex">
+                {total && total.map((totalmateriel,i)=>(
+
+                <FeaturedItem totalmateriel={totalmateriel} key={i} color={color}/>
+                ))
+                }
+            
+            </div>
+        </div>
+        )
+    }
     return (
         <div>
-        <h3><strong>Total :</strong> </h3>
+     
+        {listTotalCountbyType1&&FeaturedItemList("Total",listTotalCountbyType1,"white")}
         <div className="my-2"></div>
-      <div className="d-flex">
-          {listTotalCountbyType1 && listTotalCountbyType1.map((totalmateriel,i)=>(
-
-          <FeaturedItem totalmateriel={totalmateriel} key={i} />
-          ))
-               
-            
-            }
+        {listTotalAvailableByType1 &&FeaturedItemList("Disponible",listTotalAvailableByType1,"#ceefce")}
+   
            
          
         </div>
-        <div className="my-2"></div>
-        {listTotalAvailableByType1 &&<h3><strong>Disponible :</strong> </h3>}
-        <div className="d-flex">
-          {listTotalAvailableByType1 && listTotalAvailableByType1.map((totalmateriel,i)=>(
-
-          <FeaturedItem totalmateriel={totalmateriel} key={i} color="#ceefce" />
-          ))
-               
-            
-            }
-           
-         
-        </div>
-        </div>
+       
     )
+    
 }
 
 export default FeaturedInfo

@@ -24,7 +24,7 @@ function ListMateriels() {
       // console.log(materiel)
       setshowEditAddModal(true);setMateriel(materiel)
     }
-    const handleClose = () => {setshowEditAddModal(false);setshowAffctMaterielModal(false)};
+    const handleClose = () => {setshowEditAddModal(false);setshowAffctMaterielModal(false);setMateriel({})};
     const handleShowAffctMateriel=(materiel)=>{setshowAffctMaterielModal(true);setMateriel(materiel)}
     useEffect(()=>{
         dispatch(getMateriels());

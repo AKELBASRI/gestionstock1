@@ -3,7 +3,7 @@ import {Button,Modal,Form} from 'react-bootstrap'
 import { useDispatch,useSelector } from "react-redux";
 import toastr from 'toastr';
 import "toastr/build/toastr.css"
-
+import NumericInput from 'react-numeric-input';
 import useStateRef from 'react-usestateref'
 import { API_URL } from '../../../../config';
 import { isAuthenticated } from '../../../../auth/helpers';
@@ -20,12 +20,12 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
     const [isvalid1,setMaterial,material]=useStateRef({})
     const [Qte,setQte]=useState(1)
     const dispatch=useDispatch();
-    const material1 = useSelector((state) =>codemtrl ? state.MaterielReducer.find((p)=>p.idmateriel===codemtrl):null);
+    let material1 = useSelector((state) =>codemtrl ? state.MaterielReducer.find((p)=>p.idmateriel===codemtrl):null);
     useEffect(()=>{
        
        getCategories().then((res)=>setCategories(res)).catch((err) => console.log(err));
         getFournisseur().then((res)=>setFournisseur(res)).catch((err) => console.log(err));
-       
+  
         if(material1){
            
             setMaterial(material1)
@@ -74,10 +74,16 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
         LoadDesignations(material)
       }
     const LoadDesignations=(material)=>{
-        // if(material.current.idtype!==''){
+        
         if(material!==undefined){
-            getdesignationbytype(material.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
-            console.log(Designations)
+            
+            if(material.current){
+                getdesignationbytype(material.current.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
+            }else{
+                getdesignationbytype(material.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
+            }
+           
+           
         }
       
     }
@@ -251,7 +257,8 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
             {!showInventory.current &&  !codemtrl &&(
                 <div>
                      <Form.Label>Quantité</Form.Label>
-                     <Form.Control value={Qte || '' } onChange={handleQte}   type="text" placeholder="Quantité" id="Qte" />
+                     <NumericInput  min={0} max={100} value={Qte || '' } onChange={handleQte}  className="form-control" id="Qte"/>
+                     {/* <Form.Control value={Qte || '' } onChange={handleQte}   type="text" placeholder="Quantité" id="Qte" /> */}
                      <div className="text-danger">{errors.Qte}</div>
                 </div>
             )}
