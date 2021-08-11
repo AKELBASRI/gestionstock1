@@ -10,7 +10,8 @@ import { API_URL } from '../../../../config';
 
 
     const handleClickDelete=(materiel,ActiongetMateriel)=>{
-    
+        console.log(materiel.designation.designation)
+      const marque=materiel.designation.designation
       const{user,token}=isAuthenticated()
       fetch(`${API_URL}/materiels/delete/${user.Mle}`,{
          method:"DELETE",
@@ -30,7 +31,7 @@ import { API_URL } from '../../../../config';
          else{
             
              //props.history.push('/');
-             toastr.success(`Le materiel ${materiel.marque}  est supprimé avec succés `,'Suppression Materiel',{
+             toastr.success(`Le materiel ${marque}  est supprimé avec succés `,'Suppression Materiel',{
                  positionClass:"toast-bottom-left"
              });
              ActiongetMateriel()

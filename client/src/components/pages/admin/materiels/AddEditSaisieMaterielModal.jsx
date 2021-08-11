@@ -40,7 +40,8 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
         }
     },[material1])
     const handleQte=(e)=>{
-        setQte(e.target.value)
+      
+        setQte(e)
     }
     const ResetMateriels=()=>{
         setMaterial({  iddesignation:'',
@@ -164,7 +165,8 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
      })
     }
     const AjoutMateriel=()=>{
-        const marque=material.current.iddesignation
+       
+        const marque=Designations.filter((designation)=>designation.idDesignation==material.current.iddesignation)[0].designation
          for (let i = 0; i < Qte; i++) {
                 const{user,token}=isAuthenticated()
                 fetch(`${API_URL}/materiels/create/${user.Mle}`,{
@@ -257,7 +259,7 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
             {!showInventory.current &&  !codemtrl &&(
                 <div>
                      <Form.Label>Quantité</Form.Label>
-                     <NumericInput  min={0} max={100} value={Qte || '' } onChange={handleQte}  className="form-control" id="Qte"/>
+                     <NumericInput  min={0} max={100} value={Qte || 1 } onChange={handleQte}  className="form-control" id="Qte"/>
                      {/* <Form.Control value={Qte || '' } onChange={handleQte}   type="text" placeholder="Quantité" id="Qte" /> */}
                      <div className="text-danger">{errors.Qte}</div>
                 </div>

@@ -49,11 +49,7 @@ export const SidebarData = [
 
 
   },
-  {
-    title: 'Saisie et Affectation Materiels',
-    path: '/addmtrl',
-    icon: "fas fa-laptop"
-  },
+  
 
   {
     title: 'Liste des Designations',
@@ -62,6 +58,11 @@ export const SidebarData = [
     iconClosed: <span className="fas fa-caret-down caret"></span>,
     iconOpened: <span className="fas fa-caret-up caret"></span>,
 
-  }
+  },
 
+  {
+    title: 'Saisie et Affectation Materiels',
+    path: '/addmtrl',
+    icon: "fas fa-laptop"
+  }
 ];
