@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function FeaturedItem({totalmateriel}) {
+function FeaturedItem({totalmateriel,color}) {
    
     return (
      
        <Featured>
         
-        <Item>
+        <Item background-color={color}>
         <span >{`Nombre Total des ${totalmateriel[1]}s`}</span>
         <FeaturedMoneyContainer>
             <span>{totalmateriel[0]}</span>
@@ -33,11 +33,13 @@ const Item=styled.div`
     padding: 30px;
     border-radius:10px ;
     cursor: pointer;
+ 
     -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
     span{
         font-size: 20px;
     }
+    ${(color)=>color}
 `
 const FeaturedMoneyContainer=styled.div`
     margin:10px 0px;

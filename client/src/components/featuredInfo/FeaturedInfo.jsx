@@ -29,11 +29,11 @@ function FeaturedInfo() {
          
         </div>
         <div className="my-2"></div>
-        <h3><strong>Disponible :</strong> </h3>
+        {listTotalAvailableByType1 &&<h3><strong>Disponible :</strong> </h3>}
         <div className="d-flex">
           {listTotalAvailableByType1 && listTotalAvailableByType1.map((totalmateriel,i)=>(
 
-          <FeaturedItem totalmateriel={totalmateriel} key={i} />
+          <FeaturedItem totalmateriel={totalmateriel} key={i} color="#ceefce" />
           ))
                
             
