@@ -1,45 +1,57 @@
-import React,{useEffect,useState} from 'react'
-import { flattenObject, getTotaMaterielByType,getTotalAvailableMaterielByType } from '../../core/ApiCore';
-import FeaturedItem from './FeaturedItem';
+import React, { useEffect, useState } from "react";
+import {
+  flattenObject,
+  getTotaMaterielByType,
+  getTotalAvailableMaterielByType,
+} from "../../core/ApiCore";
+import FeaturedItem from "./FeaturedItem";
 function FeaturedInfo() {
-    const [listTotalCountbyType,setlistTotalCountbyType]=useState([])
-    const[listTotalAvailableByType,setlistTotalAvailableByType]=useState([])
-    useEffect(()=>{
-        getTotaMaterielByType().then((res)=>setlistTotalCountbyType(res)).catch((err) => console.log(err));
-        getTotalAvailableMaterielByType().then((res)=>setlistTotalAvailableByType(res)).catch((err) => console.log(err));
-    },[])
+  const [listTotalCountbyType, setlistTotalCountbyType] = useState([]);
+  const [listTotalAvailableByType, setlistTotalAvailableByType] = useState([]);
+  useEffect(() => {
+    getTotaMaterielByType()
+      .then((res) => setlistTotalCountbyType(res))
+      .catch((err) => console.log(err));
+    getTotalAvailableMaterielByType()
+      .then((res) => setlistTotalAvailableByType(res))
+      .catch((err) => console.log(err));
+  }, []);
 
-    const listTotalCountbyType1= listTotalCountbyType.map( (_data) =>{return flattenObject(_data)});
-    const listTotalAvailableByType1= listTotalAvailableByType.map( (_data) =>{return flattenObject(_data)});
-    const FeaturedItemList=(title,total,color)=>{
-        return(
-        <div>
-            <h3><strong>{title}</strong> </h3>
-            <div className="my-2"></div>
-                <div className="d-flex">
-                {total && total.map((totalmateriel,i)=>(
-
-                <FeaturedItem totalmateriel={totalmateriel} key={i} color={color}/>
-                ))
-                }
-            
-            </div>
-        </div>
-        )
-    }
+  const listTotalCountbyType1 = listTotalCountbyType.map((_data) => {
+    return flattenObject(_data);
+  });
+  const listTotalAvailableByType1 = listTotalAvailableByType.map((_data) => {
+    return flattenObject(_data);
+  });
+  const FeaturedItemList = (title, total, color) => {
     return (
-        <div>
-     
-        {listTotalCountbyType1&&FeaturedItemList("Total",listTotalCountbyType1,"white")}
+      <div>
+        <h3>
+          <strong>{title}</strong>{" "}
+        </h3>
         <div className="my-2"></div>
-        {listTotalAvailableByType1 &&FeaturedItemList("Disponible",listTotalAvailableByType1,"#ceefce")}
-   
-           
-         
+        <div className="d-flex">
+          {total &&
+            total.map((totalmateriel, i) => (
+              <FeaturedItem
+                totalmateriel={totalmateriel}
+                key={i}
+                color={color}
+              />
+            ))}
         </div>
-       
-    )
-    
+      </div>
+    );
+  };
+  return (
+    <div>
+      {listTotalCountbyType1 &&
+        FeaturedItemList("Total", listTotalCountbyType1, "white")}
+      <div className="my-2"></div>
+      {listTotalAvailableByType1 &&
+        FeaturedItemList("Disponible", listTotalAvailableByType1, "#ceefce")}
+    </div>
+  );
 }
 
-export default FeaturedInfo
+export default FeaturedInfo;

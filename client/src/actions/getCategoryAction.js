@@ -11,8 +11,7 @@ export const getcategories = () => async (dispatch) => {
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${token}`
             },
-        }).
-        then((res)=>res.json())
+        }).then((res)=>res.json())
         .then((data)=>{
             dispatch({type:'GetCategory',payload:data})
            

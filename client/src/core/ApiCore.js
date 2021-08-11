@@ -124,8 +124,7 @@ export const getdesignationbytype = (idtype) => {
                 "Authorization":`Bearer ${token}`
             }
           
-        }).
-        then((res)=>res.json())
+        }).then((res)=>res.json())
         .then((data)=>(data)).catch(error=>console.log(error))
         }
         

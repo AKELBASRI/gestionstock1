@@ -1,6 +1,6 @@
 import React from 'react'
 import { isAuthenticated } from '../../../auth/helpers'
-import { useSelector,useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { withRouter } from 'react-router-dom';
 import "./Layout.css"
 import styled from 'styled-components'

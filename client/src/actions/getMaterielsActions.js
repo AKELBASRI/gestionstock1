@@ -11,8 +11,7 @@ export const getMateriels = () => async (dispatch) => {
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${token}`
             },
-        }).
-        then((res)=>res.json())
+        }).then((res)=>res.json())
         .then((data)=>{
             dispatch({type:'GetMateriels',payload:data})
            

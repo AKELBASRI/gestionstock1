@@ -1,19 +1,19 @@
-import React from 'react'
-import FeaturedInfo from '../../../featuredInfo/FeaturedInfo'
-import Layout from '../../Layout/Layout'
-import styled from 'styled-components'
+import React from "react";
+import FeaturedInfo from "../../../featuredInfo/FeaturedInfo";
+import Layout from "../../Layout/Layout";
+import styled from "styled-components";
 
 function Home() {
-    return (
-        <Layout>
-        <Container>
-           <FeaturedInfo />
-        </Container>
-        </Layout>
-    )
+  return (
+    <Layout>
+      <Container>
+        <FeaturedInfo />
+      </Container>
+    </Layout>
+  );
 }
 
-export default Home
-const Container=styled.div`
-   flex:4;
-`
+export default Home;
+const Container = styled.div`
+  flex: 4;
+`;
