@@ -20,7 +20,10 @@ function ListMateriels() {
     const[showAffctMaterielModal,setshowAffctMaterielModal]=useState(false)
     const[showEditAddModal,setshowEditAddModal]=useState(false);
    
-    const handleShowEditAddModal=(materiel)=>{ setshowEditAddModal(true);setMateriel(materiel)}
+    const handleShowEditAddModal=(materiel)=>{ 
+      // console.log(materiel)
+      setshowEditAddModal(true);setMateriel(materiel)
+    }
     const handleClose = () => {setshowEditAddModal(false);setshowAffctMaterielModal(false)};
     const handleShowAffctMateriel=(materiel)=>{setshowAffctMaterielModal(true);setMateriel(materiel)}
     useEffect(()=>{
@@ -61,7 +64,7 @@ function ListMateriels() {
         label: "id",
         name: "idmateriel",
         options: {
-            filter: false,
+            filter: true,
             display:false
         }
         },
@@ -121,7 +124,7 @@ function ListMateriels() {
                   label: "idtype",
                   name: "idtype",
                   options: {
-                  filter: false,
+                  filter: true,
                   sort: false,
                   display:false
                 }

@@ -74,8 +74,9 @@ function AddEditSaisieMaterielModal({codemtrl,show,handleClose}) {
         LoadDesignations(material)
       }
     const LoadDesignations=(material)=>{
-        if(material.current.idtype!==''){
-            getdesignationbytype(material.current.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
+        // if(material.current.idtype!==''){
+        if(material!==undefined){
+            getdesignationbytype(material.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
             console.log(Designations)
         }
       

@@ -10,7 +10,7 @@ const { requireSignIn ,isAuth} = require("../middleware/auth");
 
 const router = express.Router();
 router.get("/all/:mle",requireSignIn,isAuth,getAllDesignation);
-router.get("/countMaterielbyType/:mle",requireSignIn,isAuth,GetCountbyType);
+
 router.get("/getdesignationbytype/:mle/:idtype",requireSignIn,isAuth,showDesignation);
 router.post('/create/:mle',requireSignIn,isAuth,saveDesignation);
 router.put('/update/:mle',requireSignIn,isAuth,updateDesignation);

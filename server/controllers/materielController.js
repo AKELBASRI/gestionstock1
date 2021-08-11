@@ -142,7 +142,7 @@ exports.AffecterMaterielle=(req,res)=>{
 //   join designation on designation.idDesignation=materiel.iddesignation
 //   join typemateriel on typemateriel.id=materiel.idtype
 //   group by materiel.idtype
-  exports.GetCountbyType=(req,res)=>{
+  exports.GetTotalbyType=(req,res)=>{
  
 
     models.typemateriel.hasMany(models.materiel,{foreignKey: 'idtype', sourceKey: 'id'});
@@ -154,6 +154,34 @@ exports.AffecterMaterielle=(req,res)=>{
     models.materiel.belongsTo(models.designation,{foreignKey: 'iddesignation', sourceKey: 'idDesignation'});
 
     models.materiel.findAll({attributes: [ [sequelize.fn('count', sequelize.col("materiel.idtype")), 'nbrMaterielbyType']],
+  
+    include:[
+        {model:models.typemateriel,attributes:['type']},
+        // {model:models.designation,attributes:['designation']}
+    ],
+    group: ['materiel.idtype'],
+    raw:true
+}).
+    then(materiels=>
+        res.status(200).json(materiels)
+        )
+    .catch(error=>res.status(500).json(error));
+     
+  }
+
+  exports.GetAvailableMaterielTotal=(req,res)=>{
+ 
+
+    models.typemateriel.hasMany(models.materiel,{foreignKey: 'idtype', sourceKey: 'id'});
+    models.materiel.belongsTo(models.typemateriel,{foreignKey: 'idtype', sourceKey: 'idtype'});
+
+
+
+    models.designation.hasMany(models.materiel,{foreignKey: 'iddesignation', sourceKey: 'idDesignation'});
+    models.materiel.belongsTo(models.designation,{foreignKey: 'iddesignation', sourceKey: 'idDesignation'});
+
+    models.materiel.findAll({attributes: [ [sequelize.fn('count', sequelize.col("materiel.idtype")), 'nbrMaterielbyType']],
+    where: {Affecter: false},
     include:[
         {model:models.typemateriel,attributes:['type']},
         // {model:models.designation,attributes:['designation']}

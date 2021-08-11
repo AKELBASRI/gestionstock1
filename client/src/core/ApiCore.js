@@ -1,9 +1,22 @@
 import { isAuthenticated } from "../auth/helpers";
 import { API_URL } from "../config";
-
-export const getCountByType=()=>{
+export const getTotalAvailableMaterielByType=()=>{
     const{user,token}=isAuthenticated()
-    return fetch(`${API_URL}/designations/countMaterielbyType/${user.Mle}`,{
+    return fetch(`${API_URL}/materiels/countMaterielavailablebyType/${user.Mle}`,{
+         method:"GET",
+         headers:{
+             "Accept":"application/json",
+             "Content-Type":"application/json",
+             "Authorization":`Bearer ${token}`
+         },
+     }).then(res=>res.json())
+     .then(data=>data)
+     .catch(error=>console.error(error))
+}
+
+export const getTotaMaterielByType=()=>{
+    const{user,token}=isAuthenticated()
+    return fetch(`${API_URL}/materiels/countMaterielbyType/${user.Mle}`,{
          method:"GET",
          headers:{
              "Accept":"application/json",
