@@ -109,7 +109,9 @@ function ListMateriels() {
         filter: true,
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          return <div>{value == 1 ? value + " an" : value + " ans"}</div>;
+          return (
+            <div>{parseInt(value) === 1 ? value + " an" : value + " ans"}</div>
+          );
         },
       },
     },

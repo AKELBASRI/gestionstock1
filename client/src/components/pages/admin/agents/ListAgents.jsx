@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-import { confirmAlert } from "react-confirm-alert";
-
 import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
 

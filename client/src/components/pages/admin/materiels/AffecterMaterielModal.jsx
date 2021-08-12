@@ -83,7 +83,7 @@ function AffecterMaterielModal({ codemtrl, show, handleClose }) {
     } else {
       setaffctMaterial({});
     }
-  }, [material1]);
+  }, [material1, setaffctMaterial]);
   return (
     <div>
       <Modal show={show} onHide={handleClose}>

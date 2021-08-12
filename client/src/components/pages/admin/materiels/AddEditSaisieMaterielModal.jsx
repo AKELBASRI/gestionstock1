@@ -35,19 +35,23 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
     getFournisseur()
       .then((res) => setFournisseur(res))
       .catch((err) => console.log(err));
-
+    // checkenventoryornot();
     if (material1) {
       setMaterial(material1);
-    } else {
-      ResetMateriels();
-    }
-    checkenventoryornot();
-    if (material1) {
       // getdesignationbytype(material1.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
       // console.log(Designations)
       LoadDesignations(material1);
+    } else {
+      setMaterial({
+        iddesignation: "",
+        numeroinventaire: "",
+        garentie: "",
+        datereceptionprovisoire: "",
+        IDFournisseur: "",
+        idtype: "",
+      });
     }
-  }, [material1]);
+  }, [material1, setMaterial]);
   const handleQte = (e) => {
     setQte(e);
   };
@@ -170,7 +174,8 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
   const AjoutMateriel = () => {
     const marque = Designations.filter(
       (designation) =>
-        designation.idDesignation == material.current.iddesignation
+        parseInt(designation.idDesignation) ===
+        parseInt(material.current.iddesignation)
     )[0].designation;
     for (let i = 0; i < Qte; i++) {
       const { user, token } = isAuthenticated();

@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter,Switch,Route} from 'react-router-dom';
+import {BrowserRouter,Switch} from 'react-router-dom';
 import Home from './components/pages/admin/home/Home';
 import Sidebar from './components/sidebar/Sidebar';
 import Topbar from './components/topbar/Topbar';
