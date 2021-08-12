@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import useStateRef from "react-usestateref";
 
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getservices } from "../../../../actions/getserviceAction";
+
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 import Switch from "@material-ui/core/Switch";
 import { getcategories } from "../../../../actions/getCategoryAction";
 function AddEditCategoryModal({ CodeSce, show, handleClose }) {
-  const [isvalid, setIsValid, ref] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
   const [ncategory, setCategory] = useState({
     idtypemateriel: "",
     type: "",
     inventoryornot: false,
   });
-  const [checked, setChecked] = React.useState(true);
+  // const [checked, setChecked] = React.useState(true);
+  const checked = true;
   const dispatch = useDispatch();
   const category = useSelector((state) =>
     CodeSce ? state.categoryReducer.find((p) => p.id === CodeSce) : null

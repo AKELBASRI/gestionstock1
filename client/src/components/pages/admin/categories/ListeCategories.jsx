@@ -3,8 +3,6 @@ import MUIDataTable from "mui-datatables";
 import Layout from "../../Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import Switch from "@material-ui/core/Switch";
-import { confirmAlert } from "react-confirm-alert";
-
 import handleClickDelete from "./DeleteCategory";
 import AddEditCategoryModal from "./AddEditCategoryModal";
 import { getcategories } from "../../../../actions/getCategoryAction";

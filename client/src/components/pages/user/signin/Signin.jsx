@@ -61,14 +61,14 @@ function Signin(props) {
               <div className="card1 pb-5">
                 <div className="row">
                   <div className="d-flex align-items-center justify-content-around">
-                    <img src={logo} className="logo" />
+                    <img src={logo} className="logo" alt="logo" />
 
                     <div className="title">Gestion Stock Informatique</div>
                   </div>
                 </div>
                 <div className="row px-3 justify-content-center mt-4 mb-5">
                   {" "}
-                  <img src={hero} className="image" />{" "}
+                  <img src={hero} className="image" alt="logo" />{" "}
                 </div>
               </div>
             </div>

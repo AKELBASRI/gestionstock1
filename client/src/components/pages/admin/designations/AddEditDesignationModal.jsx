@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, InputGroup } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import useStateRef from "react-usestateref";
 
 import toastr from "toastr";
@@ -12,11 +12,11 @@ import { API_URL } from "../../../../config";
 import { getDesignation } from "../../../../actions/getDesignationAction";
 import { getCategories } from "../../../../core/ApiCore";
 function AddEditDesignationModal({ iddesignation, show, handleClose }) {
-  const [isvalid, setIsValid, ref] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
   const [errors, setErrors] = useState({});
   const [categories, setCategories] = useState([]);
   const [ndesignation, setDesignation] = useState({});
-  const [checked, setChecked] = React.useState(true);
+
   const dispatch = useDispatch();
   const designation = useSelector((state) =>
     iddesignation

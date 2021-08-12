@@ -11,7 +11,7 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { getusers } from "../../../../actions/getUserAction";
 
 function AddEditUserModal({ Mle, show, handleClose }) {
-  const [isvalid, setIsValid, ref] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
   const [errors, setErrors] = useState({});
 
   const [normaluser, setUser] = useState({
@@ -170,7 +170,7 @@ function AddEditUserModal({ Mle, show, handleClose }) {
               id="nom"
             />
             <div className="text-danger">{errors.name}</div>
-            {usernormal == undefined && (
+            {!usernormal && (
               <div>
                 <Form.Label>Matricule </Form.Label>
                 <Form.Control

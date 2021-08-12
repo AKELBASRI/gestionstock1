@@ -16,11 +16,11 @@ import {
 function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
   const [categories, setCategories] = useState([]);
   const [Fournisseurs, setFournisseur] = useState([]);
-  const [isvalid, setIsValid, ref] = useStateRef(true);
-  const [isvalid2, setShowInventory, showInventory] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
+  const [, setShowInventory, showInventory] = useStateRef(true);
   const [errors, setErrors] = useState({});
   const [Designations, setDesignation] = useState([]);
-  const [isvalid1, setMaterial, material] = useStateRef({});
+  const [, setMaterial, material] = useStateRef({});
   const [Qte, setQte] = useState(1);
   const dispatch = useDispatch();
   let material1 = useSelector((state) =>

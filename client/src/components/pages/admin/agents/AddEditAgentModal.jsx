@@ -14,7 +14,7 @@ import { getAgencies, getservices } from "../../../../core/ApiCore";
 function AddEditAgentModal({ Mle, show, handleClose }) {
   const [services, setservices] = useState([]);
   const [agencies, setAgencies] = useState([]);
-  const [isvalid, setIsValid, ref] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
   const [errors, setErrors] = useState({});
 
   const [normaluser, setUser] = useState({
@@ -208,7 +208,7 @@ function AddEditAgentModal({ Mle, show, handleClose }) {
               id="agent_full_name"
             />
             <div className="text-danger">{errors.name}</div>
-            {usernormal == undefined && (
+            {!usernormal && (
               <div>
                 <Form.Label>Matricule </Form.Label>
                 <Form.Control

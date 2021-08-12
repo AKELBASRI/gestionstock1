@@ -30,7 +30,7 @@ function SubMenu({ item1, state, props, onOpen }) {
     if (subnav) {
       onOpen(item1.key);
     }
-  }, [subnav]);
+  }, [item1.key, onOpen, subnav]);
   return (
     <div>
       <ul>

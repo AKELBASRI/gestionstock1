@@ -17,7 +17,7 @@ function AffecterMaterielModal({ codemtrl, show, handleClose }) {
       ? state.MaterielReducer.find((p) => p.idmateriel === codemtrl)
       : null
   );
-  const [isvalid1, setaffctMaterial, affctMateriel] = useStateRef({});
+  const [, setaffctMaterial, affctMateriel] = useStateRef({});
   const dispatch = useDispatch();
   const handleChange = (e) => {
     setaffctMaterial({

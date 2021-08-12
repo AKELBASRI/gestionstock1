@@ -11,7 +11,7 @@ import { API_URL } from "../../../../config";
 import { getFournisseurs } from "../../../../actions/getFournisseur";
 
 function AddEditFournisseurModal({ id, show, handleClose }) {
-  const [isvalid, setIsValid, ref] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
   const [nFournisseur, setFournisseur] = useState({
     NomFournisseur: "",
   });

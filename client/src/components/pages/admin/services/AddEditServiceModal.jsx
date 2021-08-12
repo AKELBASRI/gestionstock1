@@ -10,7 +10,7 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 
 function AddEditServiceModal({ CodeSce, show, handleClose }) {
-  const [isvalid, setIsValid, ref] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
   const [nservice, setService] = useState({
     id: "",
     service_name: "",

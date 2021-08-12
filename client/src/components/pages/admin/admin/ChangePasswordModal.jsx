@@ -8,7 +8,7 @@ import { API_URL } from "../../../../config";
 function ChangePasswordModal({ usernormal, show, handleClose }) {
   const [input, setInput] = useState({ password: "", password2: "" });
   const [errors, setErrors] = useState({});
-  const [isvalid, setIsValid, ref] = useStateRef(true);
+  const [, setIsValid, ref] = useStateRef(true);
   const handleChange = (e) => {
     setInput({ ...input, [e.target.id]: e.target.value });
   };

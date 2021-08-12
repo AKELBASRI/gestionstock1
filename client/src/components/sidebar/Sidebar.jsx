@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { showorhidesidebar } from "../../actions/showorhideAction";
@@ -45,10 +45,18 @@ const Sidebar = (props) => {
   useEffect(() => {
     if (window.matchMedia("(min-width: 728px)").matches) {
       /* the view port is at least 400 pixels wide */
-      openNav();
+      if (sidebar.current) {
+        sidebar.current.style.width = "307px";
+        setactive(false);
+        sidebar.current.classList.remove("active");
+      }
     } else {
       /* the view port is less than 400 pixels wide */
-      closeNav();
+      if (sidebar.current) {
+        sidebar.current.style.width = "90px";
+        sidebar.current.classList.add("active");
+        setactive(true);
+      }
     }
   }, []);
 

@@ -47,8 +47,8 @@ const FeaturedMoneyContainer = styled.div`
     }
     }
 `;
-const FeaturedMoneyRate = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-`;
+// const FeaturedMoneyRate = styled.div`
+//   display: flex;
+//   align-items: center;
+//   margin-left: 20px;
+// `;
