@@ -23,5 +23,10 @@
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.2",
     "sequelize-auto": "^0.8.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.0"
   }
 }

@@ -1,136 +1,135 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = function materiel(sequelize, DataTypes) {
   return sequelize.define('materiel', {
     idmateriel: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     iddesignation: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'designation',
-        key: 'idDesignation'
-      }
+        key: 'idDesignation',
+      },
     },
     numeroinventaire: {
       type: DataTypes.STRING(90),
-      allowNull: true
+      allowNull: true,
     },
     garentie: {
       type: DataTypes.STRING(45),
-      allowNull: true
+      allowNull: true,
     },
     datereceptionprovisoire: {
       type: DataTypes.DATEONLY,
-      allowNull: true
+      allowNull: true,
     },
     IDFournisseur: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'fournisseur',
-        key: 'idFournisseur'
-      }
+        key: 'idFournisseur',
+      },
     },
     Affecter: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: false
+      defaultValue: false,
     },
     datesaisie: {
       type: DataTypes.DATEONLY,
-      allowNull: true
+      allowNull: true,
     },
     idtype: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'typemateriel',
-        key: 'id'
-      }
+        key: 'id',
+      },
     },
     idagence: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'agencies',
-        key: 'id'
-      }
+        key: 'id',
+      },
     },
     mleagent: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'agents',
-        key: 'agent_number'
-      }
+        key: 'agent_number',
+      },
     },
     idservice: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'services',
-        key: 'id'
-      }
-    }
+        key: 'id',
+      },
+    },
   }, {
     sequelize,
     tableName: 'materiel',
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "idmateriel" },
-        ]
+          { name: 'idmateriel' },
+        ],
       },
       {
-        name: "fk_agenceid_idx",
-        using: "BTREE",
+        name: 'fk_agenceid_idx',
+        using: 'BTREE',
         fields: [
-          { name: "idagence" },
-        ]
+          { name: 'idagence' },
+        ],
       },
       {
-        name: "fk_typeid_idx",
-        using: "BTREE",
+        name: 'fk_typeid_idx',
+        using: 'BTREE',
         fields: [
-          { name: "idtype" },
-        ]
+          { name: 'idtype' },
+        ],
       },
       {
-        name: "fk_agentid_idx",
-        using: "BTREE",
+        name: 'fk_agentid_idx',
+        using: 'BTREE',
         fields: [
-          { name: "mleagent" },
-        ]
+          { name: 'mleagent' },
+        ],
       },
       {
-        name: "fk_idfournisseur_idx",
-        using: "BTREE",
+        name: 'fk_idfournisseur_idx',
+        using: 'BTREE',
         fields: [
-          { name: "IDFournisseur" },
-        ]
+          { name: 'IDFournisseur' },
+        ],
       },
       {
-        name: "idservice",
-        using: "BTREE",
+        name: 'idservice',
+        using: 'BTREE',
         fields: [
-          { name: "idservice" },
-        ]
+          { name: 'idservice' },
+        ],
       },
       {
-        name: "iddesignation_FK",
-        using: "BTREE",
+        name: 'iddesignation_FK',
+        using: 'BTREE',
         fields: [
-          { name: "iddesignation" },
-        ]
+          { name: 'iddesignation' },
+        ],
       },
-    ]
+    ],
   });
 };

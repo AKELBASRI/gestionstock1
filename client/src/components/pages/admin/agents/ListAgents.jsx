@@ -150,7 +150,7 @@ function ListAgents() {
         />
       )}
       <AddEditAgentModal
-        Mle={user.agent_number}
+        agent_number={user.agent_number}
         show={showEditAddModal}
         handleClose={handleClose}
       />

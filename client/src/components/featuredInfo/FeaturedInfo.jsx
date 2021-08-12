@@ -17,12 +17,16 @@ function FeaturedInfo() {
       .catch((err) => console.log(err));
   }, []);
 
-  const listTotalCountbyType1 = listTotalCountbyType.map((_data) => {
-    return flattenObject(_data);
-  });
-  const listTotalAvailableByType1 = listTotalAvailableByType.map((_data) => {
-    return flattenObject(_data);
-  });
+  const listTotalCountbyType1 =
+    listTotalCountbyType &&
+    listTotalCountbyType.map((_data) => {
+      return flattenObject(_data);
+    });
+  const listTotalAvailableByType1 =
+    listTotalAvailableByType &&
+    listTotalAvailableByType.map((_data) => {
+      return flattenObject(_data);
+    });
   const FeaturedItemList = (title, total, color) => {
     return (
       <div>
@@ -31,7 +35,7 @@ function FeaturedInfo() {
         </h3>
         <div className="my-2"></div>
         <div className="d-flex">
-          {total &&
+          {total.length > 0 &&
             total.map((totalmateriel, i) => (
               <FeaturedItem
                 totalmateriel={totalmateriel}

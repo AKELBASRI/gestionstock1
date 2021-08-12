@@ -1,29 +1,28 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = function services(sequelize, DataTypes) {
   return sequelize.define('services', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     service_name: {
       type: DataTypes.STRING(50),
-      allowNull: false
-    }
+      allowNull: false,
+    },
   }, {
     sequelize,
     tableName: 'services',
     timestamps: false,
     indexes: [
       {
-        name: "PRIMARY",
+        name: 'PRIMARY',
         unique: true,
-        using: "BTREE",
+        using: 'BTREE',
         fields: [
-          { name: "id" },
-        ]
+          { name: 'id' },
+        ],
       },
-    ]
+    ],
   });
 };

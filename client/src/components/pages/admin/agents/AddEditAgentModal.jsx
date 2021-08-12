@@ -11,7 +11,7 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { getagents } from "../../../../actions/getagentsAction";
 import { getAgencies, getservices } from "../../../../core/ApiCore";
 
-function AddEditAgentModal({ Mle, show, handleClose }) {
+function AddEditAgentModal({ agent_number, show, handleClose }) {
   const [services, setservices] = useState([]);
   const [agencies, setAgencies] = useState([]);
   const [, setIsValid, ref] = useStateRef(true);
@@ -27,7 +27,9 @@ function AddEditAgentModal({ Mle, show, handleClose }) {
 
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
-    Mle ? state.agentsReducer.find((p) => p.agent_number === Mle) : null
+    agent_number
+      ? state.agentsReducer.find((p) => p.agent_number === agent_number)
+      : null
   );
   useEffect(() => {
     getservices()
@@ -111,7 +113,7 @@ function AddEditAgentModal({ Mle, show, handleClose }) {
           );
         } else {
           toastr.success(
-            `L'agent matricule ${normaluser.agent_number}  est modifié avec succés `,
+            `L'agent matricule ${normaluser.agent_full_name}  est modifié avec succés `,
             "Modification Utilisateur",
             {
               positionClass: "toast-bottom-left",
@@ -159,13 +161,19 @@ function AddEditAgentModal({ Mle, show, handleClose }) {
           handleClose();
 
           toastr.success(
-            `L'utilisateur ${normaluser.nom}  est crée avec succés `,
+            `L'utilisateur ${normaluser.agent_full_name}  est crée avec succés `,
             "Nouveau Utilisateur",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setUser({ Mle: "", password: "", codesce: "", nom: "", Email: "" });
+          setUser({
+            agent_number: "",
+            password: "",
+            codesce: "",
+            nom: "",
+            Email: "",
+          });
           dispatch(getagents());
         }
       })
@@ -218,7 +226,7 @@ function AddEditAgentModal({ Mle, show, handleClose }) {
                   placeholder="Matricule"
                   id="agent_number"
                 />
-                <div className="text-danger">{errors.Mle}</div>
+                <div className="text-danger">{errors.agent_number}</div>
                 {/* <Form.Label>Mot de passe </Form.Label>
             <Form.Control value={normaluser.password || '' } onChange={handleChange}   type="password" placeholder="Mot de passe " id="password" />
             <div className="text-danger">{errors.password}</div>
