@@ -5,22 +5,24 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon index.js"
   },
   "author": "AHMED KHALIL EL BASRI",
   "license": "ISC",
   "dependencies": {
     "@joi/date": "^2.1.0",
     "bcryptjs": "^2.4.3",
+    "cjs-loader": "^0.1.0",
     "cors": "^2.8.5",
     "dateformat": "^4.5.1",
     "dotenv": "^8.5.1",
     "express": "^4.17.1",
-    "express-jwt": "^6.0.0",
+    "express-jwt": "^6.1.0",
     "express-validator": "^5.3.1",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
+    "pm2": "^5.1.0",
     "sequelize": "^6.6.2",
     "sequelize-auto": "^0.8.2"
   },
