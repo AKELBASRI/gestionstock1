@@ -10,7 +10,7 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 import Switch from "@material-ui/core/Switch";
 import { getcategories } from "../../../../actions/getCategoryAction";
-function AddEditCategoryModal({ CodeSce, show, handleClose }) {
+function AddEditCategoryModal(Props) {
   const [, setIsValid, ref] = useStateRef(true);
   const [ncategory, setCategory] = useState({
     idtypemateriel: "",
@@ -21,7 +21,9 @@ function AddEditCategoryModal({ CodeSce, show, handleClose }) {
   const checked = true;
   const dispatch = useDispatch();
   const category = useSelector((state) =>
-    CodeSce ? state.categoryReducer.find((p) => p.id === CodeSce) : null
+    Props.CodeSce
+      ? state.categoryReducer.find((p) => p.id === Props.CodeSce)
+      : null
   );
   useEffect(() => {
     if (category) {
@@ -73,7 +75,7 @@ function AddEditCategoryModal({ CodeSce, show, handleClose }) {
           );
           setCategory({ idtypemateriel: "", type: "", inventoryornot: "" });
           dispatch(getcategories());
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -115,7 +117,7 @@ function AddEditCategoryModal({ CodeSce, show, handleClose }) {
           );
           setCategory({ idtypemateriel: "", type: "", inventoryornot: "" });
 
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -127,7 +129,7 @@ function AddEditCategoryModal({ CodeSce, show, handleClose }) {
   const Submit = (e) => {
     e.preventDefault();
     if (validate()) {
-      if (!CodeSce) {
+      if (!Props.CodeSce) {
         AddCategory();
       } else {
         updateCategory();
@@ -142,7 +144,7 @@ function AddEditCategoryModal({ CodeSce, show, handleClose }) {
 
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
             {category
@@ -175,11 +177,11 @@ function AddEditCategoryModal({ CodeSce, show, handleClose }) {
           {JSON.stringify(ncategory)}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Props.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={Submit}>
-            {CodeSce !== undefined ? "Modifier" : "Ajout"}
+            {Props.CodeSce !== undefined ? "Modifier" : "Ajout"}
           </Button>
         </Modal.Footer>
       </Modal>

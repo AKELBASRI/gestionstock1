@@ -10,7 +10,7 @@ import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { getusers } from "../../../../actions/getUserAction";
 
-function AddEditUserModal({ Mle, show, handleClose }) {
+function AddEditUserModal(Props) {
   const [, setIsValid, ref] = useStateRef(true);
   const [errors, setErrors] = useState({});
 
@@ -22,7 +22,7 @@ function AddEditUserModal({ Mle, show, handleClose }) {
 
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
-    Mle ? state.usersReducer.find((p) => p.Mle === Mle) : null
+    Props.Mle ? state.usersReducer.find((p) => p.Mle === Props.Mle) : null
   );
   useEffect(() => {
     if (usernormal) {
@@ -87,7 +87,7 @@ function AddEditUserModal({ Mle, show, handleClose }) {
           );
           setUser({ Mle: "", password: "", codesce: "", nom: "" });
           dispatch(getusers());
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -118,7 +118,7 @@ function AddEditUserModal({ Mle, show, handleClose }) {
             }
           );
         } else {
-          handleClose();
+          Props.handleClose();
 
           toastr.success(
             `L'utilisateur ${normaluser.nom}  est crée avec succés `,
@@ -151,7 +151,7 @@ function AddEditUserModal({ Mle, show, handleClose }) {
 
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
             {usernormal
@@ -195,7 +195,7 @@ function AddEditUserModal({ Mle, show, handleClose }) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Props.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={submitUser}>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
-function SubMenu({ item1, state, props, onOpen }) {
+function SubMenu(Props) {
   const [subnav, setSubnav] = useState(false);
   const showSubnav = () => setSubnav(!subnav);
-  item1.close = () => {
+  Props.item1.close = () => {
     setSubnav(false);
   };
   const isActive = (history, path) => {
@@ -23,45 +23,45 @@ function SubMenu({ item1, state, props, onOpen }) {
     if (item1.item.subNav) {
       showSubnav();
     } else if (path) {
-      onOpen(item1.key);
+      Props.onOpen(item1.key);
     }
   };
   useEffect(() => {
     if (subnav) {
-      onOpen(item1.key);
+      Props.onOpen(Props.item1.key);
     }
-  }, [item1.key, onOpen, subnav]);
+  }, [Props.item1.key, Props.onOpen, subnav]);
   return (
     <div>
       <ul>
         <li>
           <Link
-            to={item1.item.subNav ? "#" : item1.item.path}
-            style={isActive(props.history, item1.item.path)}
-            onClick={() => clickitem(item1, item1.item.path)}
+            to={Props.item1.item.subNav ? "#" : Props.item1.item.path}
+            style={isActive(Props.props.history, Props.path)}
+            onClick={() => clickitem(Props.item1, Props.item1.item.path)}
           >
             <span>
-              <i className={item1.item.icon}></i>
+              <i className={Props.item1.item.icon}></i>
             </span>
-            <Title state={state}>{item1.item.title}</Title>
-            {item1.item.subNav &&
-              (item1.item.subNav && subnav
-                ? item1.item.iconOpened
-                : item1.item.subNav
-                ? item1.item.iconClosed
+            <Title state={Props.state}>{Props.item1.item.title}</Title>
+            {Props.item1.item.subNav &&
+              (Props.item1.item.subNav && subnav
+                ? Props.item1.item.iconOpened
+                : Props.item1.item.subNav
+                ? Props.item1.item.iconClosed
                 : null)}
           </Link>
 
           {subnav && (
-            <ShowLeft state={state}>
+            <ShowLeft state={Props.state}>
               {subnav &&
-                item1.item.subNav &&
-                item1.item.subNav.map((item, index) => {
+                Props.item1.item.subNav &&
+                Props.item1.item.subNav.map((item, index) => {
                   return (
                     <li key={index}>
                       <Link
                         to={item.path}
-                        style={isActive(props.history, item.path)}
+                        style={isActive(Props.props.history, item.path)}
                       >
                         <SubTitle>{item.title}</SubTitle>
                       </Link>

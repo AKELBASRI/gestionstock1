@@ -5,7 +5,7 @@ import "toastr/build/toastr.css";
 import useStateRef from "react-usestateref";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
-function ChangePasswordModal({ usernormal, show, handleClose }) {
+function ChangePasswordModal(Props) {
   const [input, setInput] = useState({ password: "", password2: "" });
   const [errors, setErrors] = useState({});
   const [, setIsValid, ref] = useStateRef(true);
@@ -24,7 +24,10 @@ function ChangePasswordModal({ usernormal, show, handleClose }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ password: input.password, Mle: usernormal.Mle }),
+        body: JSON.stringify({
+          password: input.password,
+          Mle: Props.usernormal.Mle,
+        }),
       })
         .then((res) => res.json())
         .then((res) => {
@@ -39,7 +42,7 @@ function ChangePasswordModal({ usernormal, show, handleClose }) {
           } else {
             //props.history.push('/');
             toastr.success(
-              `Changement mot de passe bien effectué ${usernormal.nom}   `,
+              `Changement mot de passe bien effectué ${Props.usernormal.nom}   `,
               "Changement mot de passe Utilisateur",
               {
                 positionClass: "toast-bottom-left",
@@ -47,7 +50,7 @@ function ChangePasswordModal({ usernormal, show, handleClose }) {
             );
             setInput({ password: "", password2: "" });
             setErrors({});
-            handleClose();
+            Props.handleClose();
           }
         })
         .catch((err) => {
@@ -79,11 +82,11 @@ function ChangePasswordModal({ usernormal, show, handleClose }) {
   };
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-            Modification mot de passe du : {usernormal.nom} Matricule :{" "}
-            {usernormal.Mle}
+            Modification mot de passe du : {Props.usernormal.nom} Matricule :{" "}
+            {Props.usernormal.Mle}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -108,7 +111,7 @@ function ChangePasswordModal({ usernormal, show, handleClose }) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Props.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit}>

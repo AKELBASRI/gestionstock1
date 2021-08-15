@@ -23,9 +23,7 @@ const Sidebar = (props) => {
     });
   };
   const openNav = () => {
-    //  console.log("ok")
     dispatch(showorhidesidebar(true));
-
     if (sidebar.current) {
       sidebar.current.style.width = "307px";
       setactive(false);

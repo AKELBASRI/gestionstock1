@@ -8,13 +8,13 @@ import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { getMateriels } from "../../../../actions/getMaterielsActions";
 import { getAgencies, getAgents, getservices } from "../../../../core/ApiCore";
-function AffecterMaterielModal({ codemtrl, show, handleClose }) {
+function AffecterMaterielModal(Props) {
   const [ListAgents, setAgents] = useState([]);
   const [ListeService, setService] = useState([]);
   const [Listagencies, setAgencies] = useState([]);
   const material1 = useSelector((state) =>
-    codemtrl
-      ? state.MaterielReducer.find((p) => p.idmateriel === codemtrl)
+    Props.codemtrl
+      ? state.MaterielReducer.find((p) => p.idmateriel === Props.codemtrl)
       : null
   );
   const [, setaffctMaterial, affctMateriel] = useStateRef({});
@@ -58,7 +58,7 @@ function AffecterMaterielModal({ codemtrl, show, handleClose }) {
           );
           setaffctMaterial({});
           dispatch(getMateriels());
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -86,7 +86,7 @@ function AffecterMaterielModal({ codemtrl, show, handleClose }) {
   }, [material1, setaffctMaterial]);
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Affectation Materiel</Modal.Title>
         </Modal.Header>
@@ -100,7 +100,7 @@ function AffecterMaterielModal({ codemtrl, show, handleClose }) {
               className="form-control"
               aria-label="Default select example"
             >
-              <option value="">Selectionner l'agent</option>
+              <option value="">{"Selectionner l'agent"}</option>
 
               {ListAgents &&
                 ListAgents.map((agent, i) => (
@@ -147,7 +147,7 @@ function AffecterMaterielModal({ codemtrl, show, handleClose }) {
             </select>
           </Form.Group>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" onClick={Props.handleClose}>
               Close
             </Button>
             <Button variant="primary" onClick={AffecterAction}>

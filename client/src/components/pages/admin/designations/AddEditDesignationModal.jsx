@@ -11,7 +11,7 @@ import { API_URL } from "../../../../config";
 
 import { getDesignation } from "../../../../actions/getDesignationAction";
 import { getCategories } from "../../../../core/ApiCore";
-function AddEditDesignationModal({ iddesignation, show, handleClose }) {
+function AddEditDesignationModal(Props) {
   const [, setIsValid, ref] = useStateRef(true);
   const [errors, setErrors] = useState({});
   const [categories, setCategories] = useState([]);
@@ -19,8 +19,10 @@ function AddEditDesignationModal({ iddesignation, show, handleClose }) {
 
   const dispatch = useDispatch();
   const designation = useSelector((state) =>
-    iddesignation
-      ? state.designationReducer.find((p) => p.idDesignation === iddesignation)
+    Props.iddesignation
+      ? state.designationReducer.find(
+          (p) => p.idDesignation === Props.iddesignation
+        )
       : null
   );
   useEffect(() => {
@@ -80,7 +82,7 @@ function AddEditDesignationModal({ iddesignation, show, handleClose }) {
           );
           setDesignation({});
           dispatch(getDesignation());
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -122,7 +124,7 @@ function AddEditDesignationModal({ iddesignation, show, handleClose }) {
           );
           setDesignation({});
 
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -134,7 +136,7 @@ function AddEditDesignationModal({ iddesignation, show, handleClose }) {
   const Submit = (e) => {
     e.preventDefault();
     if (validate()) {
-      if (!iddesignation) {
+      if (!Props.iddesignation) {
         AddDesignation();
       } else {
         updateDesignation();
@@ -147,7 +149,7 @@ function AddEditDesignationModal({ iddesignation, show, handleClose }) {
 
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
             {designation
@@ -190,11 +192,11 @@ function AddEditDesignationModal({ iddesignation, show, handleClose }) {
           {JSON.stringify(ndesignation)}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Props.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={Submit}>
-            {iddesignation !== undefined ? "Modifier" : "Ajout"}
+            {Props.iddesignation !== undefined ? "Modifier" : "Ajout"}
           </Button>
         </Modal.Footer>
       </Modal>

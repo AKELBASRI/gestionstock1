@@ -9,7 +9,7 @@ import { getservices } from "../../../../actions/getserviceAction";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 
-function AddEditServiceModal({ CodeSce, show, handleClose }) {
+function AddEditServiceModal(Props) {
   const [, setIsValid, ref] = useStateRef(true);
   const [nservice, setService] = useState({
     id: "",
@@ -17,7 +17,9 @@ function AddEditServiceModal({ CodeSce, show, handleClose }) {
   });
   const dispatch = useDispatch();
   const service = useSelector((state) =>
-    CodeSce ? state.serviceReducer.find((p) => p.id === CodeSce) : null
+    Props.CodeSce
+      ? state.serviceReducer.find((p) => p.id === Props.CodeSce)
+      : null
   );
   useEffect(() => {
     if (service) {
@@ -69,7 +71,7 @@ function AddEditServiceModal({ CodeSce, show, handleClose }) {
           );
           setService({ Libelle: "" });
           dispatch(getservices());
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -111,7 +113,7 @@ function AddEditServiceModal({ CodeSce, show, handleClose }) {
           );
           setService({ service_name: "" });
 
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -123,7 +125,7 @@ function AddEditServiceModal({ CodeSce, show, handleClose }) {
   const Submit = (e) => {
     e.preventDefault();
     if (validate()) {
-      if (!CodeSce) {
+      if (!Props.CodeSce) {
         AddService();
       } else {
         updateService();
@@ -136,7 +138,7 @@ function AddEditServiceModal({ CodeSce, show, handleClose }) {
 
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
             {service
@@ -158,11 +160,11 @@ function AddEditServiceModal({ CodeSce, show, handleClose }) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Props.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={Submit}>
-            {CodeSce !== undefined ? "Modifier" : "Ajout"}
+            {Props.CodeSce !== undefined ? "Modifier" : "Ajout"}
           </Button>
         </Modal.Footer>
       </Modal>

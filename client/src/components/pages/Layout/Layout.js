@@ -1,41 +1,52 @@
-import React from 'react'
-import { isAuthenticated } from '../../../auth/helpers'
-import { useSelector } from "react-redux"
-import { withRouter } from 'react-router-dom';
-import "./Layout.css"
-import styled from 'styled-components'
-function Layout({children,props}) {
-    const state = useSelector((state) => state.showorhidereducers);
-    
-    return (
-       
-      <div>
-       
-        <Container state={state} isAuthenticated={isAuthenticated()}>
-        <div className="mx-5">{children}</div>
-        <FooterBackground isAuthenticated={isAuthenticated()}>
-              <div className="py-4">
-            <div className="footer ml-4 ml-sm-5 mb-2 text-center">
-                <small>Copyright &copy; 2021.  RADEEO S.S.I. Tous droits réservés.<br/>Gestion Stock V1.0 by Ahmed Khalil El Basri.</small></div> 
-               
-                </div>
-        </FooterBackground>     
-  
+import React from "react";
+import { isAuthenticated } from "../../../auth/helpers";
+import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
+import "./Layout.css";
+import Box from "@material-ui/core/Box";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
 
-     
-        </Container>
-       </div>
-    )
+const useStyles = makeStyles(() => ({
+  FooterBackground: {
+    color: "#fff",
+    backgroundColor: "#011627",
+  },
+}));
+
+function Layout(Props) {
+  const state = useSelector((state) => state.showorhidereducers);
+  const classes = useStyles();
+  return (
+    <div>
+      <Box
+        style={{
+          marginLeft:
+            isAuthenticated() && state ? "270px" : state ? "0px" : "90px",
+        }}
+      >
+        <div className="mx-5">{Props.children}</div>
+        <Box
+          className={classes.FooterBackground}
+          style={{
+            marginTop: isAuthenticated
+              ? "calc(100vh - 50px)"
+              : "calc(100% - 80%)",
+          }}
+        >
+          <Box py="30px">
+            <Box textAlign="center" fontSize="14px">
+              <Typography variant="subtitle1">
+                Copyright &copy; 2021. RADEEO S.S.I. Tous droits réservés.
+                <Typography></Typography>
+                Gestion Stock V1.0 by Ahmed Khalil El Basri.
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </div>
+  );
 }
 
-export default withRouter(Layout)
-
-const Container=styled.div`
-  margin-left: ${({state,isAuthenticated})=>isAuthenticated && state?'270px;':state?'0px;':'90px;'} 
-`
-
-const FooterBackground=styled.div`
-  color: #fff;
-  background-color: #011627;
-  margin-top: ${({isAuthenticated})=>isAuthenticated ?'calc(100vh - 50px);':'calc(100% - 80%);'}
-`
+export default withRouter(Layout);

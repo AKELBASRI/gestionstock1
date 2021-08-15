@@ -9,6 +9,7 @@ import handleClickDelete from "./DeleteMateriel";
 import AffecterMaterielModal from "./AffecterMaterielModal";
 import { flattenObject } from "../../../../core/ApiCore";
 import { Delete } from "../../../../core/util";
+import { Box } from "@material-ui/core";
 
 function ListMateriels() {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ function ListMateriels() {
     return flattenObject(_data);
   });
 
-  const buttons = (dataIndex, rowIndex) => {
+  const buttons = (dataIndex) => {
     return (
       <div className="row">
         <button
@@ -108,9 +109,9 @@ function ListMateriels() {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
+        customBodyRender: function an(value) {
           return (
-            <div>{parseInt(value) === 1 ? value + " an" : value + " ans"}</div>
+            <Box>{parseInt(value) === 1 ? value + " an" : value + " ans"}</Box>
           );
         },
       },
@@ -128,11 +129,11 @@ function ListMateriels() {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
+        customBodyRender: function checked(value) {
           return (
-            <div>
-              <Switch checked={value} />
-            </div>
+            <Box>
+              <Switch checked={value} disableRipple="true" />
+            </Box>
           );
         },
       },

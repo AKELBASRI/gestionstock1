@@ -6,8 +6,112 @@ import "toastr/build/toastr.css";
 import logo from "../../../logo_radeeo.jpg";
 import hero from "../../../hero.png";
 import Layout from "../../Layout/Layout";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import CardMedia from "@material-ui/core/CardMedia";
+import Box from "@material-ui/core/Box";
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+const ColorButton = withStyles(() => ({
+  root: {
+    height: "45px",
+    width: "150px",
+    color: "white",
+    borderRadius: "2px",
+    backgroundColor: "#011627",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#011627",
+    },
+  },
+}))(Button);
+const useStyles = makeStyles(() => ({
+  root: {
+    "& > *": {
+      width: "25ch",
+      marginBottom: "12px",
+    },
+  },
+  width: {
+    width: "50%",
+    "@media (max-width: 991px)": {
+      width: "100%",
+    },
+  },
+  ml: {
+    "@media (max-width: 991px)": {
+      marginLeft: "-20px",
+    },
+  },
+  textsm: {
+    fontSize: "15px",
+  },
 
-function Signin(props) {
+  input: {
+    height: 0.5,
+    color: "#2c3e50",
+    fontSize: "13px",
+    letterSpacing: "1px",
+    "&::placeholder": {
+      color: "#bdbdbd",
+      opacity: "1",
+      fontWeight: "300",
+    },
+    "&::-ms-input-placeholder": {
+      color: "#bdbdbd",
+      fontWeight: "300",
+    },
+
+    "&:::-ms-input-placeholder": {
+      color: "#bdbdbd",
+      fontWeight: 300,
+    },
+  },
+
+  media: {
+    width: "70px",
+    height: "90px",
+    marginTop: "20px",
+    marginLeft: "250px",
+    "@media (max-width: 991px)": {
+      marginLeft: "0px",
+    },
+  },
+  title: {
+    fontSize: "17px",
+    marginLeft: "20px",
+    fontWeight: "bold",
+    "@media (max-width: 991px)": {
+      marginTop: "12px",
+      fontSize: "auto",
+    },
+  },
+  image: {
+    marginTop: "-30px",
+    width: "500px",
+    height: "400px",
+    "@media (max-width: 991px)": {
+      marginTop: "60px",
+      width: "530px",
+      height: "210px",
+    },
+  },
+  card2: {
+    margin: "0px 40px",
+    "@media (max-width: 991px)": {
+      margin: "0px 15px",
+    },
+  },
+  box2: {
+    "@media (max-width: 991px)": {
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
+}));
+function Signin(Props) {
   const [user, setUser] = useState({
     Mle: "",
     password: "",
@@ -37,7 +141,7 @@ function Signin(props) {
           );
         } else {
           localStorage.setItem("jwt_info", JSON.stringify(res));
-          props.history.push({
+          Props.history.push({
             pathname: "/",
             state: { state: true },
           });
@@ -52,76 +156,88 @@ function Signin(props) {
         });
       });
   };
+
+  const classes = useStyles();
   return (
     <div>
       <Layout>
-        <div className="card  border-0">
-          <div className="row d-flex">
-            <div className="col-lg-6">
-              <div className="card1 pb-5">
-                <div className="row">
-                  <div className="d-flex align-items-center justify-content-around">
-                    <img src={logo} className="logo" alt="logo" />
+        <Box display="flex" flexWrap="wrap">
+          <Box className={classes.width}>
+            <Box display="flex" alignItems="center">
+              <CardMedia
+                component="img"
+                className={classes.media}
+                image={logo}
+                title="logo"
+              />
+              <Typography className={classes.title}>
+                Gestion Stock Informatique
+              </Typography>
+            </Box>
 
-                    <div className="title">Gestion Stock Informatique</div>
-                  </div>
-                </div>
-                <div className="row px-3 justify-content-center mt-4 mb-5">
-                  {" "}
-                  <img src={hero} className="image" alt="logo" />{" "}
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="card2 card border-0 px-4 py-5">
-                <div className="row px-3">
-                  {" "}
-                  <label className="mb-1">
-                    <h6 className="mb-0 text-sm">Matricule</h6>
-                  </label>
-                  <input
-                    className="mb-4"
-                    type="text"
-                    id="Mle"
-                    placeholder="Matricule"
-                    onChange={handleChange}
-                  />{" "}
-                </div>
-                <div className="row px-3">
-                  {" "}
-                  <label className="mb-1">
-                    <h6 className="mb-0 text-sm">Mot de passe</h6>
-                  </label>{" "}
-                  <input
-                    type="password"
+            <Grid container justifyContent="center">
+              <CardMedia
+                component="img"
+                className={classes.image}
+                image={hero}
+                title="hero"
+              />
+            </Grid>
+          </Box>
+          <Box flexGrow="1" className={classes.box2}>
+            <Box component="div" className={classes.card2} py={5}>
+              <Box display="flex" alignItems="center">
+                <Box display="flex" flexDirection="column">
+                  <Box component="div" mb="2" className={classes.textsm}>
+                    Matricule
+                  </Box>
+
+                  <form className={classes.root} noValidate autoComplete="off">
+                    <TextField
+                      variant="outlined"
+                      placeholder="Matricule"
+                      InputProps={{ classes: { input: classes["input"] } }}
+                      onChange={handleChange}
+                      id="Mle"
+                      autoFocus
+                    />
+                  </form>
+                </Box>
+              </Box>
+
+              <Box display="flex" flexDirection="column">
+                <Box component="div" mb="2" className={classes.textsm}>
+                  Mot de passe
+                </Box>
+                <form className={classes.root} noValidate autoComplete="off">
+                  <TextField
                     id="password"
-                    onChange={handleChange}
+                    variant="outlined"
                     placeholder="Mot de passe"
-                  />{" "}
-                </div>
-                <div className="row px-3 mb-4"></div>
-                <div className="row mb-3 px-3">
-                  {" "}
-                  <button
-                    type="submit"
-                    onClick={submitSignin}
-                    className="btn btn-blue text-center"
-                  >
-                    Login
-                  </button>{" "}
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* <div className="bg-blue py-4 ">
-            <div className="footer ml-4 ml-sm-5 mb-2 text-center"><small>Copyright &copy; 2021.  RADEEO S.S.I. Tous droits réservés.<br/>Gestion Stock V1.0 by Ahmed Khalil El Basri.</small></div> 
-             
-           
-        </div>  */}
-        </div>
+                    InputProps={{ classes: { input: classes["input"] } }}
+                    onChange={handleChange}
+                    type="password"
+                  />
+                </form>
+              </Box>
+
+              <Box mb="20px"></Box>
+              <Grid>
+                <ColorButton
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  className={classes.margin}
+                  onClick={submitSignin}
+                >
+                  LOGIN
+                </ColorButton>
+              </Grid>
+            </Box>
+          </Box>
+        </Box>
       </Layout>
     </div>
   );
 }
-
 export default Signin;

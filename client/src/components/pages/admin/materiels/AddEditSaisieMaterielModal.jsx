@@ -13,7 +13,7 @@ import {
   getdesignationbytype,
   getFournisseur,
 } from "../../../../core/ApiCore";
-function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
+function AddEditSaisieMaterielModal(Props) {
   const [categories, setCategories] = useState([]);
   const [Fournisseurs, setFournisseur] = useState([]);
   const [, setIsValid, ref] = useStateRef(true);
@@ -24,8 +24,8 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
   const [Qte, setQte] = useState(1);
   const dispatch = useDispatch();
   let material1 = useSelector((state) =>
-    codemtrl
-      ? state.MaterielReducer.find((p) => p.idmateriel === codemtrl)
+    Props.codemtrl
+      ? state.MaterielReducer.find((p) => p.idmateriel === Props.codemtrl)
       : null
   );
   useEffect(() => {
@@ -35,11 +35,9 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
     getFournisseur()
       .then((res) => setFournisseur(res))
       .catch((err) => console.log(err));
-    // checkenventoryornot();
+
     if (material1) {
       setMaterial(material1);
-      // getdesignationbytype(material1.idtype).then((res)=>setDesignation(res.designation)).catch((err)=>console.log(err))
-      // console.log(Designations)
       LoadDesignations(material1);
     } else {
       setMaterial({
@@ -162,7 +160,7 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
           );
           ResetMateriels();
           dispatch(getMateriels());
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -199,7 +197,7 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
               }
             );
           } else {
-            handleClose();
+            Props.handleClose();
 
             toastr.success(
               `Le Materiel ${marque}  est crée avec succés `,
@@ -237,7 +235,7 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
 
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
             {material1
@@ -279,7 +277,7 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
                 <div className="text-danger">{errors.numeroinventaire}</div>
               </div>
             )}
-            {!showInventory.current && !codemtrl && (
+            {!showInventory.current && !Props.codemtrl && (
               <div>
                 <Form.Label>Quantité</Form.Label>
                 <NumericInput
@@ -370,7 +368,7 @@ function AddEditSaisieMaterielModal({ codemtrl, show, handleClose }) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Props.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={submitUser}>

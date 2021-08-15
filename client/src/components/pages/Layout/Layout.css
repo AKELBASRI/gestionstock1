@@ -14,7 +14,6 @@
   .bg-blue {
     position: absolute;
     z-index: 52551515151;
-    
   }
 }
 /* #main{
@@ -27,10 +26,9 @@
     margin-left: 0px;
 } */
 @media screen and (max-width: 728px) {
-  #main  {
+  #main {
     margin-left: 90px !important;
   }
-
 }
 @media screen and (max-width: 280px) {
   #main {
@@ -55,8 +53,5 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   } */
-  
+
 /* On screens that are 600px or less, set the background color to olive */
-
-
-

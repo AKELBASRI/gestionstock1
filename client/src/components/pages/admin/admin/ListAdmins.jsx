@@ -37,7 +37,7 @@ function ListUsers() {
     dispatch(getusers());
   };
 
-  const buttons = (dataIndex, rowIndex) => {
+  const buttons = (dataIndex) => {
     return (
       <Container>
         <button

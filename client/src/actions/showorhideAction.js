@@ -1,4 +1,3 @@
-export const showorhidesidebar=(show)=> async (dispatch) => {
-
- dispatch({type:'showorhide',payload:show})
-}
+export const showorhidesidebar = (show) => async (dispatch) => {
+  dispatch({ type: "showorhide", payload: show });
+};

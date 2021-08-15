@@ -26,7 +26,7 @@ function ListeFournisseur() {
     dispatch(getFournisseurs());
   };
 
-  const buttons = (dataIndex, rowIndex) => {
+  const buttons = (dataIndex) => {
     return (
       <div className="row">
         <button

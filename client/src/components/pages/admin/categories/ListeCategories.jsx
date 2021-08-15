@@ -7,6 +7,7 @@ import handleClickDelete from "./DeleteCategory";
 import AddEditCategoryModal from "./AddEditCategoryModal";
 import { getcategories } from "../../../../actions/getCategoryAction";
 import { Delete } from "../../../../core/util";
+import { Box } from "@material-ui/core";
 function ListeCategories() {
   const dispatch = useDispatch();
   const listcategories = useSelector((state) => state.categoryReducer);
@@ -26,7 +27,7 @@ function ListeCategories() {
     dispatch(getcategories());
   };
 
-  const buttons = (dataIndex, rowIndex) => {
+  const buttons = (dataIndex) => {
     return (
       <div className="row">
         <button
@@ -74,15 +75,16 @@ function ListeCategories() {
       options: {
         filter: true,
         sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
+        customBodyRender: function checked(value) {
           return (
-            <div>
-              <Switch checked={value} />
-            </div>
+            <Box>
+              <Switch checked={value} disableRipple="true" />
+            </Box>
           );
         },
       },
     },
+
     {
       name: "Actions",
       options: {

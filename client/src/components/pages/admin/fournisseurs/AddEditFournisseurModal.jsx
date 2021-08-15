@@ -10,14 +10,16 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 import { getFournisseurs } from "../../../../actions/getFournisseur";
 
-function AddEditFournisseurModal({ id, show, handleClose }) {
+function AddEditFournisseurModal(Props) {
   const [, setIsValid, ref] = useStateRef(true);
   const [nFournisseur, setFournisseur] = useState({
     NomFournisseur: "",
   });
   const dispatch = useDispatch();
   const fournisseur = useSelector((state) =>
-    id ? state.fournisseurReducer.find((p) => p.idFournisseur === id) : null
+    Props.id
+      ? state.fournisseurReducer.find((p) => p.idFournisseur === Props.id)
+      : null
   );
   useEffect(() => {
     if (fournisseur) {
@@ -69,7 +71,7 @@ function AddEditFournisseurModal({ id, show, handleClose }) {
           );
           setFournisseur({ NomFournisseur: "" });
           dispatch(getFournisseurs());
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -111,7 +113,7 @@ function AddEditFournisseurModal({ id, show, handleClose }) {
           );
           setFournisseur({ NomFournisseur: "" });
 
-          handleClose();
+          Props.handleClose();
         }
       })
       .catch((err) => {
@@ -123,7 +125,7 @@ function AddEditFournisseurModal({ id, show, handleClose }) {
   const Submit = (e) => {
     e.preventDefault();
     if (validate()) {
-      if (!id) {
+      if (!Props.id) {
         AddFournisseur();
       } else {
         updateFournisseur();
@@ -136,7 +138,7 @@ function AddEditFournisseurModal({ id, show, handleClose }) {
 
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={Props.show} onHide={Props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
             {fournisseur
@@ -158,11 +160,11 @@ function AddEditFournisseurModal({ id, show, handleClose }) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={Props.handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={Submit}>
-            {id !== undefined ? "Modifier" : "Ajout"}
+            {Props.id !== undefined ? "Modifier" : "Ajout"}
           </Button>
         </Modal.Footer>
       </Modal>

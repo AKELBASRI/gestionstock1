@@ -26,7 +26,7 @@ function ListServices() {
     dispatch(getservices());
   };
 
-  const buttons = (dataIndex, rowIndex) => {
+  const buttons = (dataIndex) => {
     return (
       <div className="row">
         <button
