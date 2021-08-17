@@ -1,124 +1,141 @@
-import React, { useState } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import React, { useRef } from "react";
+import { Button } from "@material-ui/core";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
-import useStateRef from "react-usestateref";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
+import { useForm } from "react-hook-form";
+
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+import { useStyles } from "../../../../core/styleModalForm";
+
 function ChangePasswordModal(Props) {
-  const [input, setInput] = useState({ password: "", password2: "" });
-  const [errors, setErrors] = useState({});
-  const [, setIsValid, ref] = useStateRef(true);
-  const handleChange = (e) => {
-    setInput({ ...input, [e.target.id]: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      const { user, token } = isAuthenticated();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-      fetch(`${API_URL}/admin/updatepassword/${user.Mle}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          password: input.password,
-          Mle: Props.usernormal.Mle,
-        }),
+  const password = useRef({});
+
+  password.current = watch("password", "");
+
+  const onSubmit = (data) => {
+    const { user, token } = isAuthenticated();
+    fetch(`${API_URL}/admin/updatepassword/${user.Mle}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        password: data.password,
+        Mle: Props.usernormal.Mle,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.error) {
+          toastr.warning(
+            res.error,
+            "S'il vous plaît Veuillez vérifier le Formulaire",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+        } else {
+          toastr.success(
+            `Changement mot de passe bien effectué ${Props.usernormal.nom}   `,
+            "Changement mot de passe Utilisateur",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+          reset(res);
+
+          Props.handleClose();
+        }
       })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.error) {
-            toastr.warning(
-              res.error,
-              "S'il vous plaît Veuillez vérifier le Formulaire",
-              {
-                positionClass: "toast-bottom-left",
-              }
-            );
-          } else {
-            //props.history.push('/');
-            toastr.success(
-              `Changement mot de passe bien effectué ${Props.usernormal.nom}   `,
-              "Changement mot de passe Utilisateur",
-              {
-                positionClass: "toast-bottom-left",
-              }
-            );
-            setInput({ password: "", password2: "" });
-            setErrors({});
-            Props.handleClose();
-          }
-        })
-        .catch((err) => {
-          toastr.error(err, "Erreur du serveur", {
-            positionClass: "toast-bottom-left",
-          });
+      .catch((err) => {
+        toastr.error(err, "Erreur du serveur", {
+          positionClass: "toast-bottom-left",
         });
-    }
+      });
   };
-  const validate = () => {
-    if (!input.password) {
-      setErrors({ password: "Veuilez Entrer le nouveau mot de passe" });
-      setIsValid(false);
-    } else if (!input.password2) {
-      setErrors({ password2: "Veuillez Confirmer le nouveau  mot de passe" });
-      setIsValid(false);
-    } else if (
-      typeof input.password !== "undefined" &&
-      typeof input.password2 !== "undefined"
-    ) {
-      if (input.password !== input.password2) {
-        setIsValid(false);
-        setErrors({ password2: "les mot de passes ne correspond pas" });
-      } else {
-        setIsValid(true);
-      }
-    }
-    return ref.current;
-  };
-  return (
-    <div>
-      <Modal show={Props.show} onHide={Props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Modification mot de passe du : {Props.usernormal.nom} Matricule :{" "}
-            {Props.usernormal.Mle}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Mot de passe</Form.Label>
-            <Form.Control
-              onChange={handleChange}
-              type="password"
-              placeholder="Mot de passe"
-              id="password"
-            />
-            <div className="text-danger">{errors.password}</div>
 
-            <Form.Label>Confirmer mot de passe </Form.Label>
-            <Form.Control
-              onChange={handleChange}
-              type="password"
-              placeholder="Confirmer mot de passe"
-              id="password2"
-            />
-            <div className="text-danger">{errors.password2}</div>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={Props.handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Changement mot de passe
-          </Button>
-        </Modal.Footer>
-      </Modal>
+  const classes = useStyles();
+  return (
+    <div className={classes.bg}>
+      <Dialog
+        open={Props.show}
+        onClose={Props.handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title" className={classes.bg}>
+          {" "}
+          {`Modification mot de passe du : ${Props.usernormal.nom} Matricule :${Props.usernormal.Mle}
+           `}
+        </DialogTitle>
+        <DialogContent className={classes.bg}>
+          <DialogContentText className={classes.bg}>
+            Changement Mot de passe{" "}
+          </DialogContentText>
+
+          <label className={classes.label}>Mot de Passe</label>
+          <input
+            className={classes.input}
+            id="password"
+            type="password"
+            {...register("password", {
+              required: "You must specify a password",
+              minLength: {
+                value: 8,
+                message: "Password must have at least 8 characters",
+              },
+            })}
+          />
+          {errors.password && (
+            <p className={classes.para}>{errors.password.message}</p>
+          )}
+          <label className={classes.label}>Confirmer Mot de Passe</label>
+          <input
+            className={classes.input}
+            id="password_repeat"
+            type="password"
+            {...register("password_repeat", {
+              validate: (value) =>
+                value === password.current || "The passwords do not match",
+            })}
+          />
+          {errors.password_repeat && (
+            <p className={classes.para}>{errors.password_repeat.message}</p>
+          )}
+        </DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <DialogActions className={classes.bg}>
+            <Button
+              onClick={Props.handleClose}
+              color="secondary"
+              variant="contained"
+            >
+              Cancel
+            </Button>
+
+            <Button color="primary" variant="contained" type="submit">
+              Changement mot de passe
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }

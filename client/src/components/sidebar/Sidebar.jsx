@@ -25,7 +25,7 @@ const Sidebar = (props) => {
   const openNav = () => {
     dispatch(showorhidesidebar(true));
     if (sidebar.current) {
-      sidebar.current.style.width = "307px";
+      sidebar.current.style.width = "322px";
       setactive(false);
       sidebar.current.classList.remove("active");
     }
@@ -44,7 +44,7 @@ const Sidebar = (props) => {
     if (window.matchMedia("(min-width: 728px)").matches) {
       /* the view port is at least 400 pixels wide */
       if (sidebar.current) {
-        sidebar.current.style.width = "307px";
+        sidebar.current.style.width = "322px";
         setactive(false);
         sidebar.current.classList.remove("active");
       }
@@ -117,7 +117,7 @@ const Titleapp = styled.div`
 const SideNav = styled.div`
   z-index: 1234 !important;
   height: 100%;
-  width: 307px;
+  width: 322px;
   position: fixed;
   z-index: 1;
   top: 0;

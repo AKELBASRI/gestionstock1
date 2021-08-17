@@ -1,3 +1,4 @@
+import { Box, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import {
   flattenObject,
@@ -29,12 +30,10 @@ function FeaturedInfo() {
     });
   const FeaturedItemList = (title, total, color) => {
     return (
-      <div>
-        <h3>
-          <strong>{title}</strong>{" "}
-        </h3>
-        <div className="my-2"></div>
-        <div className="d-flex">
+      <Box>
+        <Typography variant="h5">{title}</Typography>
+        <Box my="10px"></Box>
+        <Box display="flex">
           {total.length > 0 &&
             total.map((totalmateriel, i) => (
               <FeaturedItem
@@ -43,15 +42,15 @@ function FeaturedInfo() {
                 color={color}
               />
             ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   };
   return (
     <div>
       {listTotalCountbyType1 &&
         FeaturedItemList("Total", listTotalCountbyType1, "white")}
-      <div className="my-2"></div>
+      <Box my="10px"></Box>
       {listTotalAvailableByType1 &&
         FeaturedItemList("Disponible", listTotalAvailableByType1, "#ceefce")}
     </div>

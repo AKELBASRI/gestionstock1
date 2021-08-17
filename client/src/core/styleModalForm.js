@@ -1,0 +1,48 @@
+import { makeStyles, Button, withStyles } from "@material-ui/core";
+export const ColorButton = withStyles(() => ({
+  root: {
+    height: "45px",
+    width: "150px",
+    color: "white",
+    borderRadius: "2px",
+    backgroundColor: "#011627",
+    boxShadow: "-2px -1px 15px 1px rgba(0,0,0,0.40)",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#011627",
+    },
+  },
+}))(Button);
+export const useStyles = makeStyles(() => ({
+  input: {
+    display: "block",
+    boxSizing: "border-box",
+    width: "100%",
+    borderRadius: "4px",
+    border: "1px solid white",
+    padding: "10px 15px",
+    marginBottom: "10px",
+    fontSize: " 14px",
+  },
+  bg: {
+    background: "#011627",
+    color: "white",
+  },
+  para: {
+    color: "#bf1650",
+    "&::before": {
+      display: "inline",
+      content: '"⚠ "',
+    },
+  },
+  label: {
+    lineHeigh: "2",
+    textAlign: "left",
+    display: "block",
+    marginBottom: "20px",
+    marginTop: "0px",
+    color: "white",
+    fontSize: "14px",
+    fontWeight: "200",
+  },
+}));

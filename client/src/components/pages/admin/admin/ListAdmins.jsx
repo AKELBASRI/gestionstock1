@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-
+import CreateIcon from "@material-ui/icons/Create";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import ClearIcon from "@material-ui/icons/Clear";
 import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from "./ChangePasswordModal";
 import AddEditUserModal from "./AddEditUserModal";
 import { getusers } from "../../../../actions/getUserAction";
-
-import styled from "styled-components";
 import handleClickDeleteAdmin from "./DeleteAdmin";
 import { Delete } from "../../../../core/util";
-
+import { Box, makeStyles } from "@material-ui/core";
+import { ColorButton } from "../../../../core/styleModalForm";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 function ListUsers() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const listusers = useSelector((state) => state.usersReducer);
@@ -22,7 +30,8 @@ function ListUsers() {
     setshowEditAddModal(true);
     setUser(user);
   };
-  const handleClose = () => {
+  const handleClose = (user) => {
+    console.log(user);
     setshowpasswordmodal(false);
     setshowEditAddModal(false);
   };
@@ -39,39 +48,33 @@ function ListUsers() {
 
   const buttons = (dataIndex) => {
     return (
-      <Container>
-        <button
+      <Box className={classes.root}>
+        <CreateIcon
           type="button"
-          className="btn btn-success btn-sm px-3"
+          variant="contained"
+          color="inherit"
+          style={{ cursor: "pointer" }}
           onClick={() => handleShowEditAddModal(listusers[dataIndex])}
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </button>
+        ></CreateIcon>
 
-        <button
+        <VpnKeyIcon
           type="button"
-          className="btn btn-secondary btn-sm px-3"
+          color="primary"
           onClick={() => handleShowPassword(listusers[dataIndex])}
-        >
-          <i className="fas fa-key"></i>
-        </button>
+          style={{ cursor: "pointer" }}
+        ></VpnKeyIcon>
 
-        <button
+        <ClearIcon
           type="button"
-          className="btn btn-danger btn-sm px-3"
+          color="error"
+          style={{ cursor: "pointer" }}
           onClick={() =>
             Delete(listusers[dataIndex], Actiongetusers, handleClickDeleteAdmin)
           }
-        >
-          <i className="fas fa-times"></i>
-        </button>
-      </Container>
+        ></ClearIcon>
+      </Box>
     );
   };
-
-  const Container = styled.div.attrs(() => ({
-    className: "row",
-  }))``;
 
   const columns = [
     {
@@ -111,12 +114,7 @@ function ListUsers() {
   };
   return (
     <Layout>
-      <button
-        className="btn btn-outline-primary my-4"
-        onClick={handleShowEditAddModal}
-      >
-        nouveau admin
-      </button>
+      <ColorButton onClick={handleShowEditAddModal}>nouveau admin</ColorButton>
       {listusers && (
         <MUIDataTable
           title={"Liste des admins"}

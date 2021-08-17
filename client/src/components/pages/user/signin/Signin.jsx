@@ -12,21 +12,8 @@ import Grid from "@material-ui/core/Grid";
 import CardMedia from "@material-ui/core/CardMedia";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-const ColorButton = withStyles(() => ({
-  root: {
-    height: "45px",
-    width: "150px",
-    color: "white",
-    borderRadius: "2px",
-    backgroundColor: "#011627",
-    "&:hover": {
-      backgroundColor: "white",
-      color: "#011627",
-    },
-  },
-}))(Button);
+import { ColorButton } from "../../../../core/styleModalForm";
+
 const useStyles = makeStyles(() => ({
   root: {
     "& > *": {

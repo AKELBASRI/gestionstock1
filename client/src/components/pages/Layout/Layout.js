@@ -22,10 +22,10 @@ function Layout(Props) {
       <Box
         style={{
           marginLeft:
-            isAuthenticated() && state ? "270px" : state ? "0px" : "90px",
+            isAuthenticated() && state ? "320px" : state ? "0px" : "90px",
         }}
       >
-        <div className="mx-5">{Props.children}</div>
+        <Box mx="10px">{Props.children}</Box>
         <Box
           className={classes.FooterBackground}
           style={{

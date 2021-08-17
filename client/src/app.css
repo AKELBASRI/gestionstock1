@@ -1,7 +1,6 @@
-
-*{
-    font-family: 'Source Sans Pro','sans-serif';
-    margin: 0;
+* {
+  font-family: "Source Sans Pro", "sans-serif";
+  margin: 0;
 }
 /* .rowFlex{
     display: flex;
@@ -13,45 +12,46 @@
     flex-direction: column;
 }
  */
- /* .padding-0{
+/* .padding-0{
     padding-right:0;
     padding-left:0;
 } */
-
-
-  .custom-ui {
-    text-align: center;
-    width: 500px;
-    padding: 40px;
-    background: #28bae6;
-    box-shadow: 0 20px 75px rgb(0 0 0 / 23%);
-    color: #fff;
+.react-confirm-alert-overlay {
+  z-index: 9999;
+}
+.custom-ui {
+  z-index: 125552;
+  text-align: center;
+  width: 500px;
+  padding: 40px;
+  background: #28bae6;
+  box-shadow: 0 20px 75px rgb(0 0 0 / 23%);
+  color: #fff;
 }
 .custom-ui > button {
-    width: 160px;
-    padding: 10px;
-    border: 1px solid #fff;
-    margin: 10px;
-    cursor: pointer;
-    background: none;
-    color: #fff;
-    font-size: 14px;
+  width: 160px;
+  padding: 10px;
+  border: 1px solid #fff;
+  margin: 10px;
+  cursor: pointer;
+  background: none;
+  color: #fff;
+  font-size: 14px;
+  margin-top: 40px;
 }
 
 .MuiPaper-elevation4 {
-  box-shadow: none ! important;
+  box-shadow: none !important;
 }
 
-
 @media screen and (max-width: 727px) {
-  .MuiToolbar-root.MuiToolbar-regular.MuiTablePagination-toolbar
-  {
-  display: flex;
-  flex-direction: column;
+  .MuiToolbar-root.MuiToolbar-regular.MuiTablePagination-toolbar {
+    display: flex;
+    flex-direction: column;
   }
 }
 
-*{
+* {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -61,5 +61,5 @@
 }
 
 body {
-   overflow-x:hidden;
+  overflow-x: hidden;
 }

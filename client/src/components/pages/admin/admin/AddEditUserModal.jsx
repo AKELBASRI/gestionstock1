@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
@@ -9,16 +8,27 @@ import useStateRef from "react-usestateref";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { getusers } from "../../../../actions/getUserAction";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+import { useStyles } from "../../../../core/styleModalForm";
+import { useForm } from "react-hook-form";
 
 function AddEditUserModal(Props) {
-  const [, setIsValid, ref] = useStateRef(true);
-  const [errors, setErrors] = useState({});
-
-  const [normaluser, setUser] = useState({
-    Mle: "",
-    nom: "",
-    password: "",
-  });
+  const [normaluser, setUser] = useState({});
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
 
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
@@ -26,36 +36,16 @@ function AddEditUserModal(Props) {
   );
   useEffect(() => {
     if (usernormal) {
-      setUser(usernormal);
+      setValue("object", usernormal);
+      clearErrors();
     } else {
-      setUser({ Mle: "", nom: "", password: "" });
+      reset();
     }
   }, [usernormal]);
-  const handleChange = (e) => {
-    setUser({ ...normaluser, [e.target.id]: e.target.value });
-  };
 
-  const validate = () => {
-    if (!normaluser.nom) {
-      setErrors({ name: "Veuilez Entrer le nom " });
-      setIsValid(false);
-    } else if (usernormal === undefined) {
-      if (!normaluser.Mle) {
-        setErrors({ Mle: "Veuillez Entrer le numero de matricule " });
-        setIsValid(false);
-      }
-      if (!normaluser.password) {
-        setErrors({ password: "Veuillez Entrer le mot de passe " });
-        setIsValid(false);
-      }
-    } else {
-      setIsValid(true);
-      setErrors({});
-    }
-    return ref.current;
-  };
+  const classes = useStyles();
 
-  const UpdateUser = () => {
+  const UpdateUser = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/admin/update/${user.Mle}`, {
       method: "PUT",
@@ -64,7 +54,7 @@ function AddEditUserModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(normaluser),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -96,7 +86,8 @@ function AddEditUserModal(Props) {
         });
       });
   };
-  const AddUser = () => {
+  const AddUser = (data) => {
+    console.log(data.object);
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/admin/create/${user.Mle}`, {
       method: "POST",
@@ -105,7 +96,7 @@ function AddEditUserModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(normaluser),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -138,71 +129,93 @@ function AddEditUserModal(Props) {
       });
   };
 
-  const submitUser = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      if (usernormal) {
-        UpdateUser();
-      } else {
-        AddUser();
-      }
+  const onSubmit = (data) => {
+    if (usernormal) {
+      UpdateUser(data);
+    } else {
+      AddUser(data);
     }
   };
 
   return (
     <div>
-      <Modal show={Props.show} onHide={Props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {usernormal
-              ? `Modification  de l'utilisateur : ${usernormal.nom} Matricule : ${usernormal.Mle}`
-              : "Ajout Utilisateur"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Nom</Form.Label>
-            <Form.Control
-              value={normaluser.nom || ""}
-              onChange={handleChange}
-              type="text"
-              placeholder="nom"
-              id="nom"
-            />
-            <div className="text-danger">{errors.name}</div>
-            {!usernormal && (
-              <div>
-                <Form.Label>Matricule </Form.Label>
-                <Form.Control
-                  value={normaluser.Mle || ""}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder="Matricule"
-                  id="Mle"
-                />
-                <div className="text-danger">{errors.Mle}</div>
-                <Form.Label>Mot de passe </Form.Label>
-                <Form.Control
-                  value={normaluser.password || ""}
-                  onChange={handleChange}
-                  type="password"
-                  placeholder="Mot de passe "
-                  id="password"
-                />
-                <div className="text-danger">{errors.password}</div>
-              </div>
-            )}
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={Props.handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={submitUser}>
-            {usernormal ? "Modifier" : "Ajout"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Dialog
+        open={Props.show}
+        onClose={Props.handleClose}
+        aria-labelledby="form-dialog-title"
+        fullWidth="true"
+      >
+        <DialogTitle id="form-dialog-title" className={classes.bg}>
+          {usernormal
+            ? `Modification  de l'utilisateur : ${usernormal.nom} Matricule : ${usernormal.Mle}`
+            : "Ajout Utilisateur"}
+        </DialogTitle>
+        <DialogContent className={classes.bg}>
+          <DialogContentText className={classes.bg}></DialogContentText>
+
+          <label className={classes.label}>Nom</label>
+          <input
+            className={classes.input}
+            id="object.nom"
+            type="text"
+            {...register("object.nom", {
+              required: "You must specify a name",
+            })}
+          />
+          {errors["object"]?.nom && (
+            <p className={classes.para}>{errors["object"].nom?.message}</p>
+          )}
+          {!usernormal && (
+            <div>
+              <label className={classes.label}>Matricule</label>
+              <input
+                className={classes.input}
+                id="object.Mle"
+                type="text"
+                {...register("object.Mle", {
+                  required: "You must specify Mle",
+                })}
+              />
+              {errors["object"]?.Mle && (
+                <p className={classes.para}>{errors["object"]?.Mle?.message}</p>
+              )}
+              <label className={classes.label}>Mot de passe</label>
+              <input
+                className={classes.input}
+                id="object.password"
+                type="password"
+                {...register("object.password", {
+                  required: "You must specify password",
+                  minLength: {
+                    value: 8,
+                    message: "Password must have at least 8 characters",
+                  },
+                })}
+              />
+              {errors["object"]?.password && (
+                <p className={classes.para}>
+                  {errors["object"].password?.message}
+                </p>
+              )}
+            </div>
+          )}
+        </DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <DialogActions className={classes.bg}>
+            <Button
+              onClick={Props.handleClose}
+              color="secondary"
+              variant="contained"
+            >
+              Cancel
+            </Button>
+
+            <Button color="primary" variant="contained" type="submit">
+              {usernormal ? "Modifier" : "Ajout"}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }
