@@ -21,8 +21,18 @@ export const useStyles = makeStyles(() => ({
     borderRadius: "4px",
     border: "1px solid white",
     padding: "10px 15px",
-    marginBottom: "10px",
+    marginBottom: "20px",
     fontSize: " 14px",
+  },
+  select: {
+    width: "100%",
+    borderRadius: "4px",
+    border: "1px solid white",
+    backgroundColor: "white",
+    color: "black",
+    padding: "5px 10px",
+    marginBottom: "20px",
+    width: "100%",
   },
   bg: {
     background: "#011627",
@@ -44,5 +54,6 @@ export const useStyles = makeStyles(() => ({
     color: "white",
     fontSize: "14px",
     fontWeight: "200",
+    marginTop: "20px",
   },
 }));

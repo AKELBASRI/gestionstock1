@@ -17,7 +17,7 @@
     padding-left:0;
 } */
 .react-confirm-alert-overlay {
-  z-index: 9999;
+  z-index: 9999999 !important;
 }
 .custom-ui {
   z-index: 125552;

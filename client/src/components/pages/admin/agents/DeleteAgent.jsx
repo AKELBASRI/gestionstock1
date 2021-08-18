@@ -29,7 +29,7 @@ const handleClickDelete = (agent, Actiongetagents) => {
       } else {
         //props.history.push('/');
         toastr.success(
-          `L'agent ${agent.nom}  est supprimé avec succés `,
+          `L'agent ${agent.agent_full_name}  est supprimé avec succés `,
           "Suppression Agent",
           {
             positionClass: "toast-bottom-left",

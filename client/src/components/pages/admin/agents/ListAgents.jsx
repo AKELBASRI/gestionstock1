@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
-
+import CreateIcon from "@material-ui/icons/Create";
+import ClearIcon from "@material-ui/icons/Clear";
 // import handleClickDelete from './DeleteAdmin';
 import { getagents } from "../../../../actions/getagentsAction";
 import AddEditAgentModal from "./AddEditAgentModal";
 import handleClickDelete from "./DeleteAgent";
 import { flattenObject } from "../../../../core/ApiCore";
 import { Delete } from "../../../../core/util";
+import { ColorButton } from "../../../../core/styleModalForm";
+import { Box, makeStyles } from "@material-ui/core";
 function ListAgents() {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
@@ -34,28 +37,38 @@ function ListAgents() {
   const listagentsf = listagents.map((_data) => {
     return flattenObject(_data);
   });
-
-  const buttons = (dataIndex, rowIndex) => {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+  const classes = useStyles();
+  const buttons = (dataIndex) => {
     return (
-      <div className="row">
-        <button
+      <Box className={classes.root}>
+        <CreateIcon
           type="button"
-          className="btn btn-success btn-sm px-3"
+          variant="contained"
+          color="inherit"
+          style={{ cursor: "pointer" }}
           onClick={() => handleShowEditAddModal(listagents[dataIndex])}
         >
           <i className="fas fa-pencil-alt"></i>
-        </button>
+        </CreateIcon>
 
-        <button
+        <ClearIcon
           type="button"
-          className="btn btn-danger btn-sm px-3"
+          color="error"
+          style={{ cursor: "pointer" }}
           onClick={() =>
             Delete(listagents[dataIndex], Actiongetagents, handleClickDelete)
           }
         >
           <i className="fas fa-times"></i>
-        </button>
-      </div>
+        </ClearIcon>
+      </Box>
     );
   };
   const columns = [
@@ -134,13 +147,7 @@ function ListAgents() {
   };
   return (
     <Layout>
-      <button
-        className="btn btn-outline-primary my-4"
-        onClick={handleShowEditAddModal}
-      >
-        nouveau agent
-      </button>{" "}
-      ,
+      <ColorButton onClick={handleShowEditAddModal}>nouveau agent</ColorButton>
       {listagentsf && (
         <MUIDataTable
           title={"Liste des agents"}

@@ -37,7 +37,7 @@ function SubMenu(Props) {
         <li>
           <Link
             to={Props.item1.item.subNav ? "#" : Props.item1.item.path}
-            style={isActive(Props.props.history, Props.path)}
+            style={isActive(Props.props.history, Props.item1.item.path)}
             onClick={() => clickitem(Props.item1, Props.item1.item.path)}
           >
             <span>

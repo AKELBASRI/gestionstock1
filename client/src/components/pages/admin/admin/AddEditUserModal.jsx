@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
-
-import useStateRef from "react-usestateref";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { getusers } from "../../../../actions/getUserAction";
