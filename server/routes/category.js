@@ -1,7 +1,8 @@
 const express = require('express');
+
 const {
   saveCategory, updateCategory, deleteCategory, getAllCategories,
-} = require('../controllers/categoryController');
+} = require(['../controllers/categoryController'][0]);
 const { userById } = require('../middleware/admin');
 
 const { requireSignIn, isAuth } = require('../middleware/auth');

@@ -21,30 +21,31 @@ exports.saveMateriel = (req, res) => {
     .findOne({ where: { numeroinventaire: req.body.numeroinventaire.trim() } }).then((result) => {
       if (result) {
         res.status(403).json({ error: 'materiel existe deja !' });
-      } else {
-        const schema = Joi.object({
-          idservice: Joi.number(),
-          garentie: Joi.string(),
-          numeroinventaire: Joi.optional().allow(''),
-          iddesignation: Joi.string().required(),
-          datereceptionprovisoire: Joi.date().required().format('YYYY-MM-DD').utc(),
-          IDFournisseur: Joi.number().required(),
-          idtype: Joi.number().required(),
-        });
-        const { error } = schema.validate(req.body);
-        if (error) {
-          return res.status(400).json({
-            error: error.details[0].message,
-          });
-        }
-        models.materiel.create(materiel).then((result1) => {
-          res.status(201).json({ message: 'Le materiel a été crée avec succés', service: result1 });
-        })
-          .catch((error1) => {
-            console.log(error1);
-            res.status(500).json({ message: 'Something went wrong', error });
-          });
+        return false;
       }
+      const schema = Joi.object({
+        idservice: Joi.number(),
+        garentie: Joi.string(),
+        numeroinventaire: Joi.optional().allow(''),
+        iddesignation: Joi.string().required(),
+        datereceptionprovisoire: Joi.date().required().format('YYYY-MM-DD').utc(),
+        IDFournisseur: Joi.number().required(),
+        idtype: Joi.number().required(),
+      });
+      const { error } = schema.validate(req.body);
+      if (error) {
+        return res.status(400).json({
+          error: error.details[0].message,
+        });
+      }
+      models.materiel.create(materiel).then((result1) => {
+        res.status(201).json({ message: 'Le materiel a été crée avec succés', service: result1 });
+      })
+        .catch((error1) => {
+          console.log(error1);
+          res.status(500).json({ message: 'Something went wrong', error });
+        });
+      return true;
     }).catch((error) => {
       console.log(error);
       res.status(500).json({

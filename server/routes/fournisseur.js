@@ -2,7 +2,7 @@ const express = require('express');
 
 const {
   saveFournisseur, getAllFournisseurs, updateFournisseur, deleteFournisseur,
-} = require('../controllers/fournisseurController');
+} = require(['../controllers/fournisseurController'][0]);
 const { userById } = require('../middleware/admin');
 
 const { requireSignIn, isAuth } = require('../middleware/auth');

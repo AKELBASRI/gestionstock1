@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import useStateRef from "react-usestateref";
-
+import { useStyles } from "../../../../core/styleModalForm";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,15 +17,23 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 import Switch from "@material-ui/core/Switch";
 import { getcategories } from "../../../../actions/getCategoryAction";
+import { useForm } from "react-hook-form";
+import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
+
 function AddEditCategoryModal(Props) {
-  const [, setIsValid, ref] = useStateRef(true);
-  const [ncategory, setCategory] = useState({
-    idtypemateriel: "",
-    type: "",
-    inventoryornot: false,
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    clearErrors,
+    control,
+
+    formState: { isSubmitSuccessful, errors },
+  } = useForm();
+
   // const [checked, setChecked] = React.useState(true);
-  const checked = true;
+
   const dispatch = useDispatch();
   const category = useSelector((state) =>
     Props.CodeSce
@@ -27,23 +42,18 @@ function AddEditCategoryModal(Props) {
   );
   useEffect(() => {
     if (category) {
-      setCategory(category);
+      setValue("object", category);
     } else {
-      setCategory({ inventoryornot: false });
+      setValue("object", { type: "", inventoryornot: false });
+      clearErrors();
     }
-  }, [category]);
-  const [errors, setErrors] = useState({});
-  const validate = () => {
-    if (!ncategory.type) {
-      setErrors({ type: "Veuilez Entrer le nom du category " });
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-      setErrors({});
+    if (!Props.show) {
+      setValue("object", { type: "", inventoryornot: false });
     }
-    return ref.current;
-  };
-  const AddCategory = () => {
+  }, [category, Props.show]);
+
+  const AddCategory = (data) => {
+    console.log(JSON.stringify(data.object));
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/category/create/${user.Mle}`, {
       method: "POST",
@@ -52,7 +62,7 @@ function AddEditCategoryModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(ncategory),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -65,15 +75,16 @@ function AddEditCategoryModal(Props) {
             }
           );
         } else {
+          setValue("object", { type: "", inventoryornot: false });
           //props.history.push('/');
           toastr.success(
-            `Le service ${ncategory.type}  est crée avec succés `,
+            `Le service ${data.object.type}  est crée avec succés `,
             "Nouveau Service",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setCategory({ idtypemateriel: "", type: "", inventoryornot: "" });
+
           dispatch(getcategories());
           Props.handleClose();
         }
@@ -84,7 +95,7 @@ function AddEditCategoryModal(Props) {
         });
       });
   };
-  const updateCategory = () => {
+  const updateCategory = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/category/update/${user.Mle}`, {
       method: "PUT",
@@ -93,7 +104,7 @@ function AddEditCategoryModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(ncategory),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -109,13 +120,15 @@ function AddEditCategoryModal(Props) {
           dispatch(getcategories());
           //props.history.push('/');
           toastr.success(
-            `category ${category.type}  est modifié avec succés `,
+            `category ${data.object.type}  est modifié avec succés `,
             "Modification Service",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setCategory({ idtypemateriel: "", type: "", inventoryornot: "" });
+          reset({
+            object: {},
+          });
 
           Props.handleClose();
         }
@@ -126,65 +139,70 @@ function AddEditCategoryModal(Props) {
         });
       });
   };
-  const Submit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      if (!Props.CodeSce) {
-        AddCategory();
-      } else {
-        updateCategory();
-      }
+  const onSubmit = (data) => {
+    // e.preventDefault();
+    // if (validate()) {
+    if (!Props.CodeSce) {
+      AddCategory(data);
+    } else {
+      updateCategory(data);
     }
-  };
-  const handleChange = (e) => {
-    const value =
-      e.target.id === "inventoryornot" ? e.target.checked : e.target.value;
-    setCategory({ ...ncategory, [e.target.id]: value });
+    // }
   };
 
+  const classes = useStyles();
   return (
     <div>
-      <Modal show={Props.show} onHide={Props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {category
-              ? `Modification  du category : ${category.type} `
-              : "Ajout Category"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Nom </Form.Label>
-            <Form.Control
-              value={ncategory.type || ""}
-              onChange={handleChange}
-              type="text"
-              placeholder="Nom"
-              id="type"
-            />
-            <div className="text-danger">{errors.type}</div>
-            <Form.Label>Inventory ou non </Form.Label>
+      <Dialog
+        open={Props.show}
+        onClose={Props.handleClose}
+        aria-labelledby="form-dialog-title"
+        fullWidth="true"
+      >
+        <DialogTitle id="form-dialog-title" className={classes.bg}>
+          {category
+            ? `Modification  du category : ${category.type} `
+            : "Ajout Category"}
+        </DialogTitle>
+        <DialogContent className={classes.bg}>
+          <DialogContentText className={classes.bg}></DialogContentText>
 
-            <Switch
-              checked={ncategory.inventoryornot || false}
-              value={checked}
-              onChange={handleChange}
-              id="inventoryornot"
-            />
-            <div className="text-danger">{errors.type}</div>
-          </Form.Group>
+          <label className={classes.label}>Nom</label>
+          <input
+            className={classes.input}
+            id="object.type"
+            name="object.type"
+            type="text"
+            {...register("object.type", {
+              required: "You must enter a name of category",
+            })}
+          />
+          {errors["object"]?.type && (
+            <p className={classes.para}>{errors["object"].type?.message}</p>
+          )}
+          <label className={classes.label}>Inventory or Not</label>
+          <ReactHookFormSwitch
+            id="object.inventoryornot"
+            control={control}
+            {...register("object.inventoryornot", {})}
+          ></ReactHookFormSwitch>
+        </DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <DialogActions className={classes.bg}>
+            <Button
+              onClick={Props.handleClose}
+              color="secondary"
+              variant="contained"
+            >
+              Cancel
+            </Button>
 
-          {JSON.stringify(ncategory)}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={Props.handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={Submit}>
-            {Props.CodeSce !== undefined ? "Modifier" : "Ajout"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            <Button color="primary" variant="contained" type="submit">
+              {Props.CodeSce ? "Modifier" : "Ajout"}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }

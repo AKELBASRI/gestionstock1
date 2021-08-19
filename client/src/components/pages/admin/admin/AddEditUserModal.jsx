@@ -34,9 +34,9 @@ function AddEditUserModal(Props) {
   useEffect(() => {
     if (usernormal) {
       setValue("object", usernormal);
-      clearErrors();
     } else {
       reset();
+      clearErrors();
     }
   }, [usernormal]);
 
@@ -72,7 +72,7 @@ function AddEditUserModal(Props) {
               positionClass: "toast-bottom-left",
             }
           );
-          setUser({ Mle: "", password: "", codesce: "", nom: "" });
+          // setUser({ Mle: "", password: "", codesce: "", nom: "" });
           dispatch(getusers());
           Props.handleClose();
         }
@@ -115,7 +115,8 @@ function AddEditUserModal(Props) {
               positionClass: "toast-bottom-left",
             }
           );
-          setUser({ Mle: "", password: "", nom: "" });
+          reset();
+          clearErrors();
           dispatch(getusers());
         }
       })

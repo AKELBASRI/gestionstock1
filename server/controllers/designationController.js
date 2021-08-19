@@ -11,25 +11,26 @@ exports.saveDesignation = (req, res) => {
     .findOne({ where: { designation: req.body.designation.trim() } }).then((result) => {
       if (result) {
         res.status(403).json({ error: 'designation existe deja !' });
-      } else {
-        const schema = Joi.object({
-          designation: Joi.string().trim().required(),
-          idtype: Joi.number().required(),
-        });
-        const { error } = schema.validate(req.body);
-        if (error) {
-          return res.status(400).json({
-            error: error.details[0].message,
-          });
-        }
-        models.designation.create(designation).then((result1) => {
-          res.status(201).json({ message: 'La designation a été crée avec succés', designation: result1 });
-        })
-          .catch((error1) => {
-            console.log(error);
-            res.status(500).json({ message: 'Something went wrong', error1 });
-          });
+        return false;
       }
+      const schema = Joi.object({
+        designation: Joi.string().trim().required(),
+        idtype: Joi.number().required(),
+      });
+      const { error } = schema.validate(req.body);
+      if (error) {
+        return res.status(400).json({
+          error: error.details[0].message,
+        });
+      }
+      models.designation.create(designation).then((result1) => {
+        res.status(201).json({ message: 'La designation a été crée avec succés', designation: result1 });
+      })
+        .catch((error1) => {
+          console.log(error);
+          res.status(500).json({ message: 'Something went wrong', error1 });
+        });
+      return true;
     }).catch((error) => {
       console.log(error);
       res.status(500).json({

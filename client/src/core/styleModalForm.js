@@ -2,10 +2,11 @@ import { makeStyles, Button, withStyles } from "@material-ui/core";
 export const ColorButton = withStyles(() => ({
   root: {
     height: "45px",
-    width: "150px",
+    width: "160px",
     color: "white",
     borderRadius: "2px",
     backgroundColor: "#011627",
+    padding: "30px 12px",
     boxShadow: "-2px -1px 15px 1px rgba(0,0,0,0.40)",
     "&:hover": {
       backgroundColor: "white",

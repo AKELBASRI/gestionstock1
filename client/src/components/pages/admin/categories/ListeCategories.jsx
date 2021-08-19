@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import Layout from "../../Layout/Layout";
+import CreateIcon from "@material-ui/icons/Create";
+
+import ClearIcon from "@material-ui/icons/Clear";
 import { useDispatch, useSelector } from "react-redux";
 import Switch from "@material-ui/core/Switch";
 import handleClickDelete from "./DeleteCategory";
 import AddEditCategoryModal from "./AddEditCategoryModal";
 import { getcategories } from "../../../../actions/getCategoryAction";
 import { Delete } from "../../../../core/util";
-import { Box } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
+import { ColorButton } from "../../../../core/styleModalForm";
 function ListeCategories() {
   const dispatch = useDispatch();
   const listcategories = useSelector((state) => state.categoryReducer);
@@ -26,21 +30,31 @@ function ListeCategories() {
   const actiongetcategories = () => {
     dispatch(getcategories());
   };
-
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+  const classes = useStyles();
   const buttons = (dataIndex) => {
     return (
-      <div className="row">
-        <button
+      <Box className={classes.root}>
+        <CreateIcon
           type="button"
-          className="btn btn-success btn-sm px-3"
+          variant="contained"
+          color="inherit"
+          style={{ cursor: "pointer" }}
           onClick={() => handleShowEditAddModal(listcategories[dataIndex])}
         >
           <i className="fas fa-pencil-alt"></i>
-        </button>
+        </CreateIcon>
 
-        <button
+        <ClearIcon
           type="button"
-          className="btn btn-danger btn-sm px-3"
+          color="error"
+          style={{ cursor: "pointer" }}
           onClick={() =>
             Delete(
               listcategories[dataIndex],
@@ -50,8 +64,8 @@ function ListeCategories() {
           }
         >
           <i className="fas fa-times"></i>
-        </button>
-      </div>
+        </ClearIcon>
+      </Box>
     );
   };
   const columns = [
@@ -109,12 +123,9 @@ function ListeCategories() {
   return (
     <div>
       <Layout>
-        <button
-          className="btn btn-outline-primary my-4"
-          onClick={handleShowEditAddModal}
-        >
-          nouvelle Categorie{" "}
-        </button>
+        <ColorButton onClick={handleShowEditAddModal}>
+          nouvelle Categorie
+        </ColorButton>
         {listcategories && (
           <MUIDataTable
             title={"Liste des categories"}

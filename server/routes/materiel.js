@@ -1,8 +1,9 @@
 const express = require('express');
+
 const {
   saveMateriel, getallmateriels, updateMateriel,
   deletemateriel, AffecterMaterielle, GetTotalbyType, GetAvailableMaterielTotal,
-} = require('../controllers/MaterielController');
+} = require(['../controllers/MaterielController'][0]);
 
 const { userById } = require('../middleware/admin');
 const { requireSignIn, isAuth } = require('../middleware/auth');
