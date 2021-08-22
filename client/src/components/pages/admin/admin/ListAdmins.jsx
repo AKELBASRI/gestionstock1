@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CreateIcon from "@material-ui/icons/Create";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import ClearIcon from "@material-ui/icons/Clear";
+
 import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from "./ChangePasswordModal";
@@ -10,6 +8,9 @@ import AddEditUserModal from "./AddEditUserModal";
 import { getusers } from "../../../../actions/getUserAction";
 import handleClickDeleteAdmin from "./DeleteAdmin";
 import { Delete } from "../../../../core/util";
+import CreateIcon from "@material-ui/icons/Create";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import ClearIcon from "@material-ui/icons/Clear";
 import { Box, makeStyles } from "@material-ui/core";
 import { ColorButton } from "../../../../core/styleModalForm";
 const useStyles = makeStyles((theme) => ({
@@ -30,8 +31,7 @@ function ListUsers() {
     setshowEditAddModal(true);
     setUser(user);
   };
-  const handleClose = (user) => {
-    console.log(user);
+  const handleClose = () => {
     setshowpasswordmodal(false);
     setshowEditAddModal(false);
   };
@@ -110,7 +110,7 @@ function ListUsers() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
     <Layout>

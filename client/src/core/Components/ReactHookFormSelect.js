@@ -1,37 +1,37 @@
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
+
 import Select from "@material-ui/core/Select";
 import { Controller } from "react-hook-form";
-import { useStyles } from "../styleModalForm";
+// import { useStyles } from "../styleModalForm";
 
-const ReactHookFormSelect = ({
-  name,
-  label,
-  control,
-  defaultValue,
-  children,
-  ...props
-}) => {
-  const classes = useStyles();
-  const labelId = `${name}-label`;
+const ReactHookFormSelect = (Props) => {
+  const {
+    name,
+    label,
+    control,
+    defaultValue,
+    children,
+    onchange,
+    reef,
+
+    ...props
+  } = Props;
+  // const classes = useStyles();
+  // const labelId = `${name}-label`;
   return (
     <FormControl {...props}>
-      {/* <InputLabel id={labelId}>{label}</InputLabel> */}
       <Controller
-        // as={
-        //   <Select labelId={labelId} label={label}>
-        //     {children}
-        //   </Select>
-        // }
-        // name={name}
-        // control={control}
-        // defaultValue={defaultValue}
-        render={({ field }) => (
+        render={({ field: { onChange, value } }) => (
           <Select
             fullWidth
-            {...field}
+            onChange={(e) => {
+              onChange(e);
+              onchange && onchange(e);
+            }}
             defaultValue={defaultValue}
             label={label}
+            inputRef={reef?.ref}
+            value={value || ""}
           >
             {children}
           </Select>
@@ -39,6 +39,10 @@ const ReactHookFormSelect = ({
         name={name}
         control={control}
         defaultValue={defaultValue}
+        noRef={true}
+        rules={{
+          required: true,
+        }}
       />
     </FormControl>
   );

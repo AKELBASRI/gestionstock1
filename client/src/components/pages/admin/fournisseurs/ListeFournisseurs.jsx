@@ -7,7 +7,19 @@ import { getFournisseurs } from "../../../../actions/getFournisseur";
 import AddEditFournisseurModal from "./AddEditFournisseurModal";
 import handleClickDelete from "./DeleteFournisseur";
 import { Delete } from "../../../../core/util";
+import { Box, makeStyles } from "@material-ui/core";
+
+import CreateIcon from "@material-ui/icons/Create";
+import ClearIcon from "@material-ui/icons/Clear";
+import { ColorButton } from "../../../../core/styleModalForm";
 function ListeFournisseur() {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
   const dispatch = useDispatch();
   const listFournisseurs = useSelector((state) => state.fournisseurReducer);
   const handleShowEditAddModal = (fournisseur) => {
@@ -25,23 +37,24 @@ function ListeFournisseur() {
   const actiongetFournisseurs = () => {
     dispatch(getFournisseurs());
   };
-
+  const classes = useStyles();
   const buttons = (dataIndex) => {
     return (
-      <div className="row">
-        <button
+      <Box className={classes.root}>
+        <CreateIcon
           type="button"
-          className="btn btn-success btn-sm px-3"
+          variant="contained"
+          color="inherit"
+          style={{ cursor: "pointer" }}
           onClick={() => {
             handleShowEditAddModal(listFournisseurs[dataIndex]);
           }}
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </button>
+        ></CreateIcon>
 
-        <button
+        <ClearIcon
           type="button"
-          className="btn btn-danger btn-sm px-3"
+          color="error"
+          style={{ cursor: "pointer" }}
           onClick={() =>
             Delete(
               listFournisseurs[dataIndex],
@@ -49,10 +62,8 @@ function ListeFournisseur() {
               handleClickDelete
             )
           }
-        >
-          <i className="fas fa-times"></i>
-        </button>
-      </div>
+        ></ClearIcon>
+      </Box>
     );
   };
   const columns = [
@@ -89,17 +100,14 @@ function ListeFournisseur() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
     <div>
       <Layout>
-        <button
-          className="btn btn-outline-primary my-4"
-          onClick={handleShowEditAddModal}
-        >
+        <ColorButton onClick={handleShowEditAddModal}>
           nouveau Fournisseur
-        </button>
+        </ColorButton>
         {listFournisseurs && (
           <MUIDataTable
             title={"Liste des Fournisseurs"}

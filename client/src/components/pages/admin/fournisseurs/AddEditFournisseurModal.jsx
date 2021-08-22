@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
-import useStateRef from "react-usestateref";
+import React, { useEffect } from "react";
 
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -10,11 +8,27 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 import { getFournisseurs } from "../../../../actions/getFournisseur";
 
+import { useStyles } from "../../../../core/styleModalForm";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+import { useForm } from "react-hook-form";
+
 function AddEditFournisseurModal(Props) {
-  const [, setIsValid, ref] = useStateRef(true);
-  const [nFournisseur, setFournisseur] = useState({
-    NomFournisseur: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+
+    formState: { errors },
+  } = useForm();
+
   const dispatch = useDispatch();
   const fournisseur = useSelector((state) =>
     Props.id
@@ -23,23 +37,16 @@ function AddEditFournisseurModal(Props) {
   );
   useEffect(() => {
     if (fournisseur) {
-      setFournisseur(fournisseur);
+      setValue("object", fournisseur);
     } else {
-      setFournisseur({});
+      reset();
     }
-  }, [fournisseur]);
-  const [errors, setErrors] = useState({});
-  const validate = () => {
-    if (!nFournisseur.NomFournisseur) {
-      setErrors({ Libelle: "Veuilez Entrer le nom du fournisseur " });
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-      setErrors({});
+    if (!Props.show) {
+      reset();
     }
-    return ref.current;
-  };
-  const AddFournisseur = () => {
+  }, [fournisseur, Props.show]);
+
+  const AddFournisseur = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/fournisseurs/create/${user.Mle}`, {
       method: "POST",
@@ -48,7 +55,7 @@ function AddEditFournisseurModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(nFournisseur),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -63,13 +70,13 @@ function AddEditFournisseurModal(Props) {
         } else {
           //props.history.push('/');
           toastr.success(
-            `Le Fournisseur ${nFournisseur.NomFournisseur}  est crée avec succés `,
-            "Nouveau Service",
+            `Le Fournisseur ${data.object.NomFournisseur}  est crée avec succés `,
+            "Nouveau Fournisseur",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setFournisseur({ NomFournisseur: "" });
+          reset();
           dispatch(getFournisseurs());
           Props.handleClose();
         }
@@ -80,7 +87,7 @@ function AddEditFournisseurModal(Props) {
         });
       });
   };
-  const updateFournisseur = () => {
+  const updateFournisseur = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/fournisseurs/update/${user.Mle}`, {
       method: "PUT",
@@ -89,7 +96,7 @@ function AddEditFournisseurModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(nFournisseur),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -105,13 +112,13 @@ function AddEditFournisseurModal(Props) {
           dispatch(getFournisseurs());
           //props.history.push('/');
           toastr.success(
-            `Le fournisseur ${nFournisseur.NomFournisseur}  est modifié avec succés `,
-            "Modification Service",
+            `Le fournisseur ${data.object.NomFournisseur}  est modifié avec succés `,
+            "Modification Fournisseur",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setFournisseur({ NomFournisseur: "" });
+          reset();
 
           Props.handleClose();
         }
@@ -122,53 +129,62 @@ function AddEditFournisseurModal(Props) {
         });
       });
   };
-  const Submit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      if (!Props.id) {
-        AddFournisseur();
-      } else {
-        updateFournisseur();
-      }
+  const onSubmit = (data) => {
+    if (!Props.id) {
+      AddFournisseur(data);
+    } else {
+      updateFournisseur(data);
     }
   };
-  const handleChange = (e) => {
-    setFournisseur({ ...nFournisseur, [e.target.id]: e.target.value });
-  };
 
+  const classes = useStyles();
   return (
-    <div>
-      <Modal show={Props.show} onHide={Props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {fournisseur
-              ? `Modification  du Fournisseur : ${fournisseur.NomFournisseur} `
-              : "Ajout Fournisseur"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Nom Fournisseur: </Form.Label>
-            <Form.Control
-              value={nFournisseur.NomFournisseur || ""}
-              onChange={handleChange}
-              type="text"
-              placeholder="Nom Fournisseur"
-              id="NomFournisseur"
-            />
-            <div className="text-danger">{errors.Libelle}</div>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={Props.handleClose}>
-            Close
+    <Dialog
+      open={Props.show}
+      onClose={Props.handleClose}
+      aria-labelledby="form-dialog-title"
+      fullWidth
+    >
+      <DialogTitle id="form-dialog-title" className={classes.bg}>
+        {fournisseur
+          ? `Modification  du Fournisseur : ${fournisseur.NomFournisseur} `
+          : "Ajout Fournisseur"}
+      </DialogTitle>
+      <DialogContent className={classes.bg}>
+        <DialogContentText className={classes.bg}></DialogContentText>
+
+        <label className={classes.label}>Nom Fournisseur</label>
+        <input
+          className={classes.input}
+          id="object.NomFournisseur"
+          name="object.NomFournisseur"
+          type="text"
+          {...register("object.NomFournisseur", {
+            required: "You must enter a name of Fournisseur",
+          })}
+        />
+        {errors["object"]?.NomFournisseur && (
+          <p className={classes.para}>
+            {errors["object"].NomFournisseur?.message}
+          </p>
+        )}
+      </DialogContent>
+      <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+        <DialogActions className={classes.bg}>
+          <Button
+            onClick={Props.handleClose}
+            color="secondary"
+            variant="contained"
+          >
+            Cancel
           </Button>
-          <Button variant="primary" onClick={Submit}>
-            {Props.id !== undefined ? "Modifier" : "Ajout"}
+
+          <Button color="primary" variant="contained" type="submit">
+            {Props.id ? "Modifier" : "Ajout"}
           </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 }
 

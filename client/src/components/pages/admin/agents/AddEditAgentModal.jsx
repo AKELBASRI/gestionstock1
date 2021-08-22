@@ -6,10 +6,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
   InputLabel,
   MenuItem,
-  Select,
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
@@ -18,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 
-import useStateRef from "react-usestateref";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { getagents } from "../../../../actions/getagentsAction";
@@ -37,17 +34,10 @@ function AddEditAgentModal(Props) {
     reset,
     setValue,
     clearErrors,
-    getValues,
+
     control,
     formState: { errors },
   } = useForm();
-  const [normaluser, setUser] = useState({
-    agent_number: "",
-    agent_full_name: "",
-    agent_email: "",
-    agency_id: "",
-    service_id: "",
-  });
 
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
@@ -169,7 +159,7 @@ function AddEditAgentModal(Props) {
         open={show}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
-        fullWidth="true"
+        fullWidth
       >
         <DialogTitle id="form-dialog-title" className={classes.bg}>
           {usernormal
@@ -227,35 +217,32 @@ function AddEditAgentModal(Props) {
               </p>
             )}
 
-            {/* <label className={classes.label}>Service</label> */}
-
             <InputLabel htmlFor="age-native-simple" className={classes.label}>
               Service
             </InputLabel>
             <ReactHookFormSelect
               className={classes.select}
-              native
               label="Selectionner un service"
               id="object.service_id"
               name="object.service_id"
               control={control}
               defaultValue={"0"}
-              {...register("object.service_id", {
+              reef={register("object.service_id", {
                 validate: (value) => value !== "0",
               })}
             >
-              <option value="0" style={{ cursor: "pointer" }}>
+              <MenuItem value="0" style={{ cursor: "pointer" }}>
                 Selectionner un service
-              </option>
+              </MenuItem>
               {services &&
                 services.map((service, i) => (
-                  <option
+                  <MenuItem
                     key={i + 1}
                     value={service.id}
                     style={{ cursor: "pointer" }}
                   >
                     {service.service_name}
-                  </option>
+                  </MenuItem>
                 ))}
             </ReactHookFormSelect>
             {errors["object"]?.service_id && (
@@ -269,28 +256,27 @@ function AddEditAgentModal(Props) {
             </InputLabel>
             <ReactHookFormSelect
               className={classes.select}
-              native
               label="Selectionner un service"
               id="object.agency_id"
               name="object.agency_id"
               control={control}
               defaultValue={"0"}
-              {...register("object.agency_id", {
+              reef={register("object.agency_id", {
                 validate: (value) => value !== "0",
               })}
             >
-              <option value="0" style={{ cursor: "pointer" }}>
+              <MenuItem value="0" style={{ cursor: "pointer" }}>
                 Selectionner une agence
-              </option>
+              </MenuItem>
               {agencies &&
                 agencies.map((agency, i) => (
-                  <option
+                  <MenuItem
                     key={i + 1}
                     value={agency.id}
                     style={{ cursor: "pointer" }}
                   >
                     {agency.agency_name}
-                  </option>
+                  </MenuItem>
                 ))}
             </ReactHookFormSelect>
             {errors["object"]?.agency_id && (
@@ -299,7 +285,25 @@ function AddEditAgentModal(Props) {
                   "You must select a agence"}
               </p>
             )}
-            {/*
+          </div>
+        </DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <DialogActions className={classes.bg}>
+            <Button
+              onClick={Props.handleClose}
+              color="secondary"
+              variant="contained"
+            >
+              Cancel
+            </Button>
+
+            <Button color="primary" variant="contained" type="submit">
+              {usernormal ? "Modifier" : "Ajout"}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+      {/*
 
        
             {/* <label className={classes.label}>Mot de passe</label>
@@ -320,24 +324,6 @@ function AddEditAgentModal(Props) {
                   {errors["object"].password?.message}
                 </p>
               )} */}
-          </div>
-        </DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-          <DialogActions className={classes.bg}>
-            <Button
-              onClick={Props.handleClose}
-              color="secondary"
-              variant="contained"
-            >
-              Cancel
-            </Button>
-
-            <Button color="primary" variant="contained" type="submit">
-              {usernormal ? "Modifier" : "Ajout"}
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
     </div>
   );
 }

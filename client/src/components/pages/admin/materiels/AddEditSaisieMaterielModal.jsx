@@ -1,25 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+
 import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import NumericInput from "react-numeric-input";
+// import FormControl from 'react-bootstrap/lib/FormControl';
 import useStateRef from "react-usestateref";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { getMateriels } from "../../../../actions/getMaterielsActions";
+import DateFnsUtils from "@date-io/date-fns";
 import {
   getCategories,
   getdesignationbytype,
   getFournisseur,
 } from "../../../../core/ApiCore";
-function AddEditSaisieMaterielModal(Props) {
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+} from "@material-ui/core";
+import { useStyles } from "../../../../core/styleModalForm";
+import { useForm } from "react-hook-form";
+import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
+
+const AddEditSaisieMaterielModal = (Props) => {
+  const [date, setDate] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    control,
+    formState: { errors },
+  } = useForm();
   const [categories, setCategories] = useState([]);
   const [Fournisseurs, setFournisseur] = useState([]);
-  const [, setIsValid, ref] = useStateRef(true);
+  // const [, setIsValid, ref] = useStateRef(true);
   const [, setShowInventory, showInventory] = useStateRef(true);
-  const [errors, setErrors] = useState({});
-  const [Designations, setDesignation] = useState([]);
+
+  const [, setDesignation, Designations] = useStateRef([]);
   const [, setMaterial, material] = useStateRef({});
   const [Qte, setQte] = useState(1);
   const dispatch = useDispatch();
@@ -37,35 +68,24 @@ function AddEditSaisieMaterielModal(Props) {
       .catch((err) => console.log(err));
 
     if (material1) {
-      setMaterial(material1);
+      setValue("object", material1);
       LoadDesignations(material1);
     } else {
-      setMaterial({
-        iddesignation: "",
-        numeroinventaire: "",
-        garentie: "",
-        datereceptionprovisoire: "",
-        IDFournisseur: "",
-        idtype: "",
-      });
+      reset();
+      setValue("object.datereceptionprovisoire", null);
     }
-  }, [material1, setMaterial]);
+    if (!Props.show) {
+      reset();
+      setDate(null);
+    }
+  }, [material1, setMaterial, Props.show]);
   const handleQte = (e) => {
     setQte(e);
   };
-  const ResetMateriels = () => {
-    setMaterial({
-      iddesignation: "",
-      numeroinventaire: "",
-      garentie: "",
-      datereceptionprovisoire: "",
-      IDFournisseur: "",
-      idtype: "",
-    });
-  };
+
   const checkenventoryornot = () => {
     const catselected = categories.find(
-      (cat) => cat.id === parseInt(material.current.idtype)
+      (cat) => cat.id === parseInt(getValues("object.idtype"))
     );
     if (catselected) {
       if (!catselected.inventoryornot) {
@@ -76,60 +96,41 @@ function AddEditSaisieMaterielModal(Props) {
       }
     }
   };
-  const handleChange = (e) => {
-    const value = e.target.id === "Qte" ? e.target.value - 1 : e.target.value;
-    setMaterial({ ...material.current, [e.target.id]: value });
+  const handleChange = () => {
+    // const value = e.target.id === "Qte" ? e.target.value - 1 : e.target.value;
+    // setMaterial({ ...material.current, [e.target.id]: value });
     checkenventoryornot();
-    LoadDesignations(material);
+    LoadDesignations(getValues("object"));
   };
   const LoadDesignations = (material) => {
     if (material !== undefined) {
-      if (material.current) {
-        getdesignationbytype(material.current.idtype)
-          .then((res) => setDesignation(res.designation))
-          .catch((err) => console.log(err));
-      } else {
-        getdesignationbytype(material.idtype)
-          .then((res) => setDesignation(res.designation))
-          .catch((err) => console.log(err));
-      }
-    }
-  };
-  const validate = () => {
-    if (!material.current.numeroinventaire && showInventory.current) {
-      setErrors({
-        numeroinventaire: "Veuillez saisir le numero d'inventaire ",
-      });
-      setIsValid(false);
-    } else if (!material.current.idtype) {
-      setErrors({ idtype: "Veuillez selectionner le type " });
-      setIsValid(false);
-    } else if (!Qte && !showInventory.current && !material1) {
-      setErrors({ Qte: "Veuillez saisir quantité" });
-      setIsValid(false);
-    } else if (!material.current.iddesignation) {
-      setErrors({ iddesignation: "Veuilez Entrer la designation " });
-      setIsValid(false);
-    } else if (!material.current.garentie) {
-      setErrors({ garentie: "Veuillez saisir la garentie " });
-      setIsValid(false);
-    } else if (!material.current.datereceptionprovisoire) {
-      setErrors({
-        datereceptionprovisoire:
-          "Veuillez saisir la date de reception provisoire ",
-      });
-      setIsValid(false);
-    } else if (!material.current.IDFournisseur) {
-      setErrors({ IDFournisseur: "Veuillez selectionner le Fournisseur " });
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-      setErrors({});
-    }
-    return ref.current;
-  };
+      // if (material) {
 
-  const UpdateMateriel = () => {
+      getdesignationbytype(material.idtype)
+        .then((res) => {
+          setDesignation(res.designation);
+
+          checkifdesignationexist(res.designation);
+        })
+        .catch((err) => console.log(err));
+    }
+    //else {
+    //   getdesignationbytype(material.idtype)
+    //     .then((res) => setDesignation(res.designation))
+    //     .catch((err) => console.log(err));
+    // }
+
+    // }
+  };
+  const checkifdesignationexist = (arrayofdesignations) => {
+    if (arrayofdesignations.length === 0) {
+      Props.handleClose();
+      toastr.warning("Pas de designation sur ce type", "Alerte", {
+        positionClass: "toast-bottom-left",
+      });
+    }
+  };
+  const UpdateMateriel = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/materiels/update/${user.Mle}`, {
       method: "PUT",
@@ -138,7 +139,7 @@ function AddEditSaisieMaterielModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(material.current),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -158,7 +159,7 @@ function AddEditSaisieMaterielModal(Props) {
               positionClass: "toast-bottom-left",
             }
           );
-          ResetMateriels();
+          reset();
           dispatch(getMateriels());
           Props.handleClose();
         }
@@ -169,12 +170,13 @@ function AddEditSaisieMaterielModal(Props) {
         });
       });
   };
-  const AjoutMateriel = () => {
-    const marque = Designations.filter(
+  const AjoutMateriel = (data) => {
+    const marque = Designations.current.filter(
       (designation) =>
-        parseInt(designation.idDesignation) ===
-        parseInt(material.current.iddesignation)
+        parseInt(designation?.idDesignation) ===
+        parseInt(data.object?.iddesignation)
     )[0].designation;
+
     for (let i = 0; i < Qte; i++) {
       const { user, token } = isAuthenticated();
       fetch(`${API_URL}/materiels/create/${user.Mle}`, {
@@ -184,7 +186,7 @@ function AddEditSaisieMaterielModal(Props) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(material.current),
+        body: JSON.stringify(data.object),
       })
         .then((res) => res.json())
         .then((res) => {
@@ -216,167 +218,276 @@ function AddEditSaisieMaterielModal(Props) {
           });
         });
       if (i === Qte - 1) {
-        ResetMateriels();
-        setQte("");
+        //  reset();
+        setQte(1);
       }
     }
   };
 
-  const submitUser = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      if (material1) {
-        UpdateMateriel();
-      } else {
-        AjoutMateriel();
-      }
+  const onSubmit = (data) => {
+    // setValue('object.datereceptionprovisoire',dateFormat(data.object.datereceptionprovisoire,"dd-mm-yyyy"))
+    // e.preventDefault();
+    // if (validate()) {
+
+    if (material1) {
+      UpdateMateriel(data);
+    } else {
+      AjoutMateriel(data);
     }
+    // }
   };
+  const classes = useStyles();
 
   return (
     <div>
-      <Modal show={Props.show} onHide={Props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {material1
-              ? `Modification  du materiel : ${material1.designation.designation}`
-              : "Ajout Materiel"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Type </Form.Label>
-            <select
-              value={material.current.idtype || ""}
-              id="idtype"
-              onChange={handleChange}
-              className="form-control"
-              aria-label="Default select example"
-            >
-              <option value="">Selectionner le type du materiel</option>
+      <Dialog
+        open={Props.show}
+        onClose={Props.handleClose}
+        aria-labelledby="form-dialog-title"
+        fullWidth
+      >
+        <DialogTitle id="form-dialog-title" className={classes.bg}>
+          {material1
+            ? `Modification  du materiel : ${material1.designation.designation}`
+            : "Ajout Materiel"}
+        </DialogTitle>
+        <DialogContent className={classes.bg}>
+          <DialogContentText className={classes.bg}></DialogContentText>
 
-              {categories &&
-                categories.map((category, i) => (
-                  <option key={i} value={category.id}>
-                    {category.type}
-                  </option>
-                ))}
-            </select>
+          <InputLabel htmlFor="age-native-simple" className={classes.label}>
+            Type
+          </InputLabel>
+          <ReactHookFormSelect
+            onchange={handleChange}
+            className={classes.select}
+            label="Selectionner une categorie"
+            id="object.idtype"
+            name="object.idtype"
+            control={control}
+            defaultValue={0}
+            reef={register("object.idtype", {
+              validate: (value) => value !== 0,
+              required: true,
+            })}
+          >
+            <MenuItem value="0" style={{ cursor: "pointer" }}>
+              Selectionner une categorie
+            </MenuItem>
+            {categories &&
+              categories.map((category, i) => (
+                <MenuItem
+                  key={i + 1}
+                  value={category.id}
+                  style={{ cursor: "pointer" }}
+                >
+                  {category.type}
+                </MenuItem>
+              ))}
+          </ReactHookFormSelect>
+          {errors["object"]?.idtype && (
+            <p className={classes.para}>
+              {errors["object"]?.idtype?.message ||
+                "You must select a category"}
+            </p>
+          )}
 
-            <div className="text-danger">{errors.idtype}</div>
-            {showInventory.current && (
-              <div>
-                <Form.Label>Numero Inventaire</Form.Label>
-                <Form.Control
-                  value={material.current.numeroinventaire || ""}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder="Numero Inventaire"
-                  id="numeroinventaire"
-                />
-                <div className="text-danger">{errors.numeroinventaire}</div>
-              </div>
-            )}
-            {!showInventory.current && !Props.codemtrl && (
-              <div>
-                <Form.Label>Quantité</Form.Label>
+          {showInventory.current && (
+            <div>
+              <label className={classes.label}>Numero Inventaire</label>
+              <input
+                className={classes.input}
+                name="object.numeroinventaire"
+                id="object.numeroinventaire"
+                type="text"
+                {...register("object.numeroinventaire", {
+                  required: "You must specify a number of inventory",
+                })}
+              />
+              {errors["object"]?.numeroinventaire && (
+                <p className={classes.para}>
+                  {errors["object"].numeroinventaire?.message}
+                </p>
+              )}
+            </div>
+          )}
+          {!showInventory.current && !Props.codemtrl && (
+            <div>
+              <label className={classes.label}>Quantité</label>
+              <FormControl
+                style={{
+                  backgroundColor: "white",
+                  width: "100%",
+                  borderRadius: "60px",
+                }}
+              >
                 <NumericInput
                   min={0}
                   max={100}
                   value={Qte || 1}
                   onChange={handleQte}
-                  className="form-control"
+                  style={{
+                    backgroundColor: "white",
+                    width: "100%",
+                    padding: "10px",
+                  }}
                   id="Qte"
                 />
-                {/* <Form.Control value={Qte || '' } onChange={handleQte}   type="text" placeholder="Quantité" id="Qte" /> */}
-                <div className="text-danger">{errors.Qte}</div>
-              </div>
-            )}
-            <div className="my-2"></div>
+              </FormControl>
+            </div>
+          )}
 
-            {Designations.length > 0 && (
-              <div>
-                <Form.Label>Designation </Form.Label>
-                <select
-                  value={material.current.iddesignation || ""}
-                  id="iddesignation"
-                  onChange={handleChange}
-                  className="form-control"
-                  aria-label="Default select example"
-                >
-                  <option value="">Selectionner Designation du materiel</option>
-
-                  {Designations.map((marque, i) => (
-                    <option key={i} value={marque.idDesignation}>
+          {Designations.current.length > 0 && (
+            <div>
+              <label className={classes.label}>Designation</label>
+              <ReactHookFormSelect
+                className={classes.select}
+                label="Selectionner une Designation"
+                id="object.iddesignation"
+                name="object.iddesignation"
+                control={control}
+                defaultValue={"0"}
+                reef={register("object.iddesignation", {
+                  validate: (value) => value !== "0",
+                })}
+              >
+                <MenuItem value="0" style={{ cursor: "pointer" }}>
+                  Selectionner Designation du materiel
+                </MenuItem>
+                {Designations.current &&
+                  Designations.current.map((marque, i) => (
+                    <MenuItem
+                      key={i + 1}
+                      value={marque.idDesignation}
+                      style={{ cursor: "pointer" }}
+                    >
                       {marque.designation}
-                    </option>
+                    </MenuItem>
                   ))}
-                </select>
-                <div className="text-danger">{errors.iddesignation}</div>
-              </div>
-            )}
+              </ReactHookFormSelect>
+              {errors["object"]?.iddesignation && (
+                <p className={classes.para}>
+                  {errors["object"]?.iddesignation?.message ||
+                    "You must select a designation"}
+                </p>
+              )}
+            </div>
+          )}
 
-            <Form.Label>Garentie</Form.Label>
-            <select
-              value={material.current.garentie || ""}
-              id="garentie"
-              onChange={handleChange}
-              className="form-control"
-              aria-label="Default select example"
-            >
-              <option value="">Selectionner la garentie</option>
-              <option key="1" value="1">
-                1 an
-              </option>
-              <option key="2" value="2">
-                2 ans
-              </option>
-              <option key="3" value="3">
-                3 ans
-              </option>
-            </select>
-            <div className="text-danger">{errors.garentie}</div>
-            <div className="my-2"></div>
-            <Form.Label>Date Reception Provisoire : </Form.Label>
-            <Form.Control
-              value={material.current.datereceptionprovisoire || ""}
-              onChange={handleChange}
-              type="date"
-              placeholder="Date reception provisoire"
-              id="datereceptionprovisoire"
+          <label className={classes.label}>Garentie</label>
+          <ReactHookFormSelect
+            className={classes.select}
+            label="Selectionner une gerentie"
+            id="object.garentie"
+            name="object.garentie"
+            control={control}
+            defaultValue={"0"}
+            garentiereg={register("object.garentie", {
+              validate: (value) => value !== "0",
+            })}
+          >
+            <MenuItem value="0" style={{ cursor: "pointer" }}>
+              Selectionner la garentie
+            </MenuItem>
+            <MenuItem key="1" value="1" style={{ cursor: "pointer" }}>
+              1 an
+            </MenuItem>
+            <MenuItem key="2" value="2" style={{ cursor: "pointer" }}>
+              2 ans
+            </MenuItem>
+            <MenuItem key="3" value="3" style={{ cursor: "pointer" }}>
+              3 ans
+            </MenuItem>
+          </ReactHookFormSelect>
+          {errors["object"]?.garentie && (
+            <p className={classes.para}>
+              {errors["object"]?.garentie?.message ||
+                "You must select a garentie"}
+            </p>
+          )}
+
+          <label className={classes.label}>Date Reception Provisoire</label>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              style={{
+                backgroundColor: "white",
+                width: "100%",
+                padding: "5px",
+              }}
+              id="object.datereceptionprovisoire"
+              value={getValues("object.datereceptionprovisoire") || date}
+              onChange={(date) => {
+                setValue("object.datereceptionprovisoire", date);
+                setDate(date);
+              }}
+              format="yyyy-MM-dd"
+              margin="normal"
+              name="object.datereceptionprovisoire"
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+              disableToolbar
+              inputRef={register("object.datereceptionprovisoire", {
+                required: "You must specify a date",
+              })}
             />
-            <div className="text-danger">{errors.datereceptionprovisoire}</div>
+          </MuiPickersUtilsProvider>
+          {errors["object"]?.datereceptionprovisoire && (
+            <p className={classes.para}>
+              {errors["object"].datereceptionprovisoire?.message}
+            </p>
+          )}
 
-            <Form.Label>Fournisseur </Form.Label>
-            <select
-              value={material.current.IDFournisseur || ""}
-              id="IDFournisseur"
-              onChange={handleChange}
-              className="form-control"
-              aria-label="Default select example"
+          <label className={classes.label}>Fournisseur</label>
+          <ReactHookFormSelect
+            className={classes.select}
+            value={getValues("object.IDFournisseur")}
+            label="Selectionner un fournisseur"
+            id="object.IDFournisseur"
+            name="object.IDFournisseur"
+            control={control}
+            defaultValue={"0"}
+            reef={register("object.IDFournisseur", {
+              validate: (value) => value !== "0",
+            })}
+          >
+            <MenuItem value="0" style={{ cursor: "pointer" }}>
+              Selectionner un Fournisseur
+            </MenuItem>
+            {Fournisseurs &&
+              Fournisseurs.map((fournisseur, i) => (
+                <MenuItem
+                  key={i + 1}
+                  value={fournisseur.idFournisseur}
+                  style={{ cursor: "pointer" }}
+                >
+                  {fournisseur.NomFournisseur}
+                </MenuItem>
+              ))}
+          </ReactHookFormSelect>
+          {errors["object"]?.IDFournisseur && (
+            <p className={classes.para}>
+              {errors["object"]?.IDFournisseur?.message ||
+                "You must select a fournisseur"}
+            </p>
+          )}
+        </DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <DialogActions className={classes.bg}>
+            <Button
+              onClick={Props.handleClose}
+              color="secondary"
+              variant="contained"
             >
-              <option value="">Selectionner le Fournisseur</option>
+              Cancel
+            </Button>
 
-              {Fournisseurs &&
-                Fournisseurs.map((fournisseur, i) => (
-                  <option key={i} value={fournisseur.idFournisseur}>
-                    {fournisseur.NomFournisseur}
-                  </option>
-                ))}
-            </select>
-            <div className="text-danger">{errors.IDFournisseur}</div>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={Props.handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={submitUser}>
-            {material1 ? "Modifier" : "Ajout"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            <Button color="primary" variant="contained" type="submit">
+              {material1 ? "Modifier" : "Ajout"}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
-}
+};
 export default AddEditSaisieMaterielModal;

@@ -11,14 +11,19 @@ exports.saveMateriel = (req, res) => {
     iddesignation: req.body.iddesignation,
     numeroinventaire: req.body.numeroinventaire.trim(),
     garentie: req.body.garentie,
-    datereceptionprovisoire: req.body.datereceptionprovisoire,
+    datereceptionprovisoire: dateFormat(req.body.datereceptionprovisoire, 'yyyy-mm-dd'),
     IDFournisseur: req.body.IDFournisseur,
     datesaisie: dateFormat(current, 'yyyy-mm-dd'),
     idtype: req.body.idtype,
 
   };
   models.materiel
-    .findOne({ where: { numeroinventaire: req.body.numeroinventaire.trim() } }).then((result) => {
+    .findOne({
+      where: {
+        numeroinventaire: materiel.numeroinventaire.trim()
+      || true,
+      },
+    }).then((result) => {
       if (result) {
         res.status(403).json({ error: 'materiel existe deja !' });
         return false;
@@ -27,8 +32,8 @@ exports.saveMateriel = (req, res) => {
         idservice: Joi.number(),
         garentie: Joi.string(),
         numeroinventaire: Joi.optional().allow(''),
-        iddesignation: Joi.string().required(),
-        datereceptionprovisoire: Joi.date().required().format('YYYY-MM-DD').utc(),
+        iddesignation: Joi.number().required(),
+        datereceptionprovisoire: Joi.date().required(),
         IDFournisseur: Joi.number().required(),
         idtype: Joi.number().required(),
       });

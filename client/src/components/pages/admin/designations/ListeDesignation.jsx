@@ -8,7 +8,11 @@ import { getDesignation } from "../../../../actions/getDesignationAction";
 import AddEditDesignationModal from "./AddEditDesignationModal";
 import { flattenObject } from "../../../../core/ApiCore";
 import { Delete } from "../../../../core/util";
-
+import { makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import CreateIcon from "@material-ui/icons/Create";
+import ClearIcon from "@material-ui/icons/Clear";
+import { ColorButton } from "../../../../core/styleModalForm";
 function ListeDesignation() {
   const dispatch = useDispatch();
   const listdesignations1 = useSelector((state) => state.designationReducer);
@@ -16,6 +20,13 @@ function ListeDesignation() {
     setshowEditAddModal(true);
     setDesignation(designation);
   };
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [designation, setDesignation] = useState({});
   useEffect(() => {
@@ -31,21 +42,21 @@ function ListeDesignation() {
   const listdesignation = listdesignations1.map((_data) => {
     return flattenObject(_data);
   });
-
+  const classes = useStyles();
   const buttons = (dataIndex) => {
     return (
-      <div className="row">
-        <button
+      <Box className={classes.root}>
+        <CreateIcon
           type="button"
-          className="btn btn-success btn-sm px-3"
+          variant="contained"
+          color="inherit"
+          style={{ cursor: "pointer" }}
           onClick={() => handleShowEditAddModal(listdesignations1[dataIndex])}
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </button>
-
-        <button
+        ></CreateIcon>
+        <ClearIcon
           type="button"
-          className="btn btn-danger btn-sm px-3"
+          color="error"
+          style={{ cursor: "pointer" }}
           onClick={() =>
             Delete(
               listdesignations1[dataIndex],
@@ -53,10 +64,8 @@ function ListeDesignation() {
               handleClickDelete
             )
           }
-        >
-          <i className="fas fa-times"></i>
-        </button>
-      </div>
+        ></ClearIcon>
+      </Box>
     );
   };
   const columns = [
@@ -110,17 +119,14 @@ function ListeDesignation() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
     <div>
       <Layout>
-        <button
-          className="btn btn-outline-primary my-4"
-          onClick={handleShowEditAddModal}
-        >
-          nouvelle Designation{" "}
-        </button>
+        <ColorButton onClick={handleShowEditAddModal}>
+          nouvelle Designation
+        </ColorButton>
         {listdesignation && (
           <MUIDataTable
             title={"Liste des Designations"}

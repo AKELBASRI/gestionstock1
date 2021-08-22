@@ -33,45 +33,44 @@ function SubMenu(Props) {
   }, [Props.item1.key, Props.onOpen, subnav]);
   return (
     <div>
-      <ul>
-        <li>
-          <Link
-            to={Props.item1.item.subNav ? "#" : Props.item1.item.path}
-            style={isActive(Props.props.history, Props.item1.item.path)}
-            onClick={() => clickitem(Props.item1, Props.item1.item.path)}
-          >
-            <span>
-              <i className={Props.item1.item.icon}></i>
-            </span>
-            <Title state={Props.state}>{Props.item1.item.title}</Title>
-            {Props.item1.item.subNav &&
-              (Props.item1.item.subNav && subnav
-                ? Props.item1.item.iconOpened
-                : Props.item1.item.subNav
-                ? Props.item1.item.iconClosed
-                : null)}
-          </Link>
+      {/* <ul> */}
+      {/* <li> */}
+      <Link
+        to={Props.item1.item.subNav ? "#" : Props.item1.item.path}
+        style={isActive(Props.props.history, Props.item1.item.path)}
+        onClick={() => clickitem(Props.item1, Props.item1.item.path)}
+      >
+        {Props.item1.item.icon}
 
-          {subnav && (
-            <ShowLeft state={Props.state}>
-              {subnav &&
-                Props.item1.item.subNav &&
-                Props.item1.item.subNav.map((item, index) => {
-                  return (
-                    <li key={index}>
-                      <Link
-                        to={item.path}
-                        style={isActive(Props.props.history, item.path)}
-                      >
-                        <SubTitle>{item.title}</SubTitle>
-                      </Link>
-                    </li>
-                  );
-                })}
-            </ShowLeft>
-          )}
-        </li>
-      </ul>
+        <Title state={Props.state}>{Props.item1.item.title}</Title>
+        {Props.item1.item.subNav &&
+          (Props.item1.item.subNav && subnav
+            ? Props.item1.item.iconOpened
+            : Props.item1.item.subNav
+            ? Props.item1.item.iconClosed
+            : null)}
+      </Link>
+
+      {subnav && (
+        <ShowLeft state={Props.state}>
+          {subnav &&
+            Props.item1.item.subNav &&
+            Props.item1.item.subNav.map((item, index) => {
+              return (
+                <li key={index}>
+                  <Link
+                    to={item.path}
+                    style={isActive(Props.props.history, item.path)}
+                  >
+                    <SubTitle>{item.title}</SubTitle>
+                  </Link>
+                </li>
+              );
+            })}
+        </ShowLeft>
+      )}
+      {/* </li> */}
+      {/* </ul> */}
     </div>
   );
 }

@@ -3,30 +3,21 @@ import FormControl from "@material-ui/core/FormControl";
 
 import { Controller } from "react-hook-form";
 
-import { useStyles } from "../styleModalForm";
+// import { useStyles } from "../styleModalForm";
 
-const ReactHookFormSwitch = ({
-  name,
-  label,
-  control,
-  defaultvalue,
-  children,
-  ...props
-}) => {
-  const classes = useStyles();
-  const labelId = `${name}-label`;
+const ReactHookFormSwitch = (Props) => {
+  const { control, name, reef, ...props } = Props;
+  // const classes = useStyles();
+  // const labelId = `${name}-label`;
   return (
     <FormControl {...props}>
       <Controller
-        render={({
-          field: { onChange, onBlur, value, name, ref },
-          fieldState: { invalid, isTouched, isDirty, error },
-          formState,
-        }) => (
+        render={({ field: { onChange, value } }) => (
           <Switch
             checked={value || false}
             onChange={onChange}
             defaultValue={false}
+            inputRef={reef?.ref}
           />
         )}
         name={name}

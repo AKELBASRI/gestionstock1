@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -17,7 +17,6 @@ import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 
 function AddEditUserModal(Props) {
-  const [normaluser, setUser] = useState({});
   const {
     register,
     handleSubmit,
@@ -66,7 +65,7 @@ function AddEditUserModal(Props) {
           );
         } else {
           toastr.success(
-            `L'utilisateur ${normaluser.nom}  est modifié avec succés `,
+            `L'utilisateur ${data.object.nom}  est modifié avec succés `,
             "Modification Utilisateur",
             {
               positionClass: "toast-bottom-left",
@@ -109,7 +108,7 @@ function AddEditUserModal(Props) {
           Props.handleClose();
 
           toastr.success(
-            `L'utilisateur ${normaluser.nom}  est crée avec succés `,
+            `L'utilisateur ${data.object.nom}  est crée avec succés `,
             "Nouveau Utilisateur",
             {
               positionClass: "toast-bottom-left",
@@ -141,7 +140,7 @@ function AddEditUserModal(Props) {
         open={Props.show}
         onClose={Props.handleClose}
         aria-labelledby="form-dialog-title"
-        fullWidth="true"
+        fullWidth
       >
         <DialogTitle id="form-dialog-title" className={classes.bg}>
           {usernormal

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -7,7 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import useStateRef from "react-usestateref";
+
 import { useStyles } from "../../../../core/styleModalForm";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
-import Switch from "@material-ui/core/Switch";
+
 import { getcategories } from "../../../../actions/getCategoryAction";
 import { useForm } from "react-hook-form";
 import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
@@ -29,7 +29,7 @@ function AddEditCategoryModal(Props) {
     clearErrors,
     control,
 
-    formState: { isSubmitSuccessful, errors },
+    formState: { errors },
   } = useForm();
 
   // const [checked, setChecked] = React.useState(true);
@@ -152,58 +152,56 @@ function AddEditCategoryModal(Props) {
 
   const classes = useStyles();
   return (
-    <div>
-      <Dialog
-        open={Props.show}
-        onClose={Props.handleClose}
-        aria-labelledby="form-dialog-title"
-        fullWidth="true"
-      >
-        <DialogTitle id="form-dialog-title" className={classes.bg}>
-          {category
-            ? `Modification  du category : ${category.type} `
-            : "Ajout Category"}
-        </DialogTitle>
-        <DialogContent className={classes.bg}>
-          <DialogContentText className={classes.bg}></DialogContentText>
+    <Dialog
+      open={Props.show}
+      onClose={Props.handleClose}
+      aria-labelledby="form-dialog-title"
+      fullWidth
+    >
+      <DialogTitle id="form-dialog-title" className={classes.bg}>
+        {category
+          ? `Modification  du category : ${category.type} `
+          : "Ajout Category"}
+      </DialogTitle>
+      <DialogContent className={classes.bg}>
+        <DialogContentText className={classes.bg}></DialogContentText>
 
-          <label className={classes.label}>Nom</label>
-          <input
-            className={classes.input}
-            id="object.type"
-            name="object.type"
-            type="text"
-            {...register("object.type", {
-              required: "You must enter a name of category",
-            })}
-          />
-          {errors["object"]?.type && (
-            <p className={classes.para}>{errors["object"].type?.message}</p>
-          )}
-          <label className={classes.label}>Inventory or Not</label>
-          <ReactHookFormSwitch
-            id="object.inventoryornot"
-            control={control}
-            {...register("object.inventoryornot", {})}
-          ></ReactHookFormSwitch>
-        </DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-          <DialogActions className={classes.bg}>
-            <Button
-              onClick={Props.handleClose}
-              color="secondary"
-              variant="contained"
-            >
-              Cancel
-            </Button>
+        <label className={classes.label}>Nom</label>
+        <input
+          className={classes.input}
+          id="object.type"
+          name="object.type"
+          type="text"
+          {...register("object.type", {
+            required: "You must enter a name of category",
+          })}
+        />
+        {errors["object"]?.type && (
+          <p className={classes.para}>{errors["object"].type?.message}</p>
+        )}
+        <label className={classes.label}>Inventory or Not</label>
+        <ReactHookFormSwitch
+          id="object.inventoryornot"
+          control={control}
+          reef={register("object.inventoryornot", {})}
+        ></ReactHookFormSwitch>
+      </DialogContent>
+      <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+        <DialogActions className={classes.bg}>
+          <Button
+            onClick={Props.handleClose}
+            color="secondary"
+            variant="contained"
+          >
+            Cancel
+          </Button>
 
-            <Button color="primary" variant="contained" type="submit">
-              {Props.CodeSce ? "Modifier" : "Ajout"}
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </div>
+          <Button color="primary" variant="contained" type="submit">
+            {Props.CodeSce ? "Modifier" : "Ajout"}
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 }
 

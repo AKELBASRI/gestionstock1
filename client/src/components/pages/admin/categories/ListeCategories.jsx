@@ -47,9 +47,7 @@ function ListeCategories() {
           color="inherit"
           style={{ cursor: "pointer" }}
           onClick={() => handleShowEditAddModal(listcategories[dataIndex])}
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </CreateIcon>
+        ></CreateIcon>
 
         <ClearIcon
           type="button"
@@ -62,9 +60,7 @@ function ListeCategories() {
               handleClickDelete
             )
           }
-        >
-          <i className="fas fa-times"></i>
-        </ClearIcon>
+        ></ClearIcon>
       </Box>
     );
   };
@@ -92,7 +88,7 @@ function ListeCategories() {
         customBodyRender: function checked(value) {
           return (
             <Box>
-              <Switch checked={value} disableRipple="true" />
+              <Switch checked={value} disableRipple />
             </Box>
           );
         },
@@ -118,7 +114,7 @@ function ListeCategories() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
     <div>

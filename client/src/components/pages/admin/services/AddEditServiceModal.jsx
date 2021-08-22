@@ -1,20 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
-import useStateRef from "react-usestateref";
-
+import React, { useEffect } from "react";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getservices } from "../../../../actions/getserviceAction";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
-
+import { useStyles } from "../../../../core/styleModalForm";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+import { useForm } from "react-hook-form";
 function AddEditServiceModal(Props) {
-  const [, setIsValid, ref] = useStateRef(true);
-  const [nservice, setService] = useState({
-    id: "",
-    service_name: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const service = useSelector((state) =>
     Props.CodeSce
@@ -23,23 +32,16 @@ function AddEditServiceModal(Props) {
   );
   useEffect(() => {
     if (service) {
-      setService(service);
+      setValue("object", service);
     } else {
-      setService({});
+      reset();
     }
-  }, [service]);
-  const [errors, setErrors] = useState({});
-  const validate = () => {
-    if (!nservice.service_name) {
-      setErrors({ Libelle: "Veuilez Entrer le nom du service " });
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-      setErrors({});
+    if (!Props.show) {
+      reset();
     }
-    return ref.current;
-  };
-  const AddService = () => {
+  }, [service, Props.show]);
+
+  const AddService = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/service/create/${user.Mle}`, {
       method: "POST",
@@ -48,7 +50,7 @@ function AddEditServiceModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(nservice),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -63,13 +65,13 @@ function AddEditServiceModal(Props) {
         } else {
           //props.history.push('/');
           toastr.success(
-            `Le service ${nservice.Libelle}  est crée avec succés `,
+            `Le service ${data.object.service_name}  est crée avec succés `,
             "Nouveau Service",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setService({ Libelle: "" });
+          reset();
           dispatch(getservices());
           Props.handleClose();
         }
@@ -80,7 +82,7 @@ function AddEditServiceModal(Props) {
         });
       });
   };
-  const updateService = () => {
+  const updateService = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/service/update/${user.Mle}`, {
       method: "PUT",
@@ -89,7 +91,7 @@ function AddEditServiceModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(nservice),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -105,13 +107,13 @@ function AddEditServiceModal(Props) {
           dispatch(getservices());
           //props.history.push('/');
           toastr.success(
-            `Le service ${service.service_name}  est modifié avec succés `,
+            `Le service ${data.object.service_name}  est modifié avec succés `,
             "Modification Service",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setService({ service_name: "" });
+          reset();
 
           Props.handleClose();
         }
@@ -122,52 +124,63 @@ function AddEditServiceModal(Props) {
         });
       });
   };
-  const Submit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      if (!Props.CodeSce) {
-        AddService();
-      } else {
-        updateService();
-      }
+  const onSubmit = (data) => {
+    if (!Props.CodeSce) {
+      AddService(data);
+    } else {
+      updateService(data);
     }
   };
-  const handleChange = (e) => {
-    setService({ ...nservice, [e.target.id]: e.target.value });
-  };
 
+  const classes = useStyles();
   return (
     <div>
-      <Modal show={Props.show} onHide={Props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {service
-              ? `Modification  du service : ${service.service_name} `
-              : "Ajout Service"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Libelle </Form.Label>
-            <Form.Control
-              value={nservice.service_name || ""}
-              onChange={handleChange}
-              type="text"
-              placeholder="Libelle"
-              id="service_name"
-            />
-            <div className="text-danger">{errors.Libelle}</div>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={Props.handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={Submit}>
-            {Props.CodeSce !== undefined ? "Modifier" : "Ajout"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Dialog
+        open={Props.show}
+        onClose={Props.handleClose}
+        aria-labelledby="form-dialog-title"
+        fullWidth
+      >
+        <DialogTitle id="form-dialog-title" className={classes.bg}>
+          {service
+            ? `Modification  du service : ${service.service_name} `
+            : "Ajout Service"}
+        </DialogTitle>
+        <DialogContent className={classes.bg}>
+          <DialogContentText className={classes.bg}></DialogContentText>
+
+          <label className={classes.label}>Libelle</label>
+          <input
+            className={classes.input}
+            id="object.service_name"
+            name="object.service_name"
+            type="text"
+            {...register("object.service_name", {
+              required: "You must enter a name of service",
+            })}
+          />
+          {errors["object"]?.service_name && (
+            <p className={classes.para}>
+              {errors["object"].service_name?.message}
+            </p>
+          )}
+        </DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+          <DialogActions className={classes.bg}>
+            <Button
+              onClick={Props.handleClose}
+              color="secondary"
+              variant="contained"
+            >
+              Cancel
+            </Button>
+
+            <Button color="primary" variant="contained" type="submit">
+              {Props.CodeSce ? "Modifier" : "Ajout"}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }

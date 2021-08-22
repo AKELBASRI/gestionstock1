@@ -9,9 +9,20 @@ import handleClickDelete from "./DeleteMateriel";
 import AffecterMaterielModal from "./AffecterMaterielModal";
 import { flattenObject } from "../../../../core/ApiCore";
 import { Delete } from "../../../../core/util";
-import { Box } from "@material-ui/core";
-
+import { Box, makeStyles } from "@material-ui/core";
+import { ColorButton } from "../../../../core/styleModalForm";
+import CreateIcon from "@material-ui/icons/Create";
+import LinkIcon from "@material-ui/icons/Link";
+import ClearIcon from "@material-ui/icons/Clear";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 function ListMateriels() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const [materiel, setMateriel] = useState({});
   const listmateriels1 = useSelector((state) => state.MaterielReducer);
@@ -45,18 +56,19 @@ function ListMateriels() {
 
   const buttons = (dataIndex) => {
     return (
-      <div className="row">
-        <button
+      <Box className={classes.root}>
+        <CreateIcon
           type="button"
-          className="btn btn-success btn-sm px-3"
+          variant="contained"
+          color="inherit"
+          style={{ cursor: "pointer" }}
           onClick={() => handleShowEditAddModal(listmateriels1[dataIndex])}
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </button>
+        ></CreateIcon>
 
-        <button
+        <ClearIcon
           type="button"
-          className="btn btn-danger btn-sm px-3"
+          color="error"
+          style={{ cursor: "pointer" }}
           onClick={() =>
             Delete(
               listmateriels1[dataIndex],
@@ -64,17 +76,15 @@ function ListMateriels() {
               handleClickDelete
             )
           }
-        >
-          <i className="fas fa-times"></i>
-        </button>
-        <button
+        ></ClearIcon>
+
+        <LinkIcon
           type="button"
-          className="btn btn-primary btn-sm px-3"
+          color="primary"
           onClick={() => handleShowAffctMateriel(listmateriels1[dataIndex])}
-        >
-          <i className="fas fa-link"></i>
-        </button>
-      </div>
+          style={{ cursor: "pointer" }}
+        ></LinkIcon>
+      </Box>
     );
   };
   const columns = [
@@ -132,7 +142,7 @@ function ListMateriels() {
         customBodyRender: function checked(value) {
           return (
             <Box>
-              <Switch checked={value} disableRipple="true" />
+              <Switch checked={value} disableRipple />
             </Box>
           );
         },
@@ -249,17 +259,13 @@ function ListMateriels() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
     <Layout>
-      <button
-        className="btn btn-outline-primary my-4"
-        onClick={handleShowEditAddModal}
-      >
+      <ColorButton onClick={handleShowEditAddModal}>
         nouveau Materiel
-      </button>{" "}
-      ,
+      </ColorButton>
       {listmateriels && (
         <MUIDataTable
           title={"Liste des Materiels"}

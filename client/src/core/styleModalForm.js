@@ -33,7 +33,6 @@ export const useStyles = makeStyles(() => ({
     color: "black",
     padding: "5px 10px",
     marginBottom: "20px",
-    width: "100%",
   },
   bg: {
     background: "#011627",
@@ -55,6 +54,5 @@ export const useStyles = makeStyles(() => ({
     color: "white",
     fontSize: "14px",
     fontWeight: "200",
-    marginTop: "20px",
   },
 }));

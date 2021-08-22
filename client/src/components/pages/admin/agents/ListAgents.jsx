@@ -54,9 +54,7 @@ function ListAgents() {
           color="inherit"
           style={{ cursor: "pointer" }}
           onClick={() => handleShowEditAddModal(listagents[dataIndex])}
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </CreateIcon>
+        ></CreateIcon>
 
         <ClearIcon
           type="button"
@@ -65,9 +63,7 @@ function ListAgents() {
           onClick={() =>
             Delete(listagents[dataIndex], Actiongetagents, handleClickDelete)
           }
-        >
-          <i className="fas fa-times"></i>
-        </ClearIcon>
+        ></ClearIcon>
       </Box>
     );
   };
@@ -143,7 +139,7 @@ function ListAgents() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
     <Layout>

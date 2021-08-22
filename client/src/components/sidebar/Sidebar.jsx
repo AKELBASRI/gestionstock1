@@ -134,11 +134,11 @@ const SideNav = styled.div`
     width: 100%;
   }
 
-  ul li a span.caret {
+  a span.caret {
     position: absolute;
     right: 22px;
   }
-  ul li a {
+  a {
     color: #fff;
     font-size: 18px;
     padding: 20px 30px;
@@ -149,25 +149,25 @@ const SideNav = styled.div`
     transition: all 1s ease;
   }
 
-  ul ul li a {
+  ul li a {
     font-size: 13px;
     color: #e6e6e6;
     padding-left: 40px;
   }
 
-  ul ul {
+  ul {
     position: static;
     display: block;
     transition: all 1s ease;
   }
 
-  ul ul li a {
+  ul li a {
     padding-left: 20px;
     display: block !important;
   }
 
-  ul li a span.title,
-  ul li a span.caret,
+  a span.title,
+  a > .caret,
   .titleapp span.title,
   .titleapp {
     display: ${({ active }) => (active ? "none" : "block")};
@@ -177,7 +177,7 @@ const SideNav = styled.div`
     display: ${({ active }) => (active ? "none" : "block")};
     transition: all 1s ease;
   }
-  ul li a span.title,
+  ul a span.title,
   .titleapp span.title {
     display: ${({ active }) => (active ? "none" : "block")};
     transition: all 0.3s ease;

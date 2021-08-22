@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
-import useStateRef from "react-usestateref";
 
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -8,14 +6,24 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
-
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  InputLabel,
+  MenuItem,
+} from "@material-ui/core";
 import { getDesignation } from "../../../../actions/getDesignationAction";
 import { getCategories } from "../../../../core/ApiCore";
+import { useStyles } from "../../../../core/styleModalForm";
+import { useForm } from "react-hook-form";
+import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
 function AddEditDesignationModal(Props) {
-  const [, setIsValid, ref] = useStateRef(true);
-  const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState({});
   const [categories, setCategories] = useState([]);
-  const [ndesignation, setDesignation] = useState({});
 
   const dispatch = useDispatch();
   const designation = useSelector((state) =>
@@ -25,32 +33,29 @@ function AddEditDesignationModal(Props) {
         )
       : null
   );
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm();
   useEffect(() => {
     getCategories()
       .then((res) => setCategories(res))
       .catch((err) => console.log(err));
     if (designation) {
-      setDesignation(designation);
+      setValue("object", designation);
     } else {
-      setDesignation({});
+      reset();
     }
-  }, [designation]);
-
-  const validate = () => {
-    if (!ndesignation.designation) {
-      setErrors({ designation: "Veuilez Entrer la designation " });
-      setIsValid(false);
-    } else if (!ndesignation.idtype) {
-      setErrors({ idtype: "Veuilez Selectionner le type " });
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-      setErrors({});
+    if (!Props.show) {
+      reset();
     }
-    return ref.current;
-  };
+  }, [designation, Props.show]);
 
-  const AddDesignation = () => {
+  const AddDesignation = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/designations/create/${user.Mle}`, {
       method: "POST",
@@ -59,7 +64,7 @@ function AddEditDesignationModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(ndesignation),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -74,13 +79,13 @@ function AddEditDesignationModal(Props) {
         } else {
           //props.history.push('/');
           toastr.success(
-            `La designation ${ndesignation.designation}  a été crée avec succés `,
+            `La designation ${data.object.designation}  a été crée avec succés `,
             "Nouvelle Designation",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setDesignation({});
+          reset();
           dispatch(getDesignation());
           Props.handleClose();
         }
@@ -91,7 +96,7 @@ function AddEditDesignationModal(Props) {
         });
       });
   };
-  const updateDesignation = () => {
+  const updateDesignation = (data) => {
     const { user, token } = isAuthenticated();
     fetch(`${API_URL}/designations/update/${user.Mle}`, {
       method: "PUT",
@@ -100,7 +105,7 @@ function AddEditDesignationModal(Props) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(ndesignation),
+      body: JSON.stringify(data.object),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -116,13 +121,13 @@ function AddEditDesignationModal(Props) {
           dispatch(getDesignation());
           //props.history.push('/');
           toastr.success(
-            `Designation ${ndesignation.designation}  est modifié avec succés `,
+            `Designation ${data.object.designation}  est modifié avec succés `,
             "Modification designation",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setDesignation({});
+          reset();
 
           Props.handleClose();
         }
@@ -133,74 +138,94 @@ function AddEditDesignationModal(Props) {
         });
       });
   };
-  const Submit = (e) => {
-    e.preventDefault();
-    if (validate()) {
-      if (!Props.iddesignation) {
-        AddDesignation();
-      } else {
-        updateDesignation();
-      }
+  const onSubmit = (data) => {
+    if (!Props.iddesignation) {
+      AddDesignation(data);
+    } else {
+      updateDesignation(data);
     }
   };
-  const handleChange = (e) => {
-    setDesignation({ ...ndesignation, [e.target.id]: e.target.value });
-  };
 
+  const classes = useStyles();
   return (
-    <div>
-      <Modal show={Props.show} onHide={Props.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {designation
-              ? `Modification  du designation : ${designation.designation} `
-              : "Ajout Designation"}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Designation </Form.Label>
-            <Form.Control
-              value={ndesignation.designation || ""}
-              onChange={handleChange}
-              type="text"
-              placeholder="Nom"
-              id="designation"
-            />
-            <div className="text-danger">{errors.designation}</div>
+    <Dialog
+      open={Props.show}
+      onClose={Props.handleClose}
+      aria-labelledby="form-dialog-title"
+      fullWidth
+    >
+      <DialogTitle id="form-dialog-title" className={classes.bg}>
+        {designation
+          ? `Modification  du designation : ${designation.designation} `
+          : "Ajout Designation"}
+      </DialogTitle>
+      <DialogContent className={classes.bg}>
+        <DialogContentText className={classes.bg}></DialogContentText>
+        <label className={classes.label}>Designation</label>
+        <input
+          className={classes.input}
+          id="object.designation"
+          type="text"
+          {...register("object.designation", {
+            required: "You must specify a designation",
+          })}
+        />
+        {errors["object"]?.designation && (
+          <p className={classes.para}>
+            {errors["object"].designation?.message}
+          </p>
+        )}
 
-            <Form.Label>Type </Form.Label>
-            <select
-              value={ndesignation.idtype || ""}
-              id="idtype"
-              onChange={handleChange}
-              className="form-control"
-              aria-label="Default select example"
-            >
-              <option value="">Selectionner le type du materiel</option>
-
-              {categories &&
-                categories.map((category, i) => (
-                  <option key={i} value={category.id}>
-                    {category.type}
-                  </option>
-                ))}
-            </select>
-            <div className="text-danger">{errors.type}</div>
-          </Form.Group>
-
-          {JSON.stringify(ndesignation)}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={Props.handleClose}>
-            Close
+        <InputLabel htmlFor="age-native-simple" className={classes.label}>
+          Type
+        </InputLabel>
+        <ReactHookFormSelect
+          className={classes.select}
+          label="Selectionner une categorie"
+          id="object.idtype"
+          name="object.idtype"
+          control={control}
+          defaultValue={"0"}
+          reef={register("object.idtype", {
+            validate: (value) => value !== "0",
+          })}
+        >
+          <MenuItem value="0" style={{ cursor: "pointer" }}>
+            Selectionner une categorie
+          </MenuItem>
+          {categories &&
+            categories.map((category, i) => (
+              <MenuItem
+                key={i + 1}
+                value={category.id}
+                style={{ cursor: "pointer" }}
+              >
+                {category.type}
+              </MenuItem>
+            ))}
+        </ReactHookFormSelect>
+        {errors["object"]?.idtype && (
+          <p className={classes.para}>
+            {errors["object"]?.idtype?.message || "You must select a category"}
+          </p>
+        )}
+      </DialogContent>
+      <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+        <DialogActions className={classes.bg}>
+          <Button
+            onClick={Props.handleClose}
+            color="secondary"
+            variant="contained"
+          >
+            Cancel
           </Button>
-          <Button variant="primary" onClick={Submit}>
-            {Props.iddesignation !== undefined ? "Modifier" : "Ajout"}
+
+          <Button color="primary" variant="contained" type="submit">
+            {Props.iddesignation ? "Modifier" : "Ajout"}
           </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 }
 

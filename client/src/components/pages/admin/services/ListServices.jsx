@@ -7,7 +7,19 @@ import { getservices } from "../../../../actions/getserviceAction";
 import AddEditServiceModal from "./AddEditServiceModal";
 import handleClickDelete from "./DeleteService";
 import { Delete } from "../../../../core/util";
+import { Box, makeStyles } from "@material-ui/core";
+
+import CreateIcon from "@material-ui/icons/Create";
+import ClearIcon from "@material-ui/icons/Clear";
+import { ColorButton } from "../../../../core/styleModalForm";
 function ListServices() {
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
   const dispatch = useDispatch();
   const listservices = useSelector((state) => state.serviceReducer);
   const handleShowEditAddModal = (service) => {
@@ -25,21 +37,24 @@ function ListServices() {
   const actiongetservices = () => {
     dispatch(getservices());
   };
-
+  const classes = useStyles();
   const buttons = (dataIndex) => {
     return (
-      <div className="row">
-        <button
+      <Box className={classes.root}>
+        <CreateIcon
           type="button"
-          className="btn btn-success btn-sm px-3"
-          onClick={() => handleShowEditAddModal(listservices[dataIndex])}
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </button>
+          variant="contained"
+          color="inherit"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            handleShowEditAddModal(listservices[dataIndex]);
+          }}
+        ></CreateIcon>
 
-        <button
+        <ClearIcon
           type="button"
-          className="btn btn-danger btn-sm px-3"
+          color="error"
+          style={{ cursor: "pointer" }}
           onClick={() =>
             Delete(
               listservices[dataIndex],
@@ -47,10 +62,8 @@ function ListServices() {
               handleClickDelete
             )
           }
-        >
-          <i className="fas fa-times"></i>
-        </button>
-      </div>
+        ></ClearIcon>
+      </Box>
     );
   };
   const columns = [
@@ -87,33 +100,28 @@ function ListServices() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    selectableRows: false,
+    selectableRows: "none",
   };
   return (
-    <div>
-      <Layout>
-        <button
-          className="btn btn-outline-primary my-4"
-          onClick={handleShowEditAddModal}
-        >
-          nouveau service
-        </button>
-        {listservices && (
-          <MUIDataTable
-            title={"Liste des services"}
-            data={listservices}
-            columns={columns}
-            options={options}
-          />
-        )}
-
-        <AddEditServiceModal
-          CodeSce={service.id}
-          show={showEditAddModal}
-          handleClose={handleClose}
+    <Layout>
+      <ColorButton onClick={handleShowEditAddModal}>
+        nouveau service
+      </ColorButton>
+      {listservices && (
+        <MUIDataTable
+          title={"Liste des services"}
+          data={listservices}
+          columns={columns}
+          options={options}
         />
-      </Layout>
-    </div>
+      )}
+
+      <AddEditServiceModal
+        CodeSce={service.id}
+        show={showEditAddModal}
+        handleClose={handleClose}
+      />
+    </Layout>
   );
 }
 

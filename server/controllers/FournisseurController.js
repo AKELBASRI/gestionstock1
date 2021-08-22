@@ -10,7 +10,7 @@ exports.saveFournisseur = (req, res) => {
   models.fournisseur
     .findOne({ where: { NomFournisseur: req.body.NomFournisseur.trim() } }).then((result) => {
       if (result) {
-        res.status(403).json({ error: 'Service existe deja !' });
+        res.status(403).json({ error: 'Fournisseur existe deja !' });
         return false;
       }
       const schema = Joi.object({
