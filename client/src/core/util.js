@@ -22,3 +22,9 @@ export const Delete = (user, action, handleClickDelete) => {
     },
   });
 };
+
+
+
+export const RequestError = () => (
+  <p>There was some error during fetching. Please try again.</p>
+);

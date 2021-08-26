@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
 import Switch from "@material-ui/core/Switch";
-import { getMateriels } from "../../../../actions/getMaterielsActions";
+
 import AddEditSaisieMaterielModal from "./AddEditSaisieMaterielModal";
 import handleClickDelete from "./DeleteMateriel";
 import AffecterMaterielModal from "./AffecterMaterielModal";
@@ -14,6 +14,7 @@ import { ColorButton } from "../../../../core/styleModalForm";
 import CreateIcon from "@material-ui/icons/Create";
 import LinkIcon from "@material-ui/icons/Link";
 import ClearIcon from "@material-ui/icons/Clear";
+import { FetchMateriels } from "../../../../store/actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -25,7 +26,7 @@ function ListMateriels() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [materiel, setMateriel] = useState({});
-  const listmateriels1 = useSelector((state) => state.MaterielReducer);
+  const listmateriels1 = useSelector((state) => state.requests?.queries?.FETCH_MATERIELS?.data);
   const [showAffctMaterielModal, setshowAffctMaterielModal] = useState(false);
   const [showEditAddModal, setshowEditAddModal] = useState(false);
 
@@ -44,13 +45,13 @@ function ListMateriels() {
     setMateriel(materiel);
   };
   useEffect(() => {
-    dispatch(getMateriels());
+    dispatch(FetchMateriels());
   }, [dispatch]);
   const ActiongetMateriels = () => {
-    dispatch(getMateriels());
+    dispatch(FetchMateriels());
   };
 
-  const listmateriels = listmateriels1.map((_data) => {
+  const listmateriels = listmateriels1&&listmateriels1.map((_data) => {
     return flattenObject(_data);
   });
 

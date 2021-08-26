@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Layout(Props) {
-  const state = useSelector((state) => state.showorhidereducers);
+  const state = useSelector((state) => state.showorhide);
   const classes = useStyles();
   return (
     <div>

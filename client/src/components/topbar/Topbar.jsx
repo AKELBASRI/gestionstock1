@@ -7,9 +7,10 @@ import { withRouter } from "react-router-dom";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { useDispatch } from "react-redux";
-import { showorhidesidebar } from "../../actions/showorhideAction";
+
 import { API_URL } from "../../config";
 import { isAuthenticated } from "../../auth/helpers";
+import { showorhide } from "../../store/actions";
 
 function Topbar(Props) {
   const signout = () => {
@@ -20,7 +21,7 @@ function Topbar(Props) {
         });
         localStorage.removeItem("jwt_info");
         Props.history.push("/signin");
-        dispatch(showorhidesidebar(true));
+        dispatch(showorhide());
       })
       .catch();
   };

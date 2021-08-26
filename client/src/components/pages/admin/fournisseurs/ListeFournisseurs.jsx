@@ -3,7 +3,7 @@ import MUIDataTable from "mui-datatables";
 
 import Layout from "../../Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
-import { getFournisseurs } from "../../../../actions/getFournisseur";
+
 import AddEditFournisseurModal from "./AddEditFournisseurModal";
 import handleClickDelete from "./DeleteFournisseur";
 import { Delete } from "../../../../core/util";
@@ -12,6 +12,7 @@ import { Box, makeStyles } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import { ColorButton } from "../../../../core/styleModalForm";
+import { FetchFournisseur } from "../../../../store/actions";
 function ListeFournisseur() {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +22,7 @@ function ListeFournisseur() {
     },
   }));
   const dispatch = useDispatch();
-  const listFournisseurs = useSelector((state) => state.fournisseurReducer);
+  const listFournisseurs = useSelector((state) => state.requests?.queries?.FETCH_FOURNISSEUR?.data);
   const handleShowEditAddModal = (fournisseur) => {
     setshowEditAddModal(true);
     setFournisseur(fournisseur);
@@ -29,13 +30,13 @@ function ListeFournisseur() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [fournisseur, setFournisseur] = useState({});
   useEffect(() => {
-    dispatch(getFournisseurs());
+    dispatch(FetchFournisseur());
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetFournisseurs = () => {
-    dispatch(getFournisseurs());
+    dispatch(FetchFournisseur());
   };
   const classes = useStyles();
   const buttons = (dataIndex) => {

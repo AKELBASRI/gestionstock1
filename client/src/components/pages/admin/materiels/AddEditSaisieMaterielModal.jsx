@@ -8,7 +8,6 @@ import NumericInput from "react-numeric-input";
 import useStateRef from "react-usestateref";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { getMateriels } from "../../../../actions/getMaterielsActions";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   getCategories,
@@ -33,6 +32,7 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
+import { FetchMateriels } from "../../../../store/actions";
 
 const AddEditSaisieMaterielModal = (Props) => {
   const [date, setDate] = useState(null);
@@ -56,7 +56,7 @@ const AddEditSaisieMaterielModal = (Props) => {
   const dispatch = useDispatch();
   let material1 = useSelector((state) =>
     Props.codemtrl
-      ? state.MaterielReducer.find((p) => p.idmateriel === Props.codemtrl)
+      ? state.requests?.queries?.FETCH_MATERIELS?.data.find((p) => p.idmateriel === Props.codemtrl)
       : null
   );
   useEffect(() => {
@@ -160,7 +160,7 @@ const AddEditSaisieMaterielModal = (Props) => {
             }
           );
           reset();
-          dispatch(getMateriels());
+          dispatch(FetchMateriels());
           Props.handleClose();
         }
       })
@@ -209,7 +209,7 @@ const AddEditSaisieMaterielModal = (Props) => {
               }
             );
 
-            dispatch(getMateriels());
+            dispatch(FetchMateriels());
           }
         })
         .catch((err) => {

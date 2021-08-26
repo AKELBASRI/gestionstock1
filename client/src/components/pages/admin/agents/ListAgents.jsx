@@ -5,20 +5,21 @@ import MUIDataTable from "mui-datatables";
 import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 // import handleClickDelete from './DeleteAdmin';
-import { getagents } from "../../../../actions/getagentsAction";
+
 import AddEditAgentModal from "./AddEditAgentModal";
 import handleClickDelete from "./DeleteAgent";
 import { flattenObject } from "../../../../core/ApiCore";
+import {FetchAgent} from "../../../../store/actions"
 import { Delete } from "../../../../core/util";
 import { ColorButton } from "../../../../core/styleModalForm";
 import { Box, makeStyles } from "@material-ui/core";
 function ListAgents() {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
-  const listagents = useSelector((state) => state.agentsReducer);
-
+  let listagents 
+  let listagentsf 
   const [showEditAddModal, setshowEditAddModal] = useState(false);
-
+  listagents= useSelector((state) => (state.requests?.queries?.FETCH_AGENTS?.data));
   const handleShowEditAddModal = (user) => {
     setshowEditAddModal(true);
     setUser(user);
@@ -28,15 +29,19 @@ function ListAgents() {
   };
 
   useEffect(() => {
-    dispatch(getagents());
+    dispatch(FetchAgent());
+    
+     
   }, [dispatch]);
   const Actiongetagents = () => {
-    dispatch(getagents());
+    dispatch(FetchAgent());
   };
-
-  const listagentsf = listagents.map((_data) => {
+if(listagents){
+  listagentsf = listagents.map((_data) => {
     return flattenObject(_data);
   });
+}
+  
   const useStyles = makeStyles((theme) => ({
     root: {
       "& > *": {

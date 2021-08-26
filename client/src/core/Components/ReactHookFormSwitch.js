@@ -14,10 +14,12 @@ const ReactHookFormSwitch = (Props) => {
       <Controller
         render={({ field: { onChange, value } }) => (
           <Switch
-            checked={value || false}
+            // checked={value }
             onChange={onChange}
             defaultValue={false}
             inputRef={reef?.ref}
+            checked={value||false}
+            
           />
         )}
         name={name}

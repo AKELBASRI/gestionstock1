@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
+import { FetchCategory } from "../../../../store/actions";
 import { useStyles } from "../../../../core/styleModalForm";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -16,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 
-import { getcategories } from "../../../../actions/getCategoryAction";
+
 import { useForm } from "react-hook-form";
 import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
 
@@ -27,6 +28,7 @@ function AddEditCategoryModal(Props) {
     reset,
     setValue,
     clearErrors,
+    getValues,
     control,
 
     formState: { errors },
@@ -37,7 +39,7 @@ function AddEditCategoryModal(Props) {
   const dispatch = useDispatch();
   const category = useSelector((state) =>
     Props.CodeSce
-      ? state.categoryReducer.find((p) => p.id === Props.CodeSce)
+      ? state.requests?.queries?.FETCH_CATEGORY?.data.find((p) => p.id === Props.CodeSce)
       : null
   );
   useEffect(() => {
@@ -85,7 +87,7 @@ function AddEditCategoryModal(Props) {
             }
           );
 
-          dispatch(getcategories());
+          dispatch(FetchCategory());
           Props.handleClose();
         }
       })
@@ -181,9 +183,11 @@ function AddEditCategoryModal(Props) {
         )}
         <label className={classes.label}>Inventory or Not</label>
         <ReactHookFormSwitch
+        name="object.inventoryornot"
           id="object.inventoryornot"
           control={control}
           reef={register("object.inventoryornot", {})}
+          Value={getValues("object.inventoryornot")}
         ></ReactHookFormSwitch>
       </DialogContent>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>

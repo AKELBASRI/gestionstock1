@@ -4,7 +4,6 @@ import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { getusers } from "../../../../actions/getUserAction";
 import {
   Button,
   Dialog,
@@ -15,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
-
+import { FetchAdmin } from "../../../../store/actions";
 function AddEditUserModal(Props) {
   const {
     register,
@@ -28,7 +27,7 @@ function AddEditUserModal(Props) {
 
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
-    Props.Mle ? state.usersReducer.find((p) => p.Mle === Props.Mle) : null
+    Props.Mle ? (state.requests?.queries?.FETCH_ADMINS?.data).find((p) => p.Mle === Props.Mle) : null
   );
   useEffect(() => {
     if (usernormal) {
@@ -72,7 +71,7 @@ function AddEditUserModal(Props) {
             }
           );
           // setUser({ Mle: "", password: "", codesce: "", nom: "" });
-          dispatch(getusers());
+          dispatch(fetchadmin());
           Props.handleClose();
         }
       })
@@ -116,7 +115,7 @@ function AddEditUserModal(Props) {
           );
           reset();
           clearErrors();
-          dispatch(getusers());
+          dispatch(fetchadmin());
         }
       })
       .catch((err) => {

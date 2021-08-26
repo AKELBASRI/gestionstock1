@@ -18,7 +18,7 @@ import "toastr/build/toastr.css";
 
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { getagents } from "../../../../actions/getagentsAction";
+
 import { getAgencies, getservices } from "../../../../core/ApiCore";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
 
@@ -42,7 +42,7 @@ function AddEditAgentModal(Props) {
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
     agent_number
-      ? state.agentsReducer.find((p) => p.agent_number === agent_number)
+      ? state.requests?.queries?.FETCH_AGENTS?.data?.find((p) => p.agent_number === agent_number)
       : null
   );
   useEffect(() => {

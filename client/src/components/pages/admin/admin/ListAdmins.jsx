@@ -5,7 +5,7 @@ import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from "./ChangePasswordModal";
 import AddEditUserModal from "./AddEditUserModal";
-import { getusers } from "../../../../actions/getUserAction";
+import { FetchAdmin } from "../../../../store/actions";
 import handleClickDeleteAdmin from "./DeleteAdmin";
 import { Delete } from "../../../../core/util";
 import CreateIcon from "@material-ui/icons/Create";
@@ -24,7 +24,7 @@ function ListUsers() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
-  const listusers = useSelector((state) => state.usersReducer);
+  const listusers = useSelector((state) => (state.requests?.queries?.FETCH_ADMINS?.data));
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [showPasswordModal, setshowpasswordmodal] = useState(false);
   const handleShowEditAddModal = (user) => {
@@ -40,10 +40,10 @@ function ListUsers() {
     setUser(user);
   };
   useEffect(() => {
-    dispatch(getusers());
+    dispatch(FetchAdmin());
   }, [dispatch]);
   const Actiongetusers = () => {
-    dispatch(getusers());
+    dispatch(FetchAdmin());
   };
 
   const buttons = (dataIndex) => {

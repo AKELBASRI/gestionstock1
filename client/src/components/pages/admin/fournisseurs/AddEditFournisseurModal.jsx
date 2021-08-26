@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
-import { getFournisseurs } from "../../../../actions/getFournisseur";
+
 
 import { useStyles } from "../../../../core/styleModalForm";
 import {
@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { useForm } from "react-hook-form";
+import { FetchFournisseur } from "../../../../store/actions";
 
 function AddEditFournisseurModal(Props) {
   const {
@@ -32,7 +33,7 @@ function AddEditFournisseurModal(Props) {
   const dispatch = useDispatch();
   const fournisseur = useSelector((state) =>
     Props.id
-      ? state.fournisseurReducer.find((p) => p.idFournisseur === Props.id)
+      ? state.requests?.queries?.FETCH_FOURNISSEUR?.data.find((p) => p.idFournisseur === Props.id)
       : null
   );
   useEffect(() => {
@@ -77,7 +78,7 @@ function AddEditFournisseurModal(Props) {
             }
           );
           reset();
-          dispatch(getFournisseurs());
+          dispatch(FetchFournisseur());
           Props.handleClose();
         }
       })
@@ -109,7 +110,7 @@ function AddEditFournisseurModal(Props) {
             }
           );
         } else {
-          dispatch(getFournisseurs());
+          dispatch(FetchFournisseur());
           //props.history.push('/');
           toastr.success(
             `Le fournisseur ${data.object.NomFournisseur}  est modifié avec succés `,

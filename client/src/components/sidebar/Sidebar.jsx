@@ -2,16 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { showorhidesidebar } from "../../actions/showorhideAction";
+
 import { isAuthenticated } from "../../auth/helpers";
 import { SidebarData } from "./SidebarData";
 import SubMenu from "./SubMenu";
 import styled from "styled-components";
+import { showorhide } from "../../store/actions";
+
 const Sidebar = (props) => {
   const dispatch = useDispatch();
   const sidebar = useRef(null);
   const [active, setactive] = useState(false);
-  const state = useSelector((state) => state.showorhidereducers);
+  const state = useSelector((state) => state.showorhide);
   const keys = SidebarData.map(function (item, key) {
     return { key: key, close: null, item: item };
   });
@@ -23,7 +25,7 @@ const Sidebar = (props) => {
     });
   };
   const openNav = () => {
-    dispatch(showorhidesidebar(true));
+    dispatch(showorhide());
     if (sidebar.current) {
       sidebar.current.style.width = "322px";
       setactive(false);
@@ -32,7 +34,7 @@ const Sidebar = (props) => {
   };
 
   const closeNav = () => {
-    dispatch(showorhidesidebar(false));
+    dispatch(showorhide());
     if (sidebar.current) {
       sidebar.current.style.width = "90px";
       sidebar.current.classList.add("active");

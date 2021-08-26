@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getservices } from "../../../../actions/getserviceAction";
+
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 import { useStyles } from "../../../../core/styleModalForm";
@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { useForm } from "react-hook-form";
+import { FetchService } from "../../../../store/actions";
 function AddEditServiceModal(Props) {
   const {
     register,
@@ -27,7 +28,7 @@ function AddEditServiceModal(Props) {
   const dispatch = useDispatch();
   const service = useSelector((state) =>
     Props.CodeSce
-      ? state.serviceReducer.find((p) => p.id === Props.CodeSce)
+      ? state.requests?.queries?.FETCH_SERVICE?.data.find((p) => p.id === Props.CodeSce)
       : null
   );
   useEffect(() => {
@@ -72,7 +73,7 @@ function AddEditServiceModal(Props) {
             }
           );
           reset();
-          dispatch(getservices());
+          dispatch(FetchService());
           Props.handleClose();
         }
       })
@@ -104,7 +105,7 @@ function AddEditServiceModal(Props) {
             }
           );
         } else {
-          dispatch(getservices());
+          dispatch(FetchService());
           //props.history.push('/');
           toastr.success(
             `Le service ${data.object.service_name}  est modifié avec succés `,

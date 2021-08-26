@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import Layout from "../../Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
-import { getservices } from "../../../../actions/getserviceAction";
+
 
 import AddEditServiceModal from "./AddEditServiceModal";
 import handleClickDelete from "./DeleteService";
@@ -12,6 +12,7 @@ import { Box, makeStyles } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import { ColorButton } from "../../../../core/styleModalForm";
+import { FetchService } from "../../../../store/actions";
 function ListServices() {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +22,7 @@ function ListServices() {
     },
   }));
   const dispatch = useDispatch();
-  const listservices = useSelector((state) => state.serviceReducer);
+  const listservices = useSelector((state) => state.requests?.queries?.FETCH_SERVICE?.data);
   const handleShowEditAddModal = (service) => {
     setshowEditAddModal(true);
     setservice(service);
@@ -29,13 +30,13 @@ function ListServices() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [service, setservice] = useState({});
   useEffect(() => {
-    dispatch(getservices());
+    dispatch(FetchService());
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetservices = () => {
-    dispatch(getservices());
+    dispatch(FetchService());
   };
   const classes = useStyles();
   const buttons = (dataIndex) => {

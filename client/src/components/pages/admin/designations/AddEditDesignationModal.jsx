@@ -16,11 +16,11 @@ import {
   InputLabel,
   MenuItem,
 } from "@material-ui/core";
-import { getDesignation } from "../../../../actions/getDesignationAction";
 import { getCategories } from "../../../../core/ApiCore";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
+import { FetchDesignation } from "../../../../store/actions";
 function AddEditDesignationModal(Props) {
   // const [errors, setErrors] = useState({});
   const [categories, setCategories] = useState([]);
@@ -28,7 +28,7 @@ function AddEditDesignationModal(Props) {
   const dispatch = useDispatch();
   const designation = useSelector((state) =>
     Props.iddesignation
-      ? state.designationReducer.find(
+      ? state.requests?.queries?.FETCH_DESIGNATION?.data.find(
           (p) => p.idDesignation === Props.iddesignation
         )
       : null
@@ -86,7 +86,7 @@ function AddEditDesignationModal(Props) {
             }
           );
           reset();
-          dispatch(getDesignation());
+          dispatch(FetchDesignation());
           Props.handleClose();
         }
       })
@@ -118,7 +118,7 @@ function AddEditDesignationModal(Props) {
             }
           );
         } else {
-          dispatch(getDesignation());
+          dispatch(FetchDesignation());
           //props.history.push('/');
           toastr.success(
             `Designation ${data.object.designation}  est modifié avec succés `,

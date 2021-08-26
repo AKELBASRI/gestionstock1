@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Switch from "@material-ui/core/Switch";
 import handleClickDelete from "./DeleteCategory";
 import AddEditCategoryModal from "./AddEditCategoryModal";
-import { getcategories } from "../../../../actions/getCategoryAction";
 import { Delete } from "../../../../core/util";
 import { Box, makeStyles } from "@material-ui/core";
 import { ColorButton } from "../../../../core/styleModalForm";
+import { FetchCategory } from "../../../../store/actions";
 function ListeCategories() {
   const dispatch = useDispatch();
-  const listcategories = useSelector((state) => state.categoryReducer);
+  const listcategories = useSelector((state) => state.requests?.queries?.FETCH_CATEGORY?.data);
   const handleShowEditAddModal = (category) => {
     setshowEditAddModal(true);
     setcategory(category);
@@ -22,13 +22,13 @@ function ListeCategories() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [category, setcategory] = useState({});
   useEffect(() => {
-    dispatch(getcategories());
+    dispatch(FetchCategory());
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetcategories = () => {
-    dispatch(getcategories());
+    dispatch(FetchCategory());
   };
   const useStyles = makeStyles((theme) => ({
     root: {

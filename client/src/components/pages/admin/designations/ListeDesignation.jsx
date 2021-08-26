@@ -4,7 +4,7 @@ import MUIDataTable from "mui-datatables";
 import Layout from "../../Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import handleClickDelete from "./DeleteDesignation";
-import { getDesignation } from "../../../../actions/getDesignationAction";
+
 import AddEditDesignationModal from "./AddEditDesignationModal";
 import { flattenObject } from "../../../../core/ApiCore";
 import { Delete } from "../../../../core/util";
@@ -13,9 +13,10 @@ import { Box } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import { ColorButton } from "../../../../core/styleModalForm";
+import { FetchDesignation } from "../../../../store/actions";
 function ListeDesignation() {
   const dispatch = useDispatch();
-  const listdesignations1 = useSelector((state) => state.designationReducer);
+  const listdesignations1 = useSelector((state) => state.requests?.queries?.FETCH_DESIGNATION?.data);
   const handleShowEditAddModal = (designation) => {
     setshowEditAddModal(true);
     setDesignation(designation);
@@ -30,16 +31,16 @@ function ListeDesignation() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [designation, setDesignation] = useState({});
   useEffect(() => {
-    dispatch(getDesignation());
+    dispatch(FetchDesignation());
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetDesignation = () => {
-    dispatch(getDesignation());
+    dispatch(FetchDesignation());
   };
 
-  const listdesignation = listdesignations1.map((_data) => {
+  const listdesignation = listdesignations1&&listdesignations1.map((_data) => {
     return flattenObject(_data);
   });
   const classes = useStyles();
