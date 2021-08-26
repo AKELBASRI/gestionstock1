@@ -24,7 +24,9 @@ function ListUsers() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
-  const listusers = useSelector((state) => (state.requests?.queries?.FETCH_ADMINS?.data));
+  const listusers = useSelector(
+    (state) => state.requests?.queries?.FETCH_ADMINS?.data
+  );
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [showPasswordModal, setshowpasswordmodal] = useState(false);
   const handleShowEditAddModal = (user) => {
@@ -40,7 +42,9 @@ function ListUsers() {
     setUser(user);
   };
   useEffect(() => {
-    dispatch(FetchAdmin());
+    if (!listusers) {
+      dispatch(FetchAdmin());
+    }
   }, [dispatch]);
   const Actiongetusers = () => {
     dispatch(FetchAdmin());

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -19,13 +19,23 @@ import "toastr/build/toastr.css";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 
-import { getAgencies, getservices } from "../../../../core/ApiCore";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
+import {
+  FetchAgencies,
+  FetchAgent,
+  FetchService,
+} from "../../../../store/actions";
 
 function AddEditAgentModal(Props) {
   const { agent_number, show, handleClose } = Props;
-  const [services, setservices] = useState([]);
-  const [agencies, setAgencies] = useState([]);
+  // const [services, setservices] = useState([]);
+  // const [agencies, setAgencies] = useState([]);
+  const agencies = useSelector(
+    (state) => state.requests?.queries?.FETCH_AGENCIES?.data
+  );
+  const services = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE?.data
+  );
   // const [, setIsValid, ref] = useStateRef(true);
   // const [errors, setErrors] = useState({});
   const {
@@ -42,16 +52,19 @@ function AddEditAgentModal(Props) {
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
     agent_number
-      ? state.requests?.queries?.FETCH_AGENTS?.data?.find((p) => p.agent_number === agent_number)
+      ? state.requests?.queries?.FETCH_AGENTS?.data?.find(
+          (p) => p.agent_number === agent_number
+        )
       : null
   );
   useEffect(() => {
-    getservices()
-      .then((res) => setservices(res))
-      .catch((err) => console.log(err));
-    getAgencies()
-      .then((res) => setAgencies(res))
-      .catch((err) => console.log(err));
+    if (!services) {
+      dispatch(FetchService());
+    }
+    if (!agencies) {
+      dispatch(FetchAgencies());
+    }
+
     if (usernormal) {
       setValue("object", usernormal);
       clearErrors();
@@ -90,7 +103,7 @@ function AddEditAgentModal(Props) {
             }
           );
           reset();
-          dispatch(getagents());
+          dispatch(FetchAgent());
           handleClose();
         }
       })
@@ -132,7 +145,7 @@ function AddEditAgentModal(Props) {
             }
           );
           reset();
-          dispatch(getagents());
+          dispatch(FetchAgent());
         }
       })
       .catch((err) => {

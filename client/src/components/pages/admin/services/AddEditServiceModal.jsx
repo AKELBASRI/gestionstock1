@@ -28,7 +28,9 @@ function AddEditServiceModal(Props) {
   const dispatch = useDispatch();
   const service = useSelector((state) =>
     Props.CodeSce
-      ? state.requests?.queries?.FETCH_SERVICE?.data.find((p) => p.id === Props.CodeSce)
+      ? state.requests?.queries?.FETCH_SERVICE?.data.find(
+          (p) => p.id === Props.CodeSce
+        )
       : null
   );
   useEffect(() => {

@@ -26,7 +26,9 @@ function ListMateriels() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [materiel, setMateriel] = useState({});
-  const listmateriels1 = useSelector((state) => state.requests?.queries?.FETCH_MATERIELS?.data);
+  const listmateriels1 = useSelector(
+    (state) => state.requests?.queries?.FETCH_MATERIELS?.data
+  );
   const [showAffctMaterielModal, setshowAffctMaterielModal] = useState(false);
   const [showEditAddModal, setshowEditAddModal] = useState(false);
 
@@ -45,15 +47,19 @@ function ListMateriels() {
     setMateriel(materiel);
   };
   useEffect(() => {
-    dispatch(FetchMateriels());
+    if (!listmateriels1) {
+      dispatch(FetchMateriels());
+    }
   }, [dispatch]);
   const ActiongetMateriels = () => {
     dispatch(FetchMateriels());
   };
 
-  const listmateriels = listmateriels1&&listmateriels1.map((_data) => {
-    return flattenObject(_data);
-  });
+  const listmateriels =
+    listmateriels1 &&
+    listmateriels1.map((_data) => {
+      return flattenObject(_data);
+    });
 
   const buttons = (dataIndex) => {
     return (

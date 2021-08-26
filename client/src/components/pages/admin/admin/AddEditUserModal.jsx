@@ -27,7 +27,11 @@ function AddEditUserModal(Props) {
 
   const dispatch = useDispatch();
   const usernormal = useSelector((state) =>
-    Props.Mle ? (state.requests?.queries?.FETCH_ADMINS?.data).find((p) => p.Mle === Props.Mle) : null
+    Props.Mle
+      ? (state.requests?.queries?.FETCH_ADMINS?.data).find(
+          (p) => p.Mle === Props.Mle
+        )
+      : null
   );
   useEffect(() => {
     if (usernormal) {
@@ -71,7 +75,7 @@ function AddEditUserModal(Props) {
             }
           );
           // setUser({ Mle: "", password: "", codesce: "", nom: "" });
-          dispatch(fetchadmin());
+          dispatch(FetchAdmin());
           Props.handleClose();
         }
       })
@@ -115,7 +119,7 @@ function AddEditUserModal(Props) {
           );
           reset();
           clearErrors();
-          dispatch(fetchadmin());
+          dispatch(FetchAdmin());
         }
       })
       .catch((err) => {

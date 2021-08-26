@@ -14,7 +14,9 @@ import { ColorButton } from "../../../../core/styleModalForm";
 import { FetchCategory } from "../../../../store/actions";
 function ListeCategories() {
   const dispatch = useDispatch();
-  const listcategories = useSelector((state) => state.requests?.queries?.FETCH_CATEGORY?.data);
+  const listcategories = useSelector(
+    (state) => state.requests?.queries?.FETCH_CATEGORY?.data
+  );
   const handleShowEditAddModal = (category) => {
     setshowEditAddModal(true);
     setcategory(category);
@@ -22,7 +24,9 @@ function ListeCategories() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [category, setcategory] = useState({});
   useEffect(() => {
-    dispatch(FetchCategory());
+    if (!listcategories) {
+      dispatch(FetchCategory());
+    }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);

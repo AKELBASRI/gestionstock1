@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
-// import { Button, Modal, Form } from "react-bootstrap";
+
 import { useDispatch, useSelector } from "react-redux";
 import useStateRef from "react-usestateref";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
-import { getAgencies, getAgents, getservices } from "../../../../core/ApiCore";
+
 import {
   Button,
   Dialog,
@@ -20,7 +20,14 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import { FetchMateriels } from "../../../../store/actions";
+import {
+  FetchAgencies,
+  FetchAgent,
+  FetchMateriels,
+  FetchService,
+  FetchTotalAvailableMateriels,
+  FetchTotalMateriels,
+} from "../../../../store/actions";
 function AffecterMaterielModal(Props) {
   const {
     register,
@@ -31,12 +38,23 @@ function AffecterMaterielModal(Props) {
     control,
     formState: { errors },
   } = useForm();
-  const [ListAgents, setAgents] = useState([]);
-  const [ListeService, setService] = useState([]);
-  const [Listagencies, setAgencies] = useState([]);
+
+  const ListAgents = useSelector(
+    (state) => state.requests?.queries?.FETCH_AGENTS?.data
+  );
+
+  const ListeService = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE?.data
+  );
+
+  const Listagencies = useSelector(
+    (state) => state.requests?.queries?.FETCH_AGENCIES?.data
+  );
   const material1 = useSelector((state) =>
     Props.codemtrl
-      ? state.requests?.queries?.FETCH_MATERIELS?.data.find((p) => p.idmateriel === Props.codemtrl)
+      ? state.requests?.queries?.FETCH_MATERIELS?.data.find(
+          (p) => p.idmateriel === Props.codemtrl
+        )
       : null
   );
   const [, setaffctMaterial, affctMateriel] = useStateRef({});
@@ -80,6 +98,8 @@ function AffecterMaterielModal(Props) {
           );
           setaffctMaterial({});
           dispatch(FetchMateriels());
+          dispatch(FetchTotalMateriels());
+          dispatch(FetchTotalAvailableMateriels());
           Props.handleClose();
         }
       })
@@ -90,15 +110,15 @@ function AffecterMaterielModal(Props) {
       });
   };
   useEffect(() => {
-    getservices()
-      .then((res) => setService(res))
-      .catch((error) => console.log(error));
-    getAgents()
-      .then((res) => setAgents(res))
-      .catch((error) => console.log(error));
-    getAgencies()
-      .then((res) => setAgencies(res))
-      .catch((error) => console.log(error));
+    if (!ListeService) {
+      dispatch(FetchService());
+    }
+    if (!ListAgents) {
+      dispatch(FetchAgent());
+    }
+    if (!Listagencies) {
+      dispatch(FetchAgencies());
+    }
     if (material1) {
       console.log(material1);
       setValue("object", material1);

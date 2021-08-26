@@ -9,11 +9,7 @@ import useStateRef from "react-usestateref";
 import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  getCategories,
-  getdesignationbytype,
-  getFournisseur,
-} from "../../../../core/ApiCore";
+import { getdesignationbytype } from "../../../../core/ApiCore";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -32,7 +28,13 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import { FetchMateriels } from "../../../../store/actions";
+import {
+  FetchCategory,
+  FetchFournisseur,
+  FetchMateriels,
+  FetchTotalAvailableMateriels,
+  FetchTotalMateriels,
+} from "../../../../store/actions";
 
 const AddEditSaisieMaterielModal = (Props) => {
   const [date, setDate] = useState(null);
@@ -45,8 +47,14 @@ const AddEditSaisieMaterielModal = (Props) => {
     control,
     formState: { errors },
   } = useForm();
-  const [categories, setCategories] = useState([]);
-  const [Fournisseurs, setFournisseur] = useState([]);
+
+  const categories = useSelector(
+    (state) => state.requests?.queries?.FETCH_CATEGORY?.data
+  );
+
+  const Fournisseurs = useSelector(
+    (state) => state.requests?.queries?.FETCH_FOURNISSEUR?.data
+  );
   // const [, setIsValid, ref] = useStateRef(true);
   const [, setShowInventory, showInventory] = useStateRef(true);
 
@@ -56,16 +64,18 @@ const AddEditSaisieMaterielModal = (Props) => {
   const dispatch = useDispatch();
   let material1 = useSelector((state) =>
     Props.codemtrl
-      ? state.requests?.queries?.FETCH_MATERIELS?.data.find((p) => p.idmateriel === Props.codemtrl)
+      ? state.requests?.queries?.FETCH_MATERIELS?.data.find(
+          (p) => p.idmateriel === Props.codemtrl
+        )
       : null
   );
   useEffect(() => {
-    getCategories()
-      .then((res) => setCategories(res))
-      .catch((err) => console.log(err));
-    getFournisseur()
-      .then((res) => setFournisseur(res))
-      .catch((err) => console.log(err));
+    if (!categories) {
+      dispatch(FetchCategory());
+    }
+    if (!Fournisseurs) {
+      dispatch(FetchFournisseur());
+    }
 
     if (material1) {
       setValue("object", material1);
@@ -161,6 +171,8 @@ const AddEditSaisieMaterielModal = (Props) => {
           );
           reset();
           dispatch(FetchMateriels());
+          dispatch(FetchTotalAvailableMateriels());
+          dispatch(FetchTotalMateriels());
           Props.handleClose();
         }
       })
@@ -208,7 +220,8 @@ const AddEditSaisieMaterielModal = (Props) => {
                 positionClass: "toast-bottom-left",
               }
             );
-
+            dispatch(FetchTotalAvailableMateriels());
+            dispatch(FetchTotalMateriels());
             dispatch(FetchMateriels());
           }
         })

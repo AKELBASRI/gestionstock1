@@ -22,7 +22,9 @@ function ListeFournisseur() {
     },
   }));
   const dispatch = useDispatch();
-  const listFournisseurs = useSelector((state) => state.requests?.queries?.FETCH_FOURNISSEUR?.data);
+  const listFournisseurs = useSelector(
+    (state) => state.requests?.queries?.FETCH_FOURNISSEUR?.data
+  );
   const handleShowEditAddModal = (fournisseur) => {
     setshowEditAddModal(true);
     setFournisseur(fournisseur);
@@ -30,7 +32,9 @@ function ListeFournisseur() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [fournisseur, setFournisseur] = useState({});
   useEffect(() => {
-    dispatch(FetchFournisseur());
+    if (!listFournisseurs) {
+      dispatch(FetchFournisseur());
+    }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);

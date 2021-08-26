@@ -1,21 +1,28 @@
 import { Box, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { flattenObject } from "../../core/ApiCore";
 import {
-  flattenObject,
-  getTotaMaterielByType,
-  getTotalAvailableMaterielByType,
-} from "../../core/ApiCore";
+  FetchTotalAvailableMateriels,
+  FetchTotalMateriels,
+} from "../../store/actions";
 import FeaturedItem from "./FeaturedItem";
 function FeaturedInfo() {
-  const [listTotalCountbyType, setlistTotalCountbyType] = useState([]);
-  const [listTotalAvailableByType, setlistTotalAvailableByType] = useState([]);
+  const dispatch = useDispatch();
+
+  const listTotalAvailableByType = useSelector(
+    (state) => state.requests?.queries?.FETCH_TOTAL_AVAILABLE_MATERIELS?.data
+  );
+  const listTotalCountbyType = useSelector(
+    (state) => state.requests?.queries?.FETCH_TOTAL_MATERIELS?.data
+  );
   useEffect(() => {
-    getTotaMaterielByType()
-      .then((res) => setlistTotalCountbyType(res))
-      .catch((err) => console.log(err));
-    getTotalAvailableMaterielByType()
-      .then((res) => setlistTotalAvailableByType(res))
-      .catch((err) => console.log(err));
+    if (!listTotalCountbyType) {
+      dispatch(FetchTotalMateriels());
+    }
+    if (!listTotalAvailableByType) {
+      dispatch(FetchTotalAvailableMateriels());
+    }
   }, []);
 
   const listTotalCountbyType1 =

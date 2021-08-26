@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 
-
 import { useForm } from "react-hook-form";
 import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
 
@@ -39,7 +38,9 @@ function AddEditCategoryModal(Props) {
   const dispatch = useDispatch();
   const category = useSelector((state) =>
     Props.CodeSce
-      ? state.requests?.queries?.FETCH_CATEGORY?.data.find((p) => p.id === Props.CodeSce)
+      ? state.requests?.queries?.FETCH_CATEGORY?.data.find(
+          (p) => p.id === Props.CodeSce
+        )
       : null
   );
   useEffect(() => {
@@ -119,7 +120,7 @@ function AddEditCategoryModal(Props) {
             }
           );
         } else {
-          dispatch(getcategories());
+          dispatch(FetchCategory());
           //props.history.push('/');
           toastr.success(
             `category ${data.object.type}  est modifié avec succés `,
@@ -183,7 +184,7 @@ function AddEditCategoryModal(Props) {
         )}
         <label className={classes.label}>Inventory or Not</label>
         <ReactHookFormSwitch
-        name="object.inventoryornot"
+          name="object.inventoryornot"
           id="object.inventoryornot"
           control={control}
           reef={register("object.inventoryornot", {})}

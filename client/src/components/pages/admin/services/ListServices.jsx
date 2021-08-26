@@ -3,7 +3,6 @@ import MUIDataTable from "mui-datatables";
 import Layout from "../../Layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
 
-
 import AddEditServiceModal from "./AddEditServiceModal";
 import handleClickDelete from "./DeleteService";
 import { Delete } from "../../../../core/util";
@@ -22,7 +21,9 @@ function ListServices() {
     },
   }));
   const dispatch = useDispatch();
-  const listservices = useSelector((state) => state.requests?.queries?.FETCH_SERVICE?.data);
+  const listservices = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE?.data
+  );
   const handleShowEditAddModal = (service) => {
     setshowEditAddModal(true);
     setservice(service);
@@ -30,7 +31,9 @@ function ListServices() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [service, setservice] = useState({});
   useEffect(() => {
-    dispatch(FetchService());
+    if (!listservices) {
+      dispatch(FetchService());
+    }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);

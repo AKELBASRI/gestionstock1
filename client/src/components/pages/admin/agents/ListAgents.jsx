@@ -9,17 +9,19 @@ import ClearIcon from "@material-ui/icons/Clear";
 import AddEditAgentModal from "./AddEditAgentModal";
 import handleClickDelete from "./DeleteAgent";
 import { flattenObject } from "../../../../core/ApiCore";
-import {FetchAgent} from "../../../../store/actions"
+import { FetchAgent } from "../../../../store/actions";
 import { Delete } from "../../../../core/util";
 import { ColorButton } from "../../../../core/styleModalForm";
 import { Box, makeStyles } from "@material-ui/core";
 function ListAgents() {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
-  let listagents 
-  let listagentsf 
+  let listagents;
+  let listagentsf;
   const [showEditAddModal, setshowEditAddModal] = useState(false);
-  listagents= useSelector((state) => (state.requests?.queries?.FETCH_AGENTS?.data));
+  listagents = useSelector(
+    (state) => state.requests?.queries?.FETCH_AGENTS?.data
+  );
   const handleShowEditAddModal = (user) => {
     setshowEditAddModal(true);
     setUser(user);
@@ -29,19 +31,19 @@ function ListAgents() {
   };
 
   useEffect(() => {
-    dispatch(FetchAgent());
-    
-     
+    if (!listagents) {
+      dispatch(FetchAgent());
+    }
   }, [dispatch]);
   const Actiongetagents = () => {
     dispatch(FetchAgent());
   };
-if(listagents){
-  listagentsf = listagents.map((_data) => {
-    return flattenObject(_data);
-  });
-}
-  
+  if (listagents) {
+    listagentsf = listagents.map((_data) => {
+      return flattenObject(_data);
+    });
+  }
+
   const useStyles = makeStyles((theme) => ({
     root: {
       "& > *": {

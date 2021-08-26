@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -16,15 +16,17 @@ import {
   InputLabel,
   MenuItem,
 } from "@material-ui/core";
-import { getCategories } from "../../../../core/ApiCore";
+
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import { FetchDesignation } from "../../../../store/actions";
+import { FetchCategory, FetchDesignation } from "../../../../store/actions";
 function AddEditDesignationModal(Props) {
   // const [errors, setErrors] = useState({});
-  const [categories, setCategories] = useState([]);
-
+  // const [categories, setCategories] = useState([]);
+  const categories = useSelector(
+    (state) => state.requests?.queries?.FETCH_CATEGORY?.data
+  );
   const dispatch = useDispatch();
   const designation = useSelector((state) =>
     Props.iddesignation
@@ -42,9 +44,9 @@ function AddEditDesignationModal(Props) {
     formState: { errors },
   } = useForm();
   useEffect(() => {
-    getCategories()
-      .then((res) => setCategories(res))
-      .catch((err) => console.log(err));
+    if (!categories) {
+      dispatch(FetchCategory());
+    }
     if (designation) {
       setValue("object", designation);
     } else {

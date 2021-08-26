@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { API_URL } from "../../../../config";
 
-
 import { useStyles } from "../../../../core/styleModalForm";
 import {
   Button,
@@ -33,7 +32,9 @@ function AddEditFournisseurModal(Props) {
   const dispatch = useDispatch();
   const fournisseur = useSelector((state) =>
     Props.id
-      ? state.requests?.queries?.FETCH_FOURNISSEUR?.data.find((p) => p.idFournisseur === Props.id)
+      ? state.requests?.queries?.FETCH_FOURNISSEUR?.data.find(
+          (p) => p.idFournisseur === Props.id
+        )
       : null
   );
   useEffect(() => {
