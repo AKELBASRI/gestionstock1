@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
 
 import { useDispatch, useSelector } from "react-redux";
 import useStateRef from "react-usestateref";
@@ -20,15 +19,12 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import {
-  FetchAgencies,
-  FetchAgent,
-  FetchMateriels,
-  FetchService,
-  FetchTotalAvailableMateriels,
-  FetchTotalMateriels,
-} from "../../../../store/actions";
+import Actions from "../../../../store/actions";
+import customAxios from "../../../../axios/CustomAxios";
+import { getdesignationbytype } from "../../../../core/ApiCore";
+
 function AffecterMaterielModal(Props) {
+  const [, setDesignation, Designations] = useStateRef([]);
   const {
     register,
     handleSubmit,
@@ -65,19 +61,25 @@ function AffecterMaterielModal(Props) {
       [e.target.id]: e.target.value,
     });
   };
-
+  const LoadDesignations = async (material) => {
+    if (material !== undefined) {
+      getdesignationbytype(material.idtype)
+        .then((res) => {
+          setDesignation(res.designation);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
   const onSubmit = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/materiels/affecter/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    const marque = Designations.current.filter(
+      (designation) =>
+        parseInt(designation?.idDesignation) ===
+        parseInt(data.object?.iddesignation)
+    )[0].designation;
+    customAxios
+      .put(`/materiels/affecter/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -88,40 +90,40 @@ function AffecterMaterielModal(Props) {
             }
           );
         } else {
-          //props.history.push('/');
           toastr.success(
-            `Le Materiel ${affctMateriel.current.marque}  est été modifié avec succés `,
+            `Le Materiel  ${marque} est  affecté avec succés `,
             "Modification Materiel",
             {
               positionClass: "toast-bottom-left",
             }
           );
-          setaffctMaterial({});
-          dispatch(FetchMateriels());
-          dispatch(FetchTotalMateriels());
-          dispatch(FetchTotalAvailableMateriels());
+          reset();
+          dispatch(new Actions().FetchMateriels());
+          dispatch(new Actions().FetchTotalAvailableMateriels());
+          dispatch(new Actions().FetchTotalMateriels());
           Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   useEffect(() => {
     if (!ListeService) {
-      dispatch(FetchService());
+      dispatch(new Actions().FetchService());
     }
     if (!ListAgents) {
-      dispatch(FetchAgent());
+      dispatch(new Actions().FetchAgent());
     }
     if (!Listagencies) {
-      dispatch(FetchAgencies());
+      dispatch(new Actions().FetchAgencies());
     }
     if (material1) {
       console.log(material1);
       setValue("object", material1);
+      LoadDesignations(material1);
     } else {
       reset();
     }

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
-import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 import {
   Button,
@@ -14,7 +13,8 @@ import {
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
-import { FetchAdmin } from "../../../../store/actions";
+import Actions from "../../../../store/actions";
+import axios from "../../../../axios/CustomAxios";
 function AddEditUserModal(Props) {
   const {
     register,
@@ -45,19 +45,11 @@ function AddEditUserModal(Props) {
   const classes = useStyles();
 
   const UpdateUser = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/admin/update/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    axios
+      .put(`/admin/update/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
-        console.log(res);
         if (res.error) {
           toastr.warning(
             res.error,
@@ -75,29 +67,21 @@ function AddEditUserModal(Props) {
             }
           );
           // setUser({ Mle: "", password: "", codesce: "", nom: "" });
-          dispatch(FetchAdmin());
+          dispatch(new Actions().FetchAdmin());
           Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   const AddUser = (data) => {
-    console.log(data.object);
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/admin/create/${user.Mle}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    axios
+      .post(`/admin/create/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -108,8 +92,6 @@ function AddEditUserModal(Props) {
             }
           );
         } else {
-          Props.handleClose();
-
           toastr.success(
             `L'utilisateur ${data.object.nom}  est crée avec succés `,
             "Nouveau Utilisateur",
@@ -117,13 +99,13 @@ function AddEditUserModal(Props) {
               positionClass: "toast-bottom-left",
             }
           );
-          reset();
-          clearErrors();
-          dispatch(FetchAdmin());
+          // setUser({ Mle: "", password: "", codesce: "", nom: "" });
+          dispatch(new Actions().FetchAdmin());
+          Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });

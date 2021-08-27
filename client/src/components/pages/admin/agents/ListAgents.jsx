@@ -9,10 +9,11 @@ import ClearIcon from "@material-ui/icons/Clear";
 import AddEditAgentModal from "./AddEditAgentModal";
 import handleClickDelete from "./DeleteAgent";
 import { flattenObject } from "../../../../core/ApiCore";
-import { FetchAgent } from "../../../../store/actions";
+
 import { Delete } from "../../../../core/util";
 import { ColorButton } from "../../../../core/styleModalForm";
 import { Box, makeStyles } from "@material-ui/core";
+import Actions from "../../../../store/actions";
 function ListAgents() {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
@@ -32,11 +33,11 @@ function ListAgents() {
 
   useEffect(() => {
     if (!listagents) {
-      dispatch(FetchAgent());
+      dispatch(new Actions().FetchAgent());
     }
   }, [dispatch]);
   const Actiongetagents = () => {
-    dispatch(FetchAgent());
+    dispatch(new Actions().FetchAgent());
   };
   if (listagents) {
     listagentsf = listagents.map((_data) => {

@@ -10,20 +10,37 @@ import { useDispatch } from "react-redux";
 
 import { API_URL } from "../../config";
 import { isAuthenticated } from "../../auth/helpers";
-import { showorhide } from "../../store/actions";
+import Actions from "../../store/actions";
+import axios from "axios";
 
 function Topbar(Props) {
   const signout = () => {
-    fetch(`${API_URL}/signout`)
+    axios
+      .get(`${API_URL}/signout`)
+
       .then(() => {
         toastr.info("utilisateur est deconnecté", "À la prochaine", {
           positionClass: "toast-top-right",
         });
         localStorage.removeItem("jwt_info");
         Props.history.push("/signin");
-        dispatch(showorhide());
+        dispatch(new Actions().showorhide(false));
       })
-      .catch();
+      .catch((err) => {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
+          positionClass: "toast-bottom-left",
+        });
+      });
+    // fetch(`${API_URL}/signout`)
+    //   .then(() => {
+    //     toastr.info("utilisateur est deconnecté", "À la prochaine", {
+    //       positionClass: "toast-top-right",
+    //     });
+    //     localStorage.removeItem("jwt_info");
+    //     Props.history.push("/signin");
+    //     dispatch(new Actions().showorhide(false));
+    //   })
+    //   .catch();
   };
   const dispatch = useDispatch();
 

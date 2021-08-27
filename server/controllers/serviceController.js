@@ -57,13 +57,20 @@ exports.deleteservice = (req, res) => {
 };
 
 exports.updateService = (req, res) => {
-  models.services.update(req.body, { where: { id: req.body.id } })
-    .then((result) => {
-      res.status(201)
-        .json({ message: 'le service a été modifié avec succés ', user: result });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({ error: `Something went wrong${error}` });
+  models.services
+    .findOne({ where: { service_name: req.body.service_name.trim() } }).then((result) => {
+      if (result) {
+        res.status(403).json({ error: 'Service existe deja !' });
+        return false;
+      }
+      return models.services.update(req.body, { where: { id: req.body.id } })
+        .then((result1) => {
+          res.status(201)
+            .json({ message: 'le service a été modifié avec succés ', user: result1 });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json({ error: `Something went wrong${error}` });
+        });
     });
 };

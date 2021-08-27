@@ -3,20 +3,16 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
+import customAxios from "../../../../axios/CustomAxios";
 
 const handleClickDeleteAdmin = (usernormal, action) => {
-  const { user, token } = isAuthenticated();
-  fetch(`${API_URL}/admin/delete/${user.Mle}`, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ Mle: usernormal.Mle }),
-  })
-    .then((res) => res.json())
+  const { user } = isAuthenticated();
+  customAxios
+    .delete(`/admin/delete/${user.Mle}`, {
+      data: {
+        Mle: usernormal.Mle,
+      },
+    })
     .then((res) => {
       if (res.error) {
         toastr.warning(
@@ -38,10 +34,11 @@ const handleClickDeleteAdmin = (usernormal, action) => {
       }
     })
     .catch((err) => {
-      toastr.error(err, "Erreur du serveur", {
+      toastr.error(err.response.data.error, "Erreur du serveur", {
         positionClass: "toast-bottom-left",
       });
     });
+
   return null;
 };
 

@@ -6,7 +6,7 @@ import "toastr/build/toastr.css";
 import NumericInput from "react-numeric-input";
 // import FormControl from 'react-bootstrap/lib/FormControl';
 import useStateRef from "react-usestateref";
-import { API_URL } from "../../../../config";
+
 import { isAuthenticated } from "../../../../auth/helpers";
 import DateFnsUtils from "@date-io/date-fns";
 import { getdesignationbytype } from "../../../../core/ApiCore";
@@ -28,13 +28,8 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import {
-  FetchCategory,
-  FetchFournisseur,
-  FetchMateriels,
-  FetchTotalAvailableMateriels,
-  FetchTotalMateriels,
-} from "../../../../store/actions";
+import Actions from "../../../../store/actions";
+import customAxios from "../../../../axios/CustomAxios";
 
 const AddEditSaisieMaterielModal = (Props) => {
   const [date, setDate] = useState(null);
@@ -71,10 +66,10 @@ const AddEditSaisieMaterielModal = (Props) => {
   );
   useEffect(() => {
     if (!categories) {
-      dispatch(FetchCategory());
+      dispatch(new Actions().FetchCategory());
     }
     if (!Fournisseurs) {
-      dispatch(FetchFournisseur());
+      dispatch(new Actions().FetchFournisseur());
     }
 
     if (material1) {
@@ -112,10 +107,8 @@ const AddEditSaisieMaterielModal = (Props) => {
     checkenventoryornot();
     LoadDesignations(getValues("object"));
   };
-  const LoadDesignations = (material) => {
+  const LoadDesignations = async (material) => {
     if (material !== undefined) {
-      // if (material) {
-
       getdesignationbytype(material.idtype)
         .then((res) => {
           setDesignation(res.designation);
@@ -124,13 +117,6 @@ const AddEditSaisieMaterielModal = (Props) => {
         })
         .catch((err) => console.log(err));
     }
-    //else {
-    //   getdesignationbytype(material.idtype)
-    //     .then((res) => setDesignation(res.designation))
-    //     .catch((err) => console.log(err));
-    // }
-
-    // }
   };
   const checkifdesignationexist = (arrayofdesignations) => {
     if (arrayofdesignations.length === 0) {
@@ -141,17 +127,15 @@ const AddEditSaisieMaterielModal = (Props) => {
     }
   };
   const UpdateMateriel = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/materiels/update/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const marque = Designations.current.filter(
+      (designation) =>
+        parseInt(designation?.idDesignation) ===
+        parseInt(data.object?.iddesignation)
+    )[0].designation;
+    const { user } = isAuthenticated();
+    customAxios
+      .put(`/materiels/update/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -163,21 +147,21 @@ const AddEditSaisieMaterielModal = (Props) => {
           );
         } else {
           toastr.success(
-            `Le Materiel ${material.current.marque}  est été modifié avec succés `,
+            `Le Materiel ${marque}  est été modifié avec succés `,
             "Modification Materiel",
             {
               positionClass: "toast-bottom-left",
             }
           );
           reset();
-          dispatch(FetchMateriels());
-          dispatch(FetchTotalAvailableMateriels());
-          dispatch(FetchTotalMateriels());
+          dispatch(new Actions().FetchMateriels());
+          dispatch(new Actions().FetchTotalAvailableMateriels());
+          dispatch(new Actions().FetchTotalMateriels());
           Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
@@ -190,17 +174,10 @@ const AddEditSaisieMaterielModal = (Props) => {
     )[0].designation;
 
     for (let i = 0; i < Qte; i++) {
-      const { user, token } = isAuthenticated();
-      fetch(`${API_URL}/materiels/create/${user.Mle}`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data.object),
-      })
-        .then((res) => res.json())
+      const { user } = isAuthenticated();
+      customAxios
+        .post(`/materiels/create/${user.Mle}`, JSON.stringify(data.object))
+
         .then((res) => {
           if (res.error) {
             toastr.warning(
@@ -220,16 +197,17 @@ const AddEditSaisieMaterielModal = (Props) => {
                 positionClass: "toast-bottom-left",
               }
             );
-            dispatch(FetchTotalAvailableMateriels());
-            dispatch(FetchTotalMateriels());
-            dispatch(FetchMateriels());
+            dispatch(new Actions().FetchTotalAvailableMateriels());
+            dispatch(new Actions().FetchTotalMateriels());
+            dispatch(new Actions().FetchMateriels());
           }
         })
         .catch((err) => {
-          toastr.error(err, "Erreur du serveur", {
+          toastr.error(err.response.data.error, "Erreur du serveur", {
             positionClass: "toast-bottom-left",
           });
         });
+
       if (i === Qte - 1) {
         //  reset();
         setQte(1);

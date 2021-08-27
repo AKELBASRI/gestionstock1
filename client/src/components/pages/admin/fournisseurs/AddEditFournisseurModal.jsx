@@ -5,7 +5,6 @@ import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
 
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
 
 import { useStyles } from "../../../../core/styleModalForm";
 import {
@@ -17,7 +16,8 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { useForm } from "react-hook-form";
-import { FetchFournisseur } from "../../../../store/actions";
+import Actions from "../../../../store/actions";
+import customAxios from "../../../../axios/CustomAxios";
 
 function AddEditFournisseurModal(Props) {
   const {
@@ -49,17 +49,10 @@ function AddEditFournisseurModal(Props) {
   }, [fournisseur, Props.show]);
 
   const AddFournisseur = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/fournisseurs/create/${user.Mle}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .post(`/fournisseurs/create/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -70,7 +63,6 @@ function AddEditFournisseurModal(Props) {
             }
           );
         } else {
-          //props.history.push('/');
           toastr.success(
             `Le Fournisseur ${data.object.NomFournisseur}  est crée avec succés `,
             "Nouveau Fournisseur",
@@ -79,28 +71,21 @@ function AddEditFournisseurModal(Props) {
             }
           );
           reset();
-          dispatch(FetchFournisseur());
+          dispatch(new Actions().FetchFournisseur());
           Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   const updateFournisseur = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/fournisseurs/update/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .put(`/fournisseurs/update/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -111,7 +96,7 @@ function AddEditFournisseurModal(Props) {
             }
           );
         } else {
-          dispatch(FetchFournisseur());
+          dispatch(new Actions().FetchFournisseur());
           //props.history.push('/');
           toastr.success(
             `Le fournisseur ${data.object.NomFournisseur}  est modifié avec succés `,
@@ -126,7 +111,7 @@ function AddEditFournisseurModal(Props) {
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });

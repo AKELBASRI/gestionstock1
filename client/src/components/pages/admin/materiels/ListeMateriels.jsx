@@ -14,7 +14,7 @@ import { ColorButton } from "../../../../core/styleModalForm";
 import CreateIcon from "@material-ui/icons/Create";
 import LinkIcon from "@material-ui/icons/Link";
 import ClearIcon from "@material-ui/icons/Clear";
-import { FetchMateriels } from "../../../../store/actions";
+import Actions from "../../../../store/actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -48,11 +48,13 @@ function ListMateriels() {
   };
   useEffect(() => {
     if (!listmateriels1) {
-      dispatch(FetchMateriels());
+      dispatch(new Actions().FetchMateriels());
     }
   }, [dispatch]);
   const ActiongetMateriels = () => {
-    dispatch(FetchMateriels());
+    dispatch(new Actions().FetchMateriels());
+    dispatch(new Actions().FetchTotalAvailableMateriels());
+    dispatch(new Actions().FetchTotalMateriels());
   };
 
   const listmateriels =

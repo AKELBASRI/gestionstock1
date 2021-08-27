@@ -13,7 +13,7 @@ import { Box } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import { ColorButton } from "../../../../core/styleModalForm";
-import { FetchDesignation } from "../../../../store/actions";
+import Actions from "../../../../store/actions";
 function ListeDesignation() {
   const dispatch = useDispatch();
   const listdesignations1 = useSelector(
@@ -34,14 +34,14 @@ function ListeDesignation() {
   const [designation, setDesignation] = useState({});
   useEffect(() => {
     if (!listdesignations1) {
-      dispatch(FetchDesignation());
+      dispatch(new Actions().FetchDesignation());
     }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetDesignation = () => {
-    dispatch(FetchDesignation());
+    dispatch(new Actions().FetchDesignation());
   };
 
   const listdesignation =

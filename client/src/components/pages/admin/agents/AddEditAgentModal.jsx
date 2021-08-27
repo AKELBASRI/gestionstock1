@@ -16,15 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 
-import { API_URL } from "../../../../config";
 import { isAuthenticated } from "../../../../auth/helpers";
 
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import {
-  FetchAgencies,
-  FetchAgent,
-  FetchService,
-} from "../../../../store/actions";
+import Actions from "../../../../store/actions";
+import customAxios from "../../../../axios/CustomAxios";
 
 function AddEditAgentModal(Props) {
   const { agent_number, show, handleClose } = Props;
@@ -59,10 +55,10 @@ function AddEditAgentModal(Props) {
   );
   useEffect(() => {
     if (!services) {
-      dispatch(FetchService());
+      dispatch(new Actions().FetchService());
     }
     if (!agencies) {
-      dispatch(FetchAgencies());
+      dispatch(new Actions().FetchAgencies());
     }
 
     if (usernormal) {
@@ -74,17 +70,10 @@ function AddEditAgentModal(Props) {
   }, [usernormal]);
 
   const UpdateUser = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/agents/update/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .put(`/agents/update/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -102,29 +91,23 @@ function AddEditAgentModal(Props) {
               positionClass: "toast-bottom-left",
             }
           );
+
           reset();
-          dispatch(FetchAgent());
+          dispatch(new Actions().FetchAgent());
           handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   const AddUser = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/agents/create/${user.Mle}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .post(`/agents/create/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -145,11 +128,11 @@ function AddEditAgentModal(Props) {
             }
           );
           reset();
-          dispatch(FetchAgent());
+          dispatch(new Actions().FetchAgent());
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
@@ -181,34 +164,38 @@ function AddEditAgentModal(Props) {
         </DialogTitle>
         <DialogContent className={classes.bg}>
           <DialogContentText className={classes.bg}></DialogContentText>
-          <label className={classes.label}>Nom</label>
-          <input
-            className={classes.input}
-            id="object.agent_full_name"
-            type="text"
-            {...register("object.agent_full_name", {
-              required: "You must specify a name",
-            })}
-          />
-          {errors["object"]?.agent_full_name && (
-            <p className={classes.para}>
-              {errors["object"].agent_full_name?.message}
-            </p>
-          )}
           <div>
-            <label className={classes.label}>Matricule</label>
+            <label className={classes.label}>Nom</label>
             <input
               className={classes.input}
-              id="object.agent_number"
+              id="object.agent_full_name"
               type="text"
-              {...register("object.agent_number", {
-                required: "You must specify Mle",
+              {...register("object.agent_full_name", {
+                required: "You must specify a name",
               })}
             />
-            {errors["object"]?.agent_number && (
+            {errors["object"]?.agent_full_name && (
               <p className={classes.para}>
-                {errors["object"]?.agent_number?.message}
+                {errors["object"].agent_full_name?.message}
               </p>
+            )}
+            {!usernormal && (
+              <div>
+                <label className={classes.label}>Matricule</label>
+                <input
+                  className={classes.input}
+                  id="object.agent_number"
+                  type="text"
+                  {...register("object.agent_number", {
+                    required: "You must specify Mle",
+                  })}
+                />
+                {errors["object"]?.agent_number && (
+                  <p className={classes.para}>
+                    {errors["object"]?.agent_number?.message}
+                  </p>
+                )}
+              </div>
             )}
             <label className={classes.label}>Email</label>
             <input

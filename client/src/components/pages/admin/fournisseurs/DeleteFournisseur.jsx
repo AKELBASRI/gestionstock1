@@ -3,20 +3,16 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
+import customAxios from "../../../../axios/CustomAxios";
 
 const handleClickDelete = (fournisseur, actiongetfournisseurs) => {
-  const { user, token } = isAuthenticated();
-  fetch(`${API_URL}/fournisseurs/delete/${user.Mle}`, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ idFournisseur: fournisseur.idFournisseur }),
-  })
-    .then((res) => res.json())
+  const { user } = isAuthenticated();
+  customAxios
+    .delete(`/fournisseurs/delete/${user.Mle}`, {
+      data: {
+        idFournisseur: fournisseur.idFournisseur,
+      },
+    })
     .then((res) => {
       if (res.error) {
         toastr.warning(
@@ -27,22 +23,33 @@ const handleClickDelete = (fournisseur, actiongetfournisseurs) => {
           }
         );
       } else {
-        //props.history.push('/');
-        toastr.success(
-          `Le fournisseur ${fournisseur.NomFournisseur}  est supprimé avec succés `,
-          "Suppression Service",
-          {
-            positionClass: "toast-bottom-left",
-          }
-        );
-        actiongetfournisseurs();
+        if (res.error) {
+          toastr.warning(
+            res.error,
+            "S'il vous plaît Veuillez vérifier le Formulaire",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+        } else {
+          //props.history.push('/');
+          toastr.success(
+            `Le fournisseur ${fournisseur.NomFournisseur}  est supprimé avec succés `,
+            "Suppression Service",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+          actiongetfournisseurs();
+        }
       }
     })
     .catch((err) => {
-      toastr.error(err, "Erreur du serveur", {
+      toastr.error(err.response.data.error, "Erreur du serveur", {
         positionClass: "toast-bottom-left",
       });
     });
+
   return null;
 };
 

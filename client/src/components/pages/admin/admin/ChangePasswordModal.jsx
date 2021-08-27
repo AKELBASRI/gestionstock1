@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
+
 import { useForm } from "react-hook-form";
 
 import {
@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
+import customAxios from "../../../../axios/CustomAxios";
 
 function ChangePasswordModal(Props) {
   const {
@@ -29,20 +30,16 @@ function ChangePasswordModal(Props) {
   password.current = watch("password", "");
 
   const onSubmit = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/admin/updatepassword/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        password: data.password,
-        Mle: Props.usernormal.Mle,
-      }),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .put(
+        `/admin/updatepassword/${user.Mle}`,
+        JSON.stringify({
+          password: data.password,
+          Mle: Props.usernormal.Mle,
+        })
+      )
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -66,7 +63,7 @@ function ChangePasswordModal(Props) {
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });

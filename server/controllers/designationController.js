@@ -67,14 +67,28 @@ exports.deleteDesignation = (req, res) => {
 };
 
 exports.updateDesignation = (req, res) => {
-  models.designation.update(req.body, { where: { idDesignation: req.body.idDesignation } })
-    .then((result) => {
-      res.status(201)
-        .json({ message: 'la designation a été modifié avec succés ', designation: result });
-    })
-    .catch((error) => {
+  models.designation
+    .findOne({ where: { designation: req.body.designation.trim() } }).then((result) => {
+      if (result) {
+        res.status(403).json({ error: 'designation existe deja !' });
+        return false;
+      }
+      return models.designation.update(req.body,
+        { where: { idDesignation: req.body.idDesignation } })
+        .then((result1) => {
+          res.status(201)
+            .json({ message: 'la designation a été modifié avec succés ', designation: result1 });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json({ error: `Something went wrong${error}` });
+        });
+    }).catch((error) => {
       console.log(error);
-      res.status(500).json({ error: `Something went wrong${error}` });
+      res.status(500).json({
+        error: 'Something went wrong',
+
+      });
     });
 };
 

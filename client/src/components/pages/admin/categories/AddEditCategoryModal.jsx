@@ -8,17 +8,17 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
-import { FetchCategory } from "../../../../store/actions";
 import { useStyles } from "../../../../core/styleModalForm";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
 
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
 
 import { useForm } from "react-hook-form";
 import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
+import customAxios from "../../../../axios/CustomAxios";
+import Actions from "../../../../store/actions";
 
 function AddEditCategoryModal(Props) {
   const {
@@ -56,18 +56,10 @@ function AddEditCategoryModal(Props) {
   }, [category, Props.show]);
 
   const AddCategory = (data) => {
-    console.log(JSON.stringify(data.object));
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/category/create/${user.Mle}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .post(`/category/create/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -81,76 +73,57 @@ function AddEditCategoryModal(Props) {
           setValue("object", { type: "", inventoryornot: false });
           //props.history.push('/');
           toastr.success(
-            `Le service ${data.object.type}  est crée avec succés `,
-            "Nouveau Service",
+            `La categorie ${data.object.type}  est crée avec succés `,
+            "Nouvelle Category",
             {
               positionClass: "toast-bottom-left",
             }
           );
 
-          dispatch(FetchCategory());
+          dispatch(new Actions().FetchCategory());
           Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   const updateCategory = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/category/update/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.error) {
-          toastr.warning(
-            res.error,
-            "S'il vous plaît Veuillez vérifier le Formulaire",
-            {
-              positionClass: "toast-bottom-left",
-            }
-          );
-        } else {
-          dispatch(FetchCategory());
-          //props.history.push('/');
-          toastr.success(
-            `category ${data.object.type}  est modifié avec succés `,
-            "Modification Service",
-            {
-              positionClass: "toast-bottom-left",
-            }
-          );
-          reset({
-            object: {},
-          });
+    const { user } = isAuthenticated();
+    customAxios
+      .put(`/category/update/${user.Mle}`, JSON.stringify(data.object))
 
-          Props.handleClose();
-        }
+      .then(() => {
+        dispatch(new Actions().FetchCategory());
+        //props.history.push('/');
+        toastr.success(
+          `category ${data.object.type}  est modifié avec succés `,
+          "Modification Service",
+          {
+            positionClass: "toast-bottom-left",
+          }
+        );
+        reset({
+          object: {},
+        });
+
+        Props.handleClose();
+        // }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   const onSubmit = (data) => {
-    // e.preventDefault();
-    // if (validate()) {
     if (!Props.CodeSce) {
       AddCategory(data);
     } else {
       updateCategory(data);
     }
-    // }
   };
 
   const classes = useStyles();

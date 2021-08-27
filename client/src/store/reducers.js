@@ -1,10 +1,9 @@
 import { SHOW_HIDE } from "./constants";
-
-export const showorhideReducer = (state = true, action) => {
+let bstate = true;
+export const showorhideReducer = (state = bstate, action) => {
   switch (action.type) {
     case SHOW_HIDE:
-      state = !state;
-      return state;
+      return action.payload;
     default:
       return state;
   }

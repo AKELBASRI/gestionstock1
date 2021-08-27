@@ -1,54 +1,14 @@
 import { isAuthenticated } from "../auth/helpers";
-import { API_URL } from "../config";
-export const getTotalAvailableMaterielByType = () => {
-  const { user, token } = isAuthenticated();
-  return fetch(
-    `${API_URL}/materiels/countMaterielavailablebyType/${user.Mle}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
-    .then((res) => res.json())
-    .then((data) => data)
-    .catch((error) => console.error(error));
-};
-
-export const getTotaMaterielByType = () => {
-  const { user, token } = isAuthenticated();
-  return fetch(`${API_URL}/materiels/countMaterielbyType/${user.Mle}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => data)
-    .catch((error) => console.error(error));
-};
+import axios from "../../src/axios/CustomAxios";
 
 export const getdesignationbytype = (idtype) => {
   try {
-    const { user, token } = isAuthenticated();
-    return fetch(
-      `${API_URL}/designations/getdesignationbytype/${user.Mle}/${idtype}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => data)
+    const { user } = isAuthenticated();
+
+    return axios
+      .get(`/designations/getdesignationbytype/${user.Mle}/${idtype}`)
+
+      .then((data) => data.data)
       .catch((error) => console.log(error));
   } catch (error) {
     console.log(error);

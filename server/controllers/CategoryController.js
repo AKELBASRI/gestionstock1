@@ -67,15 +67,28 @@ exports.deleteCategory = (req, res) => {
 
 exports.updateCategory = (req, res) => {
   models.typemateriel
-    .update(req.body, { where: { id: req.body.id } })
+    .findOne({ where: { type: req.body.type.trim() } })
     .then((result) => {
-      res.status(201).json({
-        message: 'la category a été modifié avec succés ',
-        category: result,
-      });
-    })
-    .catch((error) => {
+      if (result) {
+        res.status(403).json({ error: 'Categorie existe deja !' });
+        return false;
+      }
+      return models.typemateriel
+        .update(req.body, { where: { id: req.body.id } })
+        .then((result1) => {
+          res.status(201).json({
+            message: 'la category a été modifié avec succés ',
+            category: result1,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json({ error: `Something went wrong${error}` });
+        });
+    }).catch((error) => {
       console.log(error);
-      res.status(500).json({ error: `Something went wrong${error}` });
+      res.status(500).json({
+        error: 'Something went wrong',
+      });
     });
 };

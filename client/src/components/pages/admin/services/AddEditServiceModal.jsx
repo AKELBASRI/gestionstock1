@@ -4,7 +4,7 @@ import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
 
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
+
 import { useStyles } from "../../../../core/styleModalForm";
 import {
   Button,
@@ -15,7 +15,9 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { useForm } from "react-hook-form";
-import { FetchService } from "../../../../store/actions";
+
+import customAxios from "../../../../axios/CustomAxios";
+import Actions from "../../../../store/actions";
 function AddEditServiceModal(Props) {
   const {
     register,
@@ -45,17 +47,10 @@ function AddEditServiceModal(Props) {
   }, [service, Props.show]);
 
   const AddService = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/service/create/${user.Mle}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .post(`/service/create/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -66,7 +61,6 @@ function AddEditServiceModal(Props) {
             }
           );
         } else {
-          //props.history.push('/');
           toastr.success(
             `Le service ${data.object.service_name}  est crée avec succés `,
             "Nouveau Service",
@@ -75,28 +69,21 @@ function AddEditServiceModal(Props) {
             }
           );
           reset();
-          dispatch(FetchService());
+          dispatch(new Actions().FetchService());
           Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   const updateService = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/service/update/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .put(`/service/update/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -107,7 +94,7 @@ function AddEditServiceModal(Props) {
             }
           );
         } else {
-          dispatch(FetchService());
+          dispatch(new Actions().FetchService());
           //props.history.push('/');
           toastr.success(
             `Le service ${data.object.service_name}  est modifié avec succés `,
@@ -122,7 +109,7 @@ function AddEditServiceModal(Props) {
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });

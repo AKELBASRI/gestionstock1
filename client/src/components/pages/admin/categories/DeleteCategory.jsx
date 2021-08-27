@@ -3,20 +3,16 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
+import customAxios from "../../../../axios/CustomAxios";
 
 const handleClickDelete = (category, Actiongetcategories) => {
-  const { user, token } = isAuthenticated();
-  fetch(`${API_URL}/category/deletecategory/${user.Mle}`, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ id: category.id }),
-  })
-    .then((res) => res.json())
+  const { user } = isAuthenticated();
+  customAxios
+    .delete(`category/deletecategory/${user.Mle}`, {
+      data: {
+        id: category.id,
+      },
+    })
     .then((res) => {
       if (res.error) {
         toastr.warning(
@@ -27,22 +23,33 @@ const handleClickDelete = (category, Actiongetcategories) => {
           }
         );
       } else {
-        //props.history.push('/');
-        toastr.success(
-          `La category type ${category.type}  est supprimé avec succés `,
-          "Suppression Agent",
-          {
-            positionClass: "toast-bottom-left",
-          }
-        );
-        Actiongetcategories();
+        if (res.error) {
+          toastr.warning(
+            res.error,
+            "S'il vous plaît Veuillez vérifier le Formulaire",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+        } else {
+          //props.history.push('/');
+          toastr.success(
+            `La category type ${category.type}  est supprimé avec succés `,
+            "Suppression Agent",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+          Actiongetcategories();
+        }
       }
     })
     .catch((err) => {
-      toastr.error(err, "Erreur du serveur", {
+      toastr.error(err.response.data.error, "Erreur du serveur", {
         positionClass: "toast-bottom-left",
       });
     });
+
   return null;
 };
 

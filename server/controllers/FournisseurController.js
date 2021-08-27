@@ -57,13 +57,29 @@ exports.deleteFournisseur = (req, res) => {
 };
 
 exports.updateFournisseur = (req, res) => {
-  models.fournisseur.update(req.body, { where: { idFournisseur: req.body.idFournisseur } })
-    .then((result) => {
-      res.status(201)
-        .json({ message: 'le Fournisseur a été modifié avec succés ', user: result });
-    })
-    .catch((error) => {
+  models.fournisseur
+    .findOne({ where: { NomFournisseur: req.body.NomFournisseur.trim() } }).then((result) => {
+      if (result) {
+        res.status(403).json({ error: 'Fournisseur existe deja !' });
+        return false;
+      }
+      return models.fournisseur.update(req.body, {
+        where:
+         { idFournisseur: req.body.idFournisseur },
+      })
+        .then((result1) => {
+          res.status(201)
+            .json({ message: 'le Fournisseur a été modifié avec succés ', user: result1 });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json({ error: `Something went wrong${error}` });
+        });
+    }).catch((error) => {
       console.log(error);
-      res.status(500).json({ error: `Something went wrong${error}` });
+      res.status(500).json({
+        error: 'Something went wrong',
+
+      });
     });
 };

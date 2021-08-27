@@ -54,20 +54,38 @@ exports.saveMateriel = (req, res) => {
     }).catch((error) => {
       console.log(error);
       res.status(500).json({
-        message: 'Something went wrong',
+        error: 'Something went wrong',
 
       });
     });
 };
 exports.updateMateriel = (req, res) => {
-  models.materiel.update(req.body, { where: { idmateriel: req.body.idmateriel } })
-    .then((result) => {
-      res.status(201)
-        .json({ message: 'le materiel a été modifié avec succés ', materiel: result });
-    })
-    .catch((error) => {
+  models.materiel
+    .findOne({
+      where: {
+        numeroinventaire: req.body.numeroinventaire.trim()
+      || true,
+      },
+    }).then((result) => {
+      if (result) {
+        res.status(403).json({ error: 'materiel existe deja !' });
+        return false;
+      }
+      return models.materiel.update(req.body, { where: { idmateriel: req.body.idmateriel } })
+        .then((result1) => {
+          res.status(201)
+            .json({ message: 'le materiel a été modifié avec succés ', materiel: result1 });
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json({ error: `Something went wrong${error}` });
+        });
+    }).catch((error) => {
       console.log(error);
-      res.status(500).json({ error: `Something went wrong${error}` });
+      res.status(500).json({
+        error: 'Something went wrong',
+
+      });
     });
 };
 

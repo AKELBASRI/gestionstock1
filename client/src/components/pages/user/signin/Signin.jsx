@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { API_URL } from "../../../../config";
+import { useDispatch } from "react-redux";
 import "./signin.css";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -13,6 +13,10 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import { ColorButton } from "../../../../core/styleModalForm";
+// import customAxios from "../../../../axios/CustomAxios";
+import axios from "axios";
+import { API_URL } from "../../../../config";
+import Actions from "../../../../store/actions";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -99,6 +103,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 function Signin(Props) {
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     Mle: "",
     password: "",
@@ -108,40 +113,74 @@ function Signin(Props) {
   };
   const submitSignin = (e) => {
     e.preventDefault();
-    fetch(`${API_URL}/signin`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
+
+    axios
+      .post(`${API_URL}/signin`, user)
+
       .then((res) => {
-        if (res.error) {
+        localStorage.setItem("jwt_info", JSON.stringify(res.data));
+        Props.history.push({
+          pathname: "/",
+          state: { state: true },
+        });
+        dispatch(new Actions().showorhide(true));
+        toastr.info("Authentification réussie", "Bienvenue", {
+          positionClass: "toast-top-right",
+        });
+      })
+      .catch((err) => {
+        if (
+          err.response.status === 404 ||
+          err.response.status === 400 ||
+          err.response.status === 401
+        ) {
           toastr.warning(
-            res.error,
+            "Matricule ou mot de passe est incorrecte ",
             "S'il vous plaît Veuillez vérifier le Formulaire",
             {
               positionClass: "toast-bottom-left",
             }
           );
         } else {
-          localStorage.setItem("jwt_info", JSON.stringify(res));
-          Props.history.push({
-            pathname: "/",
-            state: { state: true },
-          });
-          toastr.info("Authentification réussie", "Bienvenue", {
-            positionClass: "toast-top-right",
+          toastr.error(err.response.data.error, "Erreur du serveur", {
+            positionClass: "toast-bottom-left",
           });
         }
-      })
-      .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
-          positionClass: "toast-top-right",
-        });
       });
+    // fetch(`${API_URL}/signin`, {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(user),
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     if (res.error) {
+    //       toastr.warning(
+    //         res.error,
+    //         "S'il vous plaît Veuillez vérifier le Formulaire",
+    //         {
+    //           positionClass: "toast-bottom-left",
+    //         }
+    //       );
+    //     } else {
+    //       localStorage.setItem("jwt_info", JSON.stringify(res));
+    //       Props.history.push({
+    //         pathname: "/",
+    //         state: { state: true },
+    //       });
+    //       toastr.info("Authentification réussie", "Bienvenue", {
+    //         positionClass: "toast-top-right",
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     toastr.error(err.response.data.error, "Erreur du serveur", {
+    //       positionClass: "toast-top-right",
+    //     });
+    //   });
   };
 
   const classes = useStyles();

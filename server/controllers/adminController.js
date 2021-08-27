@@ -63,15 +63,16 @@ exports.updatepassword = (req, res) => {
 
 exports.updateAdmin = (req, res) => {
   models.admin.update(req.body, { where: { Mle: req.body.Mle } })
-    .then((result) => {
+    .then((result1) => {
       res.status(201)
-        .json({ message: "l'utilisateur a été modifié avec succés ", user: result });
+        .json({ message: "l'utilisateur a été modifié avec succés ", user: result1 });
     })
     .catch((error) => {
       console.log(error);
       res.status(500).json({ error: `Something went wrong${error}` });
     });
 };
+
 exports.deleteadmin = (req, res) => {
   models.admin.destroy({ where: { Mle: req.body.Mle } })
     .then((result) => {

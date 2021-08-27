@@ -5,7 +5,7 @@ import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
 
 import { isAuthenticated } from "../../../../auth/helpers";
-import { API_URL } from "../../../../config";
+
 import {
   Button,
   Dialog,
@@ -20,7 +20,9 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import { FetchCategory, FetchDesignation } from "../../../../store/actions";
+
+import customAxios from "../../../../axios/CustomAxios";
+import Actions from "../../../../store/actions";
 function AddEditDesignationModal(Props) {
   // const [errors, setErrors] = useState({});
   // const [categories, setCategories] = useState([]);
@@ -45,7 +47,7 @@ function AddEditDesignationModal(Props) {
   } = useForm();
   useEffect(() => {
     if (!categories) {
-      dispatch(FetchCategory());
+      dispatch(new Actions().FetchCategory());
     }
     if (designation) {
       setValue("object", designation);
@@ -58,17 +60,10 @@ function AddEditDesignationModal(Props) {
   }, [designation, Props.show]);
 
   const AddDesignation = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/designations/create/${user.Mle}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+    customAxios
+      .post(`/designations/create/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -79,7 +74,6 @@ function AddEditDesignationModal(Props) {
             }
           );
         } else {
-          //props.history.push('/');
           toastr.success(
             `La designation ${data.object.designation}  a été crée avec succés `,
             "Nouvelle Designation",
@@ -88,28 +82,22 @@ function AddEditDesignationModal(Props) {
             }
           );
           reset();
-          dispatch(FetchDesignation());
+          dispatch(new Actions().FetchDesignation());
           Props.handleClose();
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });
   };
   const updateDesignation = (data) => {
-    const { user, token } = isAuthenticated();
-    fetch(`${API_URL}/designations/update/${user.Mle}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data.object),
-    })
-      .then((res) => res.json())
+    const { user } = isAuthenticated();
+
+    customAxios
+      .put(`/designations/update/${user.Mle}`, JSON.stringify(data.object))
+
       .then((res) => {
         if (res.error) {
           toastr.warning(
@@ -120,8 +108,7 @@ function AddEditDesignationModal(Props) {
             }
           );
         } else {
-          dispatch(FetchDesignation());
-          //props.history.push('/');
+          dispatch(new Actions().FetchDesignation());
           toastr.success(
             `Designation ${data.object.designation}  est modifié avec succés `,
             "Modification designation",
@@ -135,7 +122,7 @@ function AddEditDesignationModal(Props) {
         }
       })
       .catch((err) => {
-        toastr.error(err, "Erreur du serveur", {
+        toastr.error(err.response.data.error, "Erreur du serveur", {
           positionClass: "toast-bottom-left",
         });
       });

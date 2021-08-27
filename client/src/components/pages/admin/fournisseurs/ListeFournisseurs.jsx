@@ -12,7 +12,8 @@ import { Box, makeStyles } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import { ColorButton } from "../../../../core/styleModalForm";
-import { FetchFournisseur } from "../../../../store/actions";
+import Actions from "../../../../store/actions";
+
 function ListeFournisseur() {
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,14 +34,14 @@ function ListeFournisseur() {
   const [fournisseur, setFournisseur] = useState({});
   useEffect(() => {
     if (!listFournisseurs) {
-      dispatch(FetchFournisseur());
+      dispatch(new Actions().FetchFournisseur());
     }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetFournisseurs = () => {
-    dispatch(FetchFournisseur());
+    dispatch(new Actions().FetchFournisseur());
   };
   const classes = useStyles();
   const buttons = (dataIndex) => {

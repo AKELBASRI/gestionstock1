@@ -5,7 +5,7 @@ import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from "./ChangePasswordModal";
 import AddEditUserModal from "./AddEditUserModal";
-import { FetchAdmin } from "../../../../store/actions";
+import Actions from "../../../../store/actions";
 import handleClickDeleteAdmin from "./DeleteAdmin";
 import { Delete } from "../../../../core/util";
 import CreateIcon from "@material-ui/icons/Create";
@@ -43,11 +43,11 @@ function ListUsers() {
   };
   useEffect(() => {
     if (!listusers) {
-      dispatch(FetchAdmin());
+      dispatch(new Actions().FetchAdmin());
     }
   }, [dispatch]);
   const Actiongetusers = () => {
-    dispatch(FetchAdmin());
+    dispatch(new Actions().FetchAdmin()());
   };
 
   const buttons = (dataIndex) => {
