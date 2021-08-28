@@ -1,8 +1,10 @@
 const expressJWT = require('express-jwt');
+const dotenv = require('dotenv');
 
+dotenv.config();
 exports.requireSignIn = expressJWT({
   // secret: process.env.JWT_KEY,
-  secret: 'secret',
+  secret: process.env.JWT_KEY,
   algorithms: ['HS256'],
   userProperty: 'auth',
 });

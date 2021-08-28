@@ -22,7 +22,7 @@
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5",
-    "pm2": "^5.1.0",
+    "pm2": "^5.1.1",
     "sequelize": "^6.6.2",
     "sequelize-auto": "^0.8.2"
   },

@@ -1,1 +1,4 @@
-export const API_URL = "http://localhost:8000/api";
+import dotenv from "dotenv";
+dotenv.config();
+export const API_URL = process.env.REACT_APP_API_URL;
+console.log(API_URL);
