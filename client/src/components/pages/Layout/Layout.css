@@ -10,13 +10,11 @@
     background-color: #011627;
     margin-top: calc(100% - 80%);
 } */
-@media screen and (max-width: 280px) {
+/* @media screen and (max-width: 280px) {
   .bg-blue {
-    position: absolute;
-    z-index: 52551515151;
   }
-}
-/* #main{
+} */
+/* #main{w
   margin-left: 270px ;
 }
 #mainclose{
@@ -25,16 +23,14 @@
 #mainsignin{
     margin-left: 0px;
 } */
-@media screen and (max-width: 728px) {
+/* @media screen and (max-width: 728px) {
   #main {
-    margin-left: 90px !important;
   }
 }
 @media screen and (max-width: 280px) {
   #main {
-    margin-left: 30px !important;
   }
-}
+} */
 /* @media screen and (max-width: 1024px) {
     .bg-blue {
         color: #fff;

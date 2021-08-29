@@ -6,18 +6,29 @@ import CasinoIcon from "@material-ui/icons/Casino";
 import DevicesIcon from "@material-ui/icons/Devices";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+
 export const SidebarData = [
   {
     title: "Home",
     path: "/",
-    icon: <HomeIcon />,
+    icon: <HomeIcon style={{ width: "20px", height: "20px" }} />,
   },
   {
     title: "Administration",
     path: "#",
-    icon: <SupervisorAccountIcon />,
-    iconClosed: <ArrowDropDownIcon className="caret" />,
-    iconOpened: <ArrowDropUpIcon className="caret" />,
+    icon: <SupervisorAccountIcon style={{ width: "20px", height: "20px" }} />,
+    iconClosed: (
+      <ArrowDropDownIcon
+        className="caret"
+        style={{ width: "20px", height: "20px" }}
+      />
+    ),
+    iconOpened: (
+      <ArrowDropUpIcon
+        className="caret"
+        style={{ width: "20px", height: "20px" }}
+      />
+    ),
 
     subNav: [
       {
@@ -46,16 +57,36 @@ export const SidebarData = [
     title: "Categories",
     path: "/categories",
     icon: <ListAltIcon />,
-    iconClosed: <ArrowDropDownIcon className="caret" />,
-    iconOpened: <ArrowDropUpIcon className="caret" />,
+    iconClosed: (
+      <ArrowDropDownIcon
+        className="caret"
+        style={{ width: "20px", height: "20px" }}
+      />
+    ),
+    iconOpened: (
+      <ArrowDropUpIcon
+        className="caret"
+        style={{ width: "20px", height: "20px" }}
+      />
+    ),
   },
 
   {
     title: "Liste des Designations",
     path: "/listdesignation",
-    icon: <CasinoIcon />,
-    iconClosed: <ArrowDropDownIcon className="caret" />,
-    iconOpened: <ArrowDropUpIcon className="caret" />,
+    icon: <CasinoIcon style={{ width: "20px", height: "20px" }} />,
+    iconClosed: (
+      <ArrowDropDownIcon
+        className="caret"
+        style={{ width: "20px", height: "20px" }}
+      />
+    ),
+    iconOpened: (
+      <ArrowDropUpIcon
+        className="caret"
+        style={{ width: "20px", height: "20px" }}
+      />
+    ),
     // iconClosed: <span className="fas fa-caret-down caret"></span>,
     // iconOpened: <span className="fas fa-caret-up caret"></span>,
   },
@@ -63,6 +94,6 @@ export const SidebarData = [
   {
     title: "Saisie et Affectation Materiels",
     path: "/addmtrl",
-    icon: <DevicesIcon />,
+    icon: <DevicesIcon style={{ width: "20px", height: "20px" }} />,
   },
 ];
