@@ -74,9 +74,19 @@ function AddEditServiceModal(Props) {
         }
       })
       .catch((err) => {
-        toastr.error(err.response.data.error, "Erreur du serveur", {
-          positionClass: "toast-bottom-left",
-        });
+        if (err.response.status >= 400 && err.response.status < 500) {
+          toastr.warning(
+            err.response.data.error,
+            "S'il vous plaît Veuillez vérifier le Formulaire",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+        } else {
+          toastr.error(err.response.data.error, "Erreur du serveur", {
+            positionClass: "toast-bottom-left",
+          });
+        }
       });
   };
   const updateService = (data) => {
@@ -109,9 +119,19 @@ function AddEditServiceModal(Props) {
         }
       })
       .catch((err) => {
-        toastr.error(err.response.data.error, "Erreur du serveur", {
-          positionClass: "toast-bottom-left",
-        });
+        if (err.response.status >= 400 && err.response.status < 500) {
+          toastr.warning(
+            err.response.data.error,
+            "S'il vous plaît Veuillez vérifier le Formulaire",
+            {
+              positionClass: "toast-bottom-left",
+            }
+          );
+        } else {
+          toastr.error(err.response.data.error, "Erreur du serveur", {
+            positionClass: "toast-bottom-left",
+          });
+        }
       });
   };
   const onSubmit = (data) => {

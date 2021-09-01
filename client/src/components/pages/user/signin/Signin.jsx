@@ -129,19 +129,16 @@ function Signin(Props) {
         });
       })
       .catch((err) => {
-        if (
-          err.response.status === 404 ||
-          err.response.status === 400 ||
-          err.response.status === 401
-        ) {
+        if (err.response.status >= 400 && err.response.status < 500) {
           toastr.warning(
-            "Matricule ou mot de passe est incorrecte ",
+            err.response.data.error,
             "S'il vous plaît Veuillez vérifier le Formulaire",
             {
               positionClass: "toast-bottom-left",
             }
           );
         } else {
+          console.log(err.response.status);
           toastr.error(err.response.data.error, "Erreur du serveur", {
             positionClass: "toast-bottom-left",
           });
