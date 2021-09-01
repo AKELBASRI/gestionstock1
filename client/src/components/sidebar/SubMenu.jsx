@@ -30,13 +30,12 @@ const useStyles = makeStyles((theme) => ({
     padding: "16px 16px !important",
   },
   showleft: {
-    zindex: 45544,
     position: "fixed !important",
     display: "block",
     left: "57px",
     transform: "translateY(-25%)",
     backgroundColor: "#011627",
-    transition: "all 1s ease",
+    transition: "transform 1s ease",
   },
 }));
 

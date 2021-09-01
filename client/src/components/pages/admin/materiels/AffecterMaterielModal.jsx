@@ -265,7 +265,7 @@ function AffecterMaterielModal(Props) {
             </Button>
 
             <Button color="primary" variant="contained" type="submit">
-              {material1 ? "Modifier" : "Ajout"}
+              Affecter
             </Button>
           </DialogActions>
         </form>
