@@ -7,6 +7,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
 import MuiListItem from "@material-ui/core/ListItem";
+import { Fade } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -35,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
     left: "57px",
     transform: "translateY(-25%)",
     backgroundColor: "#011627",
-    transition: "transform 1s ease",
   },
 }));
 
@@ -129,23 +129,37 @@ function SubMenu(Props) {
             Props.item1.item.subNav &&
             Props.item1.item.subNav.map((item, index) => {
               return (
-                <Collapse key={index} in={subnav} timeout="auto" unmountOnExit>
-                  <List key={index} component="div" disablePadding>
-                    <ListItem
-                      button
-                      component={Link}
-                      to={item.path}
-                      style={isActive(Props.props.history, item.path)}
-                      className={
-                        Props.state ? classes.nested : classes.leftitem
-                      }
-                    >
-                      <ListItemText classes={{ primary: classes.listItemText }}>
-                        {item.title}
-                      </ListItemText>
-                    </ListItem>
-                  </List>
-                </Collapse>
+                <Fade
+                  key={index}
+                  in={subnav}
+                  style={{ transformOrigin: "0 0 0" }}
+                  {...(subnav ? { timeout: 1200 } : {})}
+                >
+                  <Collapse
+                    key={index}
+                    in={subnav}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <List key={index} component="div" disablePadding>
+                      <ListItem
+                        button
+                        component={Link}
+                        to={item.path}
+                        style={isActive(Props.props.history, item.path)}
+                        className={
+                          Props.state ? classes.nested : classes.leftitem
+                        }
+                      >
+                        <ListItemText
+                          classes={{ primary: classes.listItemText }}
+                        >
+                          {item.title}
+                        </ListItemText>
+                      </ListItem>
+                    </List>
+                  </Collapse>
+                </Fade>
               );
             })}
         </div>
