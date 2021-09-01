@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "16px 16px !important",
   },
   showleft: {
-    zindex: -45544,
+    zindex: 45544,
     position: "fixed !important",
     display: "block",
     left: "57px",
