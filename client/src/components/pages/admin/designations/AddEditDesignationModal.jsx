@@ -22,7 +22,8 @@ import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
 
 import customAxios from "../../../../axios/CustomAxios";
-import Actions from "../../../../store/actions";
+import { FetchCategory, FetchDesignation } from "../../../../store/actions";
+
 function AddEditDesignationModal(Props) {
   // const [errors, setErrors] = useState({});
   // const [categories, setCategories] = useState([]);
@@ -47,7 +48,7 @@ function AddEditDesignationModal(Props) {
   } = useForm();
   useEffect(() => {
     if (!categories) {
-      dispatch(new Actions().FetchCategory());
+      dispatch(FetchCategory());
     }
     if (designation) {
       setValue("object", designation);
@@ -82,7 +83,7 @@ function AddEditDesignationModal(Props) {
             }
           );
           reset();
-          dispatch(new Actions().FetchDesignation());
+          dispatch(FetchDesignation());
           Props.handleClose();
         }
       })
@@ -118,7 +119,7 @@ function AddEditDesignationModal(Props) {
             }
           );
         } else {
-          dispatch(new Actions().FetchDesignation());
+          dispatch(FetchDesignation());
           toastr.success(
             `Designation ${data.object.designation}  est modifié avec succés `,
             "Modification designation",

@@ -19,9 +19,17 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import Actions from "../../../../store/actions";
+
 import customAxios from "../../../../axios/CustomAxios";
 import { getdesignationbytype } from "../../../../core/ApiCore";
+import {
+  FetchAgencies,
+  FetchAgent,
+  FetchMateriels,
+  FetchService,
+  FetchTotalAvailableMateriels,
+  FetchTotalMateriels,
+} from "../../../../store/actions";
 
 function AffecterMaterielModal(Props) {
   const [, setDesignation, Designations] = useStateRef([]);
@@ -98,9 +106,9 @@ function AffecterMaterielModal(Props) {
             }
           );
           reset();
-          dispatch(new Actions().FetchMateriels());
-          dispatch(new Actions().FetchTotalAvailableMateriels());
-          dispatch(new Actions().FetchTotalMateriels());
+          dispatch(FetchMateriels());
+          dispatch(FetchTotalAvailableMateriels());
+          dispatch(FetchTotalMateriels());
           Props.handleClose();
         }
       })
@@ -122,13 +130,13 @@ function AffecterMaterielModal(Props) {
   };
   useEffect(() => {
     if (!ListeService) {
-      dispatch(new Actions().FetchService());
+      dispatch(FetchService());
     }
     if (!ListAgents) {
-      dispatch(new Actions().FetchAgent());
+      dispatch(FetchAgent());
     }
     if (!Listagencies) {
-      dispatch(new Actions().FetchAgencies());
+      dispatch(FetchAgencies());
     }
     if (material1) {
       console.log(material1);

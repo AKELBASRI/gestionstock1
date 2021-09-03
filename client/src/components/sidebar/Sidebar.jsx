@@ -13,7 +13,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 import { useDispatch, useSelector } from "react-redux";
-import Actions from "../../store/actions";
+import { showorhide } from "../../store/actions";
 import SubMenu from "./SubMenu";
 import { isAuthenticated } from "../../auth/helpers";
 
@@ -34,12 +34,12 @@ const Sidebar = (props) => {
     });
   };
   const handleDrawerOpen = () => {
-    dispatch(new Actions().showorhide(true));
+    dispatch(showorhide(true));
     // setOpen(true);
   };
 
   const handleDrawerClose = () => {
-    dispatch(new Actions().showorhide(false));
+    dispatch(showorhide(false));
     // setOpen(false);
   };
   function useWindowSize() {

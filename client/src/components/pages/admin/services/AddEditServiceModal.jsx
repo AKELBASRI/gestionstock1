@@ -17,7 +17,8 @@ import {
 import { useForm } from "react-hook-form";
 
 import customAxios from "../../../../axios/CustomAxios";
-import Actions from "../../../../store/actions";
+import { FetchService } from "../../../../store/actions";
+
 function AddEditServiceModal(Props) {
   const {
     register,
@@ -69,7 +70,7 @@ function AddEditServiceModal(Props) {
             }
           );
           reset();
-          dispatch(new Actions().FetchService());
+          dispatch(FetchService());
           Props.handleClose();
         }
       })
@@ -104,7 +105,7 @@ function AddEditServiceModal(Props) {
             }
           );
         } else {
-          dispatch(new Actions().FetchService());
+          dispatch(FetchService());
           //props.history.push('/');
           toastr.success(
             `Le service ${data.object.service_name}  est modifié avec succés `,

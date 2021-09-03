@@ -7,7 +7,7 @@ import { isAuthenticated } from "../../auth/helpers";
 import { SidebarData } from "../sidebar/SidebarData";
 import SubMenu from "./SubMenuancien";
 import styled from "styled-components";
-import Actions from "../../store/actions";
+import { showorhide } from "../../store/actions";
 
 const Sidebar = (props) => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Sidebar = (props) => {
     });
   };
   const openNav = () => {
-    dispatch(new Actions().showorhide(true));
+    dispatch(showorhide(true));
     if (sidebar.current) {
       sidebar.current.style.width = "322px";
       setactive(false);
@@ -34,7 +34,7 @@ const Sidebar = (props) => {
   };
 
   const closeNav = () => {
-    dispatch(new Actions().showorhide(false));
+    dispatch(showorhide(false));
     if (sidebar.current) {
       sidebar.current.style.width = "90px";
       sidebar.current.classList.add("active");

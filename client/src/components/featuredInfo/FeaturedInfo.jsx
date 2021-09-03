@@ -2,7 +2,8 @@ import { Box, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { flattenObject } from "../../core/ApiCore";
-import Actions from "../../store/actions";
+import { FetchTotalMateriels } from "../../store/actions";
+
 import FeaturedItem from "./FeaturedItem";
 function FeaturedInfo() {
   const dispatch = useDispatch();
@@ -15,10 +16,10 @@ function FeaturedInfo() {
   );
   useEffect(() => {
     if (!listTotalCountbyType) {
-      dispatch(new Actions().FetchTotalMateriels());
+      dispatch(FetchTotalMateriels());
     }
     if (!listTotalAvailableByType) {
-      dispatch(new Actions().FetchTotalAvailableMateriels());
+      dispatch(FetchTotalMateriels());
     }
   }, []);
 

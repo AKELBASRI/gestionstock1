@@ -11,7 +11,7 @@ import { Box, makeStyles } from "@material-ui/core";
 import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import { ColorButton } from "../../../../core/styleModalForm";
-import Actions from "../../../../store/actions";
+import { FetchService } from "../../../../store/actions";
 
 function ListServices() {
   const useStyles = makeStyles((theme) => ({
@@ -33,14 +33,14 @@ function ListServices() {
   const [service, setservice] = useState({});
   useEffect(() => {
     if (!listservices) {
-      dispatch(new Actions().FetchService());
+      dispatch(FetchService());
     }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetservices = () => {
-    dispatch(new Actions().FetchService());
+    dispatch(FetchService());
   };
   const classes = useStyles();
   const buttons = (dataIndex) => {

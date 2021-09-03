@@ -16,8 +16,9 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { useForm } from "react-hook-form";
-import Actions from "../../../../store/actions";
+
 import customAxios from "../../../../axios/CustomAxios";
+import { FetchFournisseur } from "../../../../store/actions";
 
 function AddEditFournisseurModal(Props) {
   const {
@@ -71,7 +72,7 @@ function AddEditFournisseurModal(Props) {
             }
           );
           reset();
-          dispatch(new Actions().FetchFournisseur());
+          dispatch(FetchFournisseur());
           Props.handleClose();
         }
       })
@@ -106,7 +107,7 @@ function AddEditFournisseurModal(Props) {
             }
           );
         } else {
-          dispatch(new Actions().FetchFournisseur());
+          dispatch(FetchFournisseur());
           //props.history.push('/');
           toastr.success(
             `Le fournisseur ${data.object.NomFournisseur}  est modifié avec succés `,

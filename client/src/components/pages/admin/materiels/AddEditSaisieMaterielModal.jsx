@@ -28,8 +28,15 @@ import {
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import Actions from "../../../../store/actions";
+
 import customAxios from "../../../../axios/CustomAxios";
+import {
+  FetchCategory,
+  FetchFournisseur,
+  FetchMateriels,
+  FetchTotalAvailableMateriels,
+  FetchTotalMateriels,
+} from "../../../../store/actions";
 
 const AddEditSaisieMaterielModal = (Props) => {
   const [date, setDate] = useState(null);
@@ -66,10 +73,10 @@ const AddEditSaisieMaterielModal = (Props) => {
   );
   useEffect(() => {
     if (!categories) {
-      dispatch(new Actions().FetchCategory());
+      dispatch(FetchCategory());
     }
     if (!Fournisseurs) {
-      dispatch(new Actions().FetchFournisseur());
+      dispatch(FetchFournisseur());
     }
 
     if (material1) {
@@ -154,9 +161,9 @@ const AddEditSaisieMaterielModal = (Props) => {
             }
           );
           reset();
-          dispatch(new Actions().FetchMateriels());
-          dispatch(new Actions().FetchTotalAvailableMateriels());
-          dispatch(new Actions().FetchTotalMateriels());
+          dispatch(FetchMateriels());
+          dispatch(FetchTotalAvailableMateriels());
+          dispatch(FetchTotalMateriels());
           Props.handleClose();
         }
       })
@@ -207,9 +214,9 @@ const AddEditSaisieMaterielModal = (Props) => {
                 positionClass: "toast-bottom-left",
               }
             );
-            dispatch(new Actions().FetchTotalAvailableMateriels());
-            dispatch(new Actions().FetchTotalMateriels());
-            dispatch(new Actions().FetchMateriels());
+            dispatch(FetchTotalAvailableMateriels());
+            dispatch(FetchTotalMateriels());
+            dispatch(FetchMateriels());
           }
         })
         .catch((err) => {

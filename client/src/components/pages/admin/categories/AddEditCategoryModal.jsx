@@ -18,7 +18,7 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import { useForm } from "react-hook-form";
 import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
 import customAxios from "../../../../axios/CustomAxios";
-import Actions from "../../../../store/actions";
+import { FetchCategory } from "../../../../store/actions";
 
 function AddEditCategoryModal(Props) {
   const {
@@ -80,7 +80,7 @@ function AddEditCategoryModal(Props) {
             }
           );
 
-          dispatch(new Actions().FetchCategory());
+          dispatch(FetchCategory());
           Props.handleClose();
         }
       })
@@ -106,7 +106,7 @@ function AddEditCategoryModal(Props) {
       .put(`/category/update/${user.Mle}`, JSON.stringify(data.object))
 
       .then(() => {
-        dispatch(new Actions().FetchCategory());
+        dispatch(FetchCategory());
         //props.history.push('/');
         toastr.success(
           `category ${data.object.type}  est modifié avec succés `,

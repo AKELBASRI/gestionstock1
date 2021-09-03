@@ -13,108 +13,77 @@ import {
   FETCH_TOTAL_AVAILABLE_MATERIELS,
 } from "./constants";
 
-export default class Actions {
-  constructor() {
-    this.user = isAuthenticated().user;
-    this.headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${isAuthenticated().token}`,
-    };
-  }
+const { user } = isAuthenticated();
+export const FetchAdmin = () => {
+  return {
+    type: FETCH_ADMINS,
+    request: { url: `/admin/alladmins/${user.Mle}` },
+  };
+};
+export const FetchAgent = () => {
+  return {
+    type: FETCH_AGENTS,
+    request: { url: `/agents/all/${user.Mle}` },
+  };
+};
+export const FetchCategory = () => {
+  return {
+    type: FETCH_CATEGORY,
+    request: { url: `/category/allcategories/${user.Mle}` },
+  };
+};
+export const FetchDesignation = () => {
+  return {
+    type: FETCH_DESIGNATION,
+    request: { url: `/designations/all/${user.Mle}` },
+  };
+};
+export const FetchFournisseur = () => {
+  return {
+    type: FETCH_FOURNISSEUR,
+    request: { url: `/fournisseurs/all/${user.Mle}` },
+  };
+};
+export const FetchService = () => {
+  return {
+    type: FETCH_SERVICE,
+    request: { url: `/service/allservices/${user.Mle}` },
+  };
+};
+export const FetchMateriels = () => {
+  return {
+    type: FETCH_MATERIELS,
+    request: { url: `/materiels/all/${user.Mle}` },
+  };
+};
 
-  FetchAdmin() {
-    const headers = this.headers;
-    const mle = this.user.Mle;
-    return {
-      type: FETCH_ADMINS,
-      request: { url: `/admin/alladmins/${mle}`, headers },
-    };
-  }
-  FetchAgent() {
-    const User = this.user;
-    const headers = this.headers;
-    return {
-      type: FETCH_AGENTS,
-      request: { url: `/agents/all/${User.Mle}`, headers },
-    };
-  }
-  FetchCategory() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_CATEGORY,
-      request: { url: `/category/allcategories/${User.Mle}`, headers },
-    };
-  }
-  FetchDesignation() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_DESIGNATION,
-      request: { url: `/designations/all/${User.Mle}`, headers },
-    };
-  }
-  FetchFournisseur() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_FOURNISSEUR,
-      request: { url: `/fournisseurs/all/${User.Mle}`, headers },
-    };
-  }
-  FetchService() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_SERVICE,
-      request: { url: `/service/allservices/${User.Mle}`, headers },
-    };
-  }
-  FetchMateriels() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_MATERIELS,
-      request: { url: `/materiels/all/${User.Mle}`, headers },
-    };
-  }
+export const FetchAgencies = () => {
+  return {
+    type: FETCH_AGENCIES,
+    request: { url: `/agencies/all/${user.Mle}` },
+  };
+};
+export const FetchTotalMateriels = () => {
+  const User = this.user;
+  return {
+    type: FETCH_TOTAL_MATERIELS,
 
-  FetchAgencies() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_AGENCIES,
-      request: { url: `/agencies/all/${User.Mle}`, headers },
-    };
-  }
-  FetchTotalMateriels() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_TOTAL_MATERIELS,
-
-      request: {
-        url: `/materiels/countMaterielbyType/${User.Mle}`,
-        headers,
-      },
-    };
-  }
-  FetchTotalAvailableMateriels() {
-    const headers = this.headers;
-    const User = this.user;
-    return {
-      type: FETCH_TOTAL_AVAILABLE_MATERIELS,
-      request: {
-        url: `/materiels/countMaterielavailablebyType/${User.Mle}`,
-        headers,
-      },
-    };
-  }
-  showorhide(state) {
-    return {
-      type: SHOW_HIDE,
-      payload: state,
-    };
-  }
-}
+    request: {
+      url: `/materiels/countMaterielbyType/${User.Mle}`,
+    },
+  };
+};
+export const FetchTotalAvailableMateriels = () => {
+  return {
+    type: FETCH_TOTAL_AVAILABLE_MATERIELS,
+    request: {
+      url: `/materiels/countMaterielavailablebyType/${user.Mle}`,
+    },
+  };
+};
+export const showorhide = (state) => {
+  return {
+    type: SHOW_HIDE,
+    payload: state,
+  };
+};

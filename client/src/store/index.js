@@ -1,13 +1,14 @@
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { handleRequests } from "@redux-requests/core";
-import { createDriver } from "@redux-requests/fetch";
-import { API_URL } from "../config";
+import { createDriver } from "@redux-requests/axios";
+
 import { showorhideReducer } from "./reducers";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
 
 import crossBrowserListener from "./reduxpersist-listener";
+import axios from "../axios/CustomAxios";
 
 const persistConfig = {
   key: "root",
@@ -17,11 +18,7 @@ const persistConfig = {
 
 export const configureStore = () => {
   const { requestsReducer, requestsMiddleware } = handleRequests({
-    driver: createDriver(window.fetch, {
-      baseURL: API_URL,
-
-      AbortController: window.AbortController,
-    }),
+    driver: createDriver(axios),
   });
 
   const reducers = combineReducers({

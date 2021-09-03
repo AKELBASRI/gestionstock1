@@ -10,8 +10,9 @@ import { useDispatch } from "react-redux";
 
 import { API_URL } from "../../config";
 import { isAuthenticated } from "../../auth/helpers";
-import Actions from "../../store/actions";
+
 import axios from "axios";
+import { showorhide } from "../../store/actions";
 
 function Topbar(Props) {
   const signout = () => {
@@ -24,7 +25,7 @@ function Topbar(Props) {
         });
         localStorage.removeItem("jwt_info");
         Props.history.push("/signin");
-        dispatch(new Actions().showorhide(false));
+        dispatch(showorhide(false));
       })
       .catch((err) => {
         if (err.response.status >= 400 && err.response.status < 500) {
@@ -48,7 +49,7 @@ function Topbar(Props) {
     //     });
     //     localStorage.removeItem("jwt_info");
     //     Props.history.push("/signin");
-    //     dispatch(new Actions().showorhide(false));
+    //     dispatch(showorhide(false));
     //   })
     //   .catch();
   };

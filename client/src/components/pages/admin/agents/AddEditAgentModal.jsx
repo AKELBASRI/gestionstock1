@@ -19,8 +19,13 @@ import "toastr/build/toastr.css";
 import { isAuthenticated } from "../../../../auth/helpers";
 
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-import Actions from "../../../../store/actions";
+
 import customAxios from "../../../../axios/CustomAxios";
+import {
+  FetchAgencies,
+  FetchAgent,
+  FetchService,
+} from "../../../../store/actions";
 
 function AddEditAgentModal(Props) {
   const { agent_number, show, handleClose } = Props;
@@ -55,10 +60,10 @@ function AddEditAgentModal(Props) {
   );
   useEffect(() => {
     if (!services) {
-      dispatch(new Actions().FetchService());
+      dispatch(FetchService());
     }
     if (!agencies) {
-      dispatch(new Actions().FetchAgencies());
+      dispatch(FetchAgencies());
     }
 
     if (usernormal) {
@@ -93,7 +98,7 @@ function AddEditAgentModal(Props) {
           );
 
           reset();
-          dispatch(new Actions().FetchAgent());
+          dispatch(FetchAgent());
           handleClose();
         }
       })
@@ -138,7 +143,7 @@ function AddEditAgentModal(Props) {
             }
           );
           reset();
-          dispatch(new Actions().FetchAgent());
+          dispatch(FetchAgent());
         }
       })
       .catch((err) => {

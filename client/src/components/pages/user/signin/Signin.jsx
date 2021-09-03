@@ -16,7 +16,7 @@ import { ColorButton } from "../../../../core/styleModalForm";
 // import customAxios from "../../../../axios/CustomAxios";
 import axios from "axios";
 import { API_URL } from "../../../../config";
-import Actions from "../../../../store/actions";
+import { showorhide } from "../../../../store/actions";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -123,7 +123,7 @@ function Signin(Props) {
           pathname: "/",
           state: { state: true },
         });
-        dispatch(new Actions().showorhide(true));
+        dispatch(showorhide(true));
         toastr.info("Authentification réussie", "Bienvenue", {
           positionClass: "toast-top-right",
         });

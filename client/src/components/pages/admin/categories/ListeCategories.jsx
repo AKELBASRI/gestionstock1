@@ -11,7 +11,7 @@ import AddEditCategoryModal from "./AddEditCategoryModal";
 import { Delete } from "../../../../core/util";
 import { Box, makeStyles } from "@material-ui/core";
 import { ColorButton } from "../../../../core/styleModalForm";
-import Actions from "../../../../store/actions";
+import { FetchCategory } from "../../../../store/actions";
 
 function ListeCategories() {
   const dispatch = useDispatch();
@@ -26,14 +26,14 @@ function ListeCategories() {
   const [category, setcategory] = useState({});
   useEffect(() => {
     if (!listcategories) {
-      dispatch(new Actions().FetchCategory());
+      dispatch(FetchCategory());
     }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
   };
   const actiongetcategories = () => {
-    dispatch(new Actions().FetchCategory());
+    dispatch(FetchCategory());
   };
   const useStyles = makeStyles((theme) => ({
     root: {

@@ -13,7 +13,8 @@ import { flattenObject } from "../../../../core/ApiCore";
 import { Delete } from "../../../../core/util";
 import { ColorButton } from "../../../../core/styleModalForm";
 import { Box, makeStyles } from "@material-ui/core";
-import Actions from "../../../../store/actions";
+import { FetchAgent } from "../../../../store/actions";
+
 function ListAgents() {
   const dispatch = useDispatch();
   const [user, setUser] = useState({});
@@ -33,11 +34,11 @@ function ListAgents() {
 
   useEffect(() => {
     if (!listagents) {
-      dispatch(new Actions().FetchAgent());
+      dispatch(FetchAgent());
     }
   }, [dispatch]);
   const Actiongetagents = () => {
-    dispatch(new Actions().FetchAgent());
+    dispatch(FetchAgent());
   };
   if (listagents) {
     listagentsf = listagents.map((_data) => {

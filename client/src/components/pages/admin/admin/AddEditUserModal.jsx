@@ -13,8 +13,9 @@ import {
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
-import Actions from "../../../../store/actions";
+
 import axios from "../../../../axios/CustomAxios";
+import { FetchAdmin } from "../../../../store/actions";
 function AddEditUserModal(Props) {
   const {
     register,
@@ -67,7 +68,7 @@ function AddEditUserModal(Props) {
             }
           );
           // setUser({ Mle: "", password: "", codesce: "", nom: "" });
-          dispatch(new Actions().FetchAdmin());
+          dispatch(FetchAdmin());
           Props.handleClose();
         }
       })
@@ -110,7 +111,7 @@ function AddEditUserModal(Props) {
             }
           );
           // setUser({ Mle: "", password: "", codesce: "", nom: "" });
-          dispatch(new Actions().FetchAdmin());
+          dispatch(FetchAdmin());
           Props.handleClose();
         }
       })

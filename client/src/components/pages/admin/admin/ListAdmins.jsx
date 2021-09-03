@@ -5,7 +5,7 @@ import Layout from "../../Layout/Layout";
 import MUIDataTable from "mui-datatables";
 import ChangePasswordModal from "./ChangePasswordModal";
 import AddEditUserModal from "./AddEditUserModal";
-import Actions from "../../../../store/actions";
+
 import handleClickDeleteAdmin from "./DeleteAdmin";
 import { Delete } from "../../../../core/util";
 import CreateIcon from "@material-ui/icons/Create";
@@ -13,6 +13,7 @@ import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ClearIcon from "@material-ui/icons/Clear";
 import { Box, makeStyles } from "@material-ui/core";
 import { ColorButton } from "../../../../core/styleModalForm";
+import { FetchAdmin } from "../../../../store/actions";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -42,12 +43,14 @@ function ListUsers() {
     setUser(user);
   };
   useEffect(() => {
+    console.log(listusers);
     if (!listusers) {
-      dispatch(new Actions().FetchAdmin());
+      console.log(listusers);
+      dispatch(FetchAdmin());
     }
   }, [dispatch]);
   const Actiongetusers = () => {
-    dispatch(new Actions().FetchAdmin()());
+    dispatch(FetchAdmin()());
   };
 
   const buttons = (dataIndex) => {
