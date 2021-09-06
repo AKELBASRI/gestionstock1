@@ -64,12 +64,11 @@ export const FetchAgencies = () => {
   };
 };
 export const FetchTotalMateriels = () => {
-  const User = this.user;
   return {
     type: FETCH_TOTAL_MATERIELS,
 
     request: {
-      url: `/materiels/countMaterielbyType/${User.Mle}`,
+      url: `/materiels/countMaterielbyType/${user.Mle}`,
     },
   };
 };
