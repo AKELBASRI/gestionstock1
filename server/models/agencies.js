@@ -1,28 +1,29 @@
-module.exports = function agencies(sequelize, DataTypes) {
+const Sequelize = require('sequelize');
+module.exports = function(sequelize, DataTypes) {
   return sequelize.define('agencies', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
     },
     agency_name: {
       type: DataTypes.STRING(20),
-      allowNull: false,
-    },
+      allowNull: false
+    }
   }, {
     sequelize,
     tableName: 'agencies',
     timestamps: false,
     indexes: [
       {
-        name: 'PRIMARY',
+        name: "PRIMARY",
         unique: true,
-        using: 'BTREE',
+        using: "BTREE",
         fields: [
-          { name: 'id' },
-        ],
+          { name: "id" },
+        ]
       },
-    ],
+    ]
   });
 };

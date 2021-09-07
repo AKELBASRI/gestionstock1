@@ -70,10 +70,6 @@ module.exports = function materiel(sequelize, DataTypes) {
     idservice: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: {
-        model: 'services',
-        key: 'id',
-      },
     },
   }, {
     sequelize,
@@ -114,13 +110,6 @@ module.exports = function materiel(sequelize, DataTypes) {
         using: 'BTREE',
         fields: [
           { name: 'IDFournisseur' },
-        ],
-      },
-      {
-        name: 'idservice',
-        using: 'BTREE',
-        fields: [
-          { name: 'idservice' },
         ],
       },
       {

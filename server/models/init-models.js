@@ -36,7 +36,17 @@ function initModels(sequelize) {
   typemateriel.hasMany(designation, { as: 'designations', foreignKey: 'idtype' });
   materiel.belongsTo(typemateriel, { as: 'idtype_typemateriel', foreignKey: 'idtype' });
   typemateriel.hasMany(materiel, { as: 'materiels', foreignKey: 'idtype' });
+  services.isHierarchy();
+  // (async () => {
+  //   try {
+  //     await services.sync();
 
+  //     await sequelize.models.servicesancestor.sync();
+  //     // console.log('Tables are created or updated successfully.');
+  //   } catch (error) {
+  //     console.error('Unable to create tables:', error);
+  //   }
+  // })();
   return {
     admin,
     agencies,
@@ -48,6 +58,7 @@ function initModels(sequelize) {
     typemateriel,
   };
 }
+
 module.exports = initModels;
 module.exports.initModels = initModels;
 module.exports.default = initModels;

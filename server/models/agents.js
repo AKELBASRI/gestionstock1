@@ -46,10 +46,6 @@ module.exports = function agents(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 28,
-      references: {
-        model: 'services',
-        key: 'id',
-      },
     },
     password_changed: {
       type: DataTypes.INTEGER,
@@ -91,13 +87,6 @@ module.exports = function agents(sequelize, DataTypes) {
         using: 'BTREE',
         fields: [
           { name: 'agency_id' },
-        ],
-      },
-      {
-        name: 'agents_agent_service',
-        using: 'BTREE',
-        fields: [
-          { name: 'service_id' },
         ],
       },
     ],

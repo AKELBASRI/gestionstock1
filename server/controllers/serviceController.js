@@ -1,5 +1,11 @@
 const Joi = require('joi');
-const models = require('../models');
+// const sequelize = require('sequelize');
+const db = require('../models');
+const initModels = require('../models/init-models');
+// const models = require('../models');
+const models = initModels(db.sequelize);
+// var service = require('path/to/user')(sequelize, DataTypes);
+// require('sequelize-hierarchy')(Sequelize);
 
 exports.saveService = (req, res) => {
   const service = {
@@ -39,10 +45,97 @@ exports.saveService = (req, res) => {
       });
     });
 };
-exports.getAllServices = (req, res) => {
-  models.services.findAll()
-    .then((services) => res.status(200).json(services))
-    .catch((error) => res.status(500).json(error));
+exports.getAllServices = async (req, res) => {
+  models.services.findOne({
+    where: { service_name: 'Service Ingénierie' },
+
+    nested: true,
+  })
+    .then((services) => {
+      services.parents = ['11', '111']; res.status(200).json(services);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json(error);
+    });
+
+  // const getSubCategoriesRecursive = async (parentservices) => {
+  //   const parents = await models.services.findAll({
+  //     where: {
+  //       parentId: parentservices.parentId,
+  //     },
+  //     raw: true,
+  //   });
+  //   return parents;
+  // };
+  // getSubCategoriesRecursive();
+  // if (subCategories.length > 0) {
+  //   const promises = [];
+  //   subCategories.forEach((category) => {
+  //     promises.push(getSubCategoriesRecursive(category));
+  //   });
+  //   category.subCategories = await Promise.all(promises);
+  // } else {
+  //   category.subCategories = [];
+  // }
+
+  // const obj = await models.services.findAll({
+  //   where: {
+  //     id: 14,
+  //   },
+  //   include: [
+  //     {
+  //       model: models.services, as: 'descendents', hierarchy: true,
+  //     },
+  //   ],
+  // });
+
+  // let parent;
+  // let idparent;
+  // const getRecursionParent = async (obj1) => {
+  //   if (obj1 !== undefined) {
+  //     idparent = obj1[0].dataValues.parentId;
+  //     if (!idparent.services) {
+  //       return null;
+  //     }
+  //   }
+
+  //   // parent = await obj.getParent();
+  //   // obj.dataValues.parent = parent;
+  //   return getRecursionParent(parent);
+  // };
+
+  // await getRecursionParent(obj);
+  // res.status(200).json(obj);
+  // (async () => {
+  //   try {
+  //     await models1.services.sync();
+
+  //     await models1.servicesancestor.sync();
+  //     // console.log('Tables are created or updated successfully.');
+  //   } catch (error) {
+  //     console.error('Unable to create tables:', error);
+  //   }
+  // })();
+  // db.sequelize.models.services.isHierarchy();
+
+  // models.services.findAll({ hierarchy: true })
+  //   .then((services) => res.status(200).json(services))
+  //   .catch((error) => {
+  //     console.log(error);
+  //     res.status(500).json(error);
+  //   });
+
+  // models.services.findOne({
+  //   where: { service_name: 'Service Ingénierie' },
+  //   include: [{ model: models.services, as: 'ancestors' }],
+  //   order: [[{ model: models.services, as: 'ancestors' }, 'hierarchyLevel']],
+  // })
+  //   .then((services) => res.status(200).json(services))
+  //   .catch((error) => {
+  //     console.log(error);
+  //     res.status(500).json(error);
+  //   });
 };
 exports.deleteservice = (req, res) => {
   models.services.destroy({ where: { id: req.body.id } })

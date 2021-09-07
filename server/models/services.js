@@ -10,6 +10,23 @@ module.exports = function services(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
+    hierarchyLevel: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: true,
+    },
+    parentId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'services',
+        key: 'id',
+      },
+
+    },
+    parents: {
+      type: DataTypes.VIRTUAL,
+
+    },
   }, {
     sequelize,
     tableName: 'services',
@@ -21,6 +38,13 @@ module.exports = function services(sequelize, DataTypes) {
         using: 'BTREE',
         fields: [
           { name: 'id' },
+        ],
+      },
+      {
+        name: 'parentId',
+        using: 'BTREE',
+        fields: [
+          { name: 'parentId' },
         ],
       },
     ],

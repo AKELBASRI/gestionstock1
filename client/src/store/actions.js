@@ -13,54 +13,54 @@ import {
   FETCH_TOTAL_AVAILABLE_MATERIELS,
 } from "./constants";
 
-const { user } = isAuthenticated();
+// const { user } = isAuthenticated();
 export const FetchAdmin = () => {
   return {
     type: FETCH_ADMINS,
-    request: { url: `/admin/alladmins/${user.Mle}` },
+    request: { url: `/admin/alladmins/${isAuthenticated().user.Mle}` },
   };
 };
 export const FetchAgent = () => {
   return {
     type: FETCH_AGENTS,
-    request: { url: `/agents/all/${user.Mle}` },
+    request: { url: `/agents/all/${isAuthenticated().user.Mle}` },
   };
 };
 export const FetchCategory = () => {
   return {
     type: FETCH_CATEGORY,
-    request: { url: `/category/allcategories/${user.Mle}` },
+    request: { url: `/category/allcategories/${isAuthenticated().user.Mle}` },
   };
 };
 export const FetchDesignation = () => {
   return {
     type: FETCH_DESIGNATION,
-    request: { url: `/designations/all/${user.Mle}` },
+    request: { url: `/designations/all/${isAuthenticated().user.Mle}` },
   };
 };
 export const FetchFournisseur = () => {
   return {
     type: FETCH_FOURNISSEUR,
-    request: { url: `/fournisseurs/all/${user.Mle}` },
+    request: { url: `/fournisseurs/all/${isAuthenticated().user.Mle}` },
   };
 };
 export const FetchService = () => {
   return {
     type: FETCH_SERVICE,
-    request: { url: `/service/allservices/${user.Mle}` },
+    request: { url: `/service/allservices/${isAuthenticated().user.Mle}` },
   };
 };
 export const FetchMateriels = () => {
   return {
     type: FETCH_MATERIELS,
-    request: { url: `/materiels/all/${user.Mle}` },
+    request: { url: `/materiels/all/${isAuthenticated().user.Mle}` },
   };
 };
 
 export const FetchAgencies = () => {
   return {
     type: FETCH_AGENCIES,
-    request: { url: `/agencies/all/${user.Mle}` },
+    request: { url: `/agencies/all/${isAuthenticated().user.Mle}` },
   };
 };
 export const FetchTotalMateriels = () => {
@@ -68,7 +68,7 @@ export const FetchTotalMateriels = () => {
     type: FETCH_TOTAL_MATERIELS,
 
     request: {
-      url: `/materiels/countMaterielbyType/${user.Mle}`,
+      url: `/materiels/countMaterielbyType/${isAuthenticated().user.Mle}`,
     },
   };
 };
@@ -76,7 +76,9 @@ export const FetchTotalAvailableMateriels = () => {
   return {
     type: FETCH_TOTAL_AVAILABLE_MATERIELS,
     request: {
-      url: `/materiels/countMaterielavailablebyType/${user.Mle}`,
+      url: `/materiels/countMaterielavailablebyType/${
+        isAuthenticated().user.Mle
+      }`,
     },
   };
 };

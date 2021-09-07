@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `db_gestion_stock` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `db_gestion_stock`;
+CREATE DATABASE  IF NOT EXISTS `gestion_stock` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `gestion_stock`;
 -- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: db_gestion_stock
+-- Host: 127.0.0.1    Database: gestion_stock
 -- ------------------------------------------------------
 -- Server version	8.0.25
 
@@ -38,7 +38,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (407,'AHMED KHALIL EL BASRI','$2a$10$qRvDUtNgOWUoZ/aqph60JeS2xqGAgSUP6vDjbIj0XkNKMdW1tix.G'),(428,'Zouhair BOUALAOUI','$2a$10$C1yQzPx4e4Z9jArdeHfRF.0hCxhsbVbmApVX7yqsWpRksaqp4Nxqq');
+INSERT INTO `admin` VALUES (407,'AHMED KHALIL EL BASRI','$2a$10$7f1l/JLyse1lztSlux2suOrYyuhdQmTvBdA8F6YF1pmMiX6KX/dNa'),(428,'Zouhair BOUALAOUI','$2a$10$C1yQzPx4e4Z9jArdeHfRF.0hCxhsbVbmApVX7yqsWpRksaqp4Nxqq'),(1427,'YASSINE BAKHTAOUI','$2a$10$AQ6MHNrw.64pGO8UjQ5K1.1slUWoSGv0IkuEaEhln.yQpYPjcxEeS');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,9 +89,7 @@ CREATE TABLE `agents` (
   PRIMARY KEY (`agent_number`),
   UNIQUE KEY `agent_number` (`agent_number`),
   KEY `agents_agent_agency` (`agency_id`),
-  KEY `agents_agent_service` (`service_id`),
-  CONSTRAINT `agency_fk` FOREIGN KEY (`agency_id`) REFERENCES `agencies` (`id`),
-  CONSTRAINT `service_fk` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`)
+  CONSTRAINT `agency_fk` FOREIGN KEY (`agency_id`) REFERENCES `agencies` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -128,7 +126,7 @@ CREATE TABLE `designation` (
 
 LOCK TABLES `designation` WRITE;
 /*!40000 ALTER TABLE `designation` DISABLE KEYS */;
-INSERT INTO `designation` VALUES (1,'Lenovo g580',3),(2,'hp p1102',5),(4,'hp sourie',2);
+INSERT INTO `designation` VALUES (1,'Lenovo g580',3);
 /*!40000 ALTER TABLE `designation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,7 +141,7 @@ CREATE TABLE `fournisseur` (
   `idFournisseur` int NOT NULL AUTO_INCREMENT,
   `NomFournisseur` varchar(45) NOT NULL,
   PRIMARY KEY (`idFournisseur`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +150,7 @@ CREATE TABLE `fournisseur` (
 
 LOCK TABLES `fournisseur` WRITE;
 /*!40000 ALTER TABLE `fournisseur` DISABLE KEYS */;
-INSERT INTO `fournisseur` VALUES (1,'AXELI'),(2,'Near Secure');
+INSERT INTO `fournisseur` VALUES (1,'AXELI'),(2,'Near Secure'),(5,'usb service');
 /*!40000 ALTER TABLE `fournisseur` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,14 +179,12 @@ CREATE TABLE `materiel` (
   KEY `fk_typeid_idx` (`idtype`),
   KEY `fk_agentid_idx` (`mleagent`),
   KEY `fk_idfournisseur_idx` (`IDFournisseur`),
-  KEY `idservice` (`idservice`),
   KEY `iddesignation_FK` (`iddesignation`),
   CONSTRAINT `fk_agenceid` FOREIGN KEY (`idagence`) REFERENCES `agencies` (`id`),
   CONSTRAINT `fk_agentid` FOREIGN KEY (`mleagent`) REFERENCES `agents` (`agent_number`),
   CONSTRAINT `fk_idfournisseur` FOREIGN KEY (`IDFournisseur`) REFERENCES `fournisseur` (`idFournisseur`),
   CONSTRAINT `fk_typeid` FOREIGN KEY (`idtype`) REFERENCES `typemateriel` (`id`),
-  CONSTRAINT `iddesignation_FK` FOREIGN KEY (`iddesignation`) REFERENCES `designation` (`idDesignation`),
-  CONSTRAINT `materiel_ibfk_1` FOREIGN KEY (`idservice`) REFERENCES `services` (`id`)
+  CONSTRAINT `iddesignation_FK` FOREIGN KEY (`iddesignation`) REFERENCES `designation` (`idDesignation`)
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -198,7 +194,7 @@ CREATE TABLE `materiel` (
 
 LOCK TABLES `materiel` WRITE;
 /*!40000 ALTER TABLE `materiel` DISABLE KEYS */;
-INSERT INTO `materiel` VALUES (21,1,'MO407','1','2021-08-04',1,_binary '\0','2021-08-04',3,NULL,NULL,NULL),(39,4,'','1','2021-08-12',1,_binary '\0','2021-08-12',2,NULL,NULL,NULL);
+INSERT INTO `materiel` VALUES (21,1,'MO407','1','2021-08-04',1,_binary '\0','2021-08-04',3,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `materiel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,8 +208,12 @@ DROP TABLE IF EXISTS `services`;
 CREATE TABLE `services` (
   `id` int NOT NULL AUTO_INCREMENT,
   `service_name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb3;
+  `hierarchyLevel` int unsigned DEFAULT NULL,
+  `parentId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `parentId` (`parentId`),
+  CONSTRAINT `services_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `services` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,8 +222,36 @@ CREATE TABLE `services` (
 
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
-INSERT INTO `services` VALUES (1,'Sytème d\'information'),(2,'Comptable et financier'),(3,'Gestion des ressources humaines'),(4,'Audit et contrôle interne'),(5,'Contrôle de gestion'),(6,'Qualité, sécurité et environnement'),(7,'Achats et logistique'),(8,'juridique'),(9,'Facturation'),(10,'Recouvrement'),(11,'Développement clientèle'),(12,'Communication'),(13,'Ingénierie'),(14,'SIG et patrimoine'),(15,'Grands travaux'),(16,'Equipment en réseaux'),(17,'Exploitation réseau eau potable'),(18,'Exploitation réseau assainissement liquide'),(19,'Amélioration rendement réseau eau potable'),(20,'Production eau potable'),(21,'Dépollution et grands ouvrages'),(22,'Le directeur géneral'),(23,'Secrétariat de direction'),(24,'Division support'),(25,'Division exploitation'),(26,'Division clientèle'),(27,'Division Ingénierie et investissements'),(28,'Autre');
+INSERT INTO `services` VALUES (1,'Direction',1,NULL),(2,'Division Support',2,1),(3,'Division Ingénieurie et investissement',2,1),(4,'Division Exploitation',2,1),(5,'Division Clientèle',2,1),(6,'Service Gestion des Ressources Humaine',2,1),(7,'Service Audit et Contrôle Interne',2,1),(8,'Service Contrôle de Gestion',2,1),(9,'Service Qualité, Securité et Environement',2,1),(10,'Service Ingénierie',3,3),(11,'Service SIG et patrimoine',3,3),(12,'Service grands travaux',3,3),(13,'Service équipement en réseaux',3,3),(14,'Service exploitation réseau eau potable',3,4);
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `servicesancestors`
+--
+
+DROP TABLE IF EXISTS `servicesancestors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `servicesancestors` (
+  `servicesId` int NOT NULL,
+  `ancestorId` int NOT NULL,
+  PRIMARY KEY (`servicesId`,`ancestorId`),
+  UNIQUE KEY `servicesancestors_servicesId_ancestorId_unique` (`servicesId`,`ancestorId`),
+  KEY `ancestorId` (`ancestorId`),
+  CONSTRAINT `servicesancestors_ibfk_1` FOREIGN KEY (`servicesId`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `servicesancestors_ibfk_2` FOREIGN KEY (`ancestorId`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `servicesancestors`
+--
+
+LOCK TABLES `servicesancestors` WRITE;
+/*!40000 ALTER TABLE `servicesancestors` DISABLE KEYS */;
+INSERT INTO `servicesancestors` VALUES (2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(10,3),(11,3),(12,3),(13,3);
+/*!40000 ALTER TABLE `servicesancestors` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -238,7 +266,7 @@ CREATE TABLE `typemateriel` (
   `type` varchar(200) NOT NULL,
   `inventoryornot` bit(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,11 +280,11 @@ INSERT INTO `typemateriel` VALUES (1,'Clavier',_binary '\0'),(2,'Sourie',_binary
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'db_gestion_stock'
+-- Dumping events for database 'gestion_stock'
 --
 
 --
--- Dumping routines for database 'db_gestion_stock'
+-- Dumping routines for database 'gestion_stock'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -268,4 +296,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-13 16:13:20
+-- Dump completed on 2021-09-07 16:21:10
