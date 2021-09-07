@@ -11,7 +11,8 @@ exports.saveService = (req, res) => {
   const service = {
 
     service_name: req.body.service_name.trim(),
-
+    hierarchyLevel: req.body.hierarchyLevel.trim(),
+    parentId: req.body.parentId,
   };
   models.services
     .findOne({ where: { service_name: req.body.service_name.trim() } }).then((result) => {
@@ -21,7 +22,8 @@ exports.saveService = (req, res) => {
       }
       const schema = Joi.object({
         service_name: Joi.string().trim().required(),
-
+        hierarchyLevel: Joi.number().required(),
+        parentId: Joi.number().optional(),
       });
       const { error } = schema.validate(req.body);
       if (error) {
@@ -45,19 +47,64 @@ exports.saveService = (req, res) => {
       });
     });
 };
-exports.getAllServices = async (req, res) => {
-  models.services.findOne({
-    where: { service_name: 'Service Ingénierie' },
-
-    nested: true,
+exports.getAllServices = (req, res) => {
+  models.services.findAll({
+    include: [
+      {
+        model: models.services,
+        required: false,
+        as: 'parent',
+        attributes: ['id', 'service_name'],
+      },
+    ],
   })
-    .then((services) => {
-      services.parents = ['11', '111']; res.status(200).json(services);
-    })
+    .then((services) => res.status(200).json(services))
     .catch((error) => {
       console.log(error);
       res.status(500).json(error);
     });
+};
+exports.getAllServiceswithhiearchy = (req, res) => {
+  models.services.findAll({ hierarchy: true })
+    .then((services) => res.status(200).json(services))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json(error);
+    });
+};
+exports.getAllParentsOfService = async (req, res) => {
+  try {
+    const firstobj = await models.services.findOne({
+      where: { id: req.body.id },
+
+      raw: true,
+    });
+    const objectParent = [];
+    if (firstobj !== undefined) {
+      const functionrecursive = async (parentid) => models.services.findOne({
+        where: { id: parentid },
+
+        nested: true,
+      });
+
+      const obj = await functionrecursive(firstobj.parentId);
+      if (obj !== undefined) {
+        objectParent.push(obj);
+        firstobj.parents = objectParent;
+        console.log(obj.parentId);
+
+        if (obj.parentId !== null) {
+          const objsuivant = await functionrecursive(obj.parentId);
+          objectParent.push(objsuivant);
+          // obj.parents = objectParent;
+        }
+        res.status(200).json(firstobj);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
 
   // const getSubCategoriesRecursive = async (parentservices) => {
   //   const parents = await models.services.findAll({

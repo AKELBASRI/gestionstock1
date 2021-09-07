@@ -245,6 +245,7 @@ function AddEditAgentModal(Props) {
             <InputLabel htmlFor="age-native-simple" className={classes.label}>
               Service
             </InputLabel>
+
             <ReactHookFormSelect
               className={classes.select}
               label="Selectionner un service"

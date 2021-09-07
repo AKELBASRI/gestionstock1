@@ -12,6 +12,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import { ColorButton } from "../../../../core/styleModalForm";
 import { FetchService } from "../../../../store/actions";
+import { flattenObject } from "../../../../core/ApiCore";
 
 function ListServices() {
   const useStyles = makeStyles((theme) => ({
@@ -22,13 +23,20 @@ function ListServices() {
     },
   }));
   const dispatch = useDispatch();
-  const listservices = useSelector(
+  let listservices;
+  let listservicesf;
+  listservices = useSelector(
     (state) => state.requests?.queries?.FETCH_SERVICE?.data
   );
   const handleShowEditAddModal = (service) => {
     setshowEditAddModal(true);
     setservice(service);
   };
+  if (listservices) {
+    listservicesf = listservices.map((_data) => {
+      return flattenObject(_data);
+    });
+  }
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [service, setservice] = useState({});
   useEffect(() => {
@@ -87,6 +95,36 @@ function ListServices() {
       },
     },
     {
+      label: "hierarchyLevel",
+      name: "hierarchyLevel",
+      options: {
+        filter: true,
+      },
+    },
+    {
+      label: "parentId",
+      name: "parentId",
+      options: {
+        filter: true,
+        display: false,
+      },
+    },
+    {
+      label: "Parentid",
+      name: "parent.id",
+      options: {
+        filter: true,
+        display: false,
+      },
+    },
+    {
+      label: "Parent",
+      name: "parent.service_name",
+      options: {
+        filter: true,
+      },
+    },
+    {
       name: "Actions",
       options: {
         filter: false,
@@ -112,10 +150,11 @@ function ListServices() {
       <ColorButton onClick={handleShowEditAddModal}>
         nouveau service
       </ColorButton>
-      {listservices && (
+
+      {listservicesf && (
         <MUIDataTable
           title={"Liste des services"}
-          data={listservices}
+          data={listservicesf}
           columns={columns}
           options={options}
         />

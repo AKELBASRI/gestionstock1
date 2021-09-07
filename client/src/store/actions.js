@@ -11,6 +11,7 @@ import {
   FETCH_AGENCIES,
   FETCH_TOTAL_MATERIELS,
   FETCH_TOTAL_AVAILABLE_MATERIELS,
+  FETCH_SERVICE_HIARCHY,
 } from "./constants";
 
 // const { user } = isAuthenticated();
@@ -48,6 +49,14 @@ export const FetchService = () => {
   return {
     type: FETCH_SERVICE,
     request: { url: `/service/allservices/${isAuthenticated().user.Mle}` },
+  };
+};
+export const FetchServiceHiearchy = () => {
+  return {
+    type: FETCH_SERVICE_HIARCHY,
+    request: {
+      url: `/service/allserviceswithhiearchy/${isAuthenticated().user.Mle}`,
+    },
   };
 };
 export const FetchMateriels = () => {

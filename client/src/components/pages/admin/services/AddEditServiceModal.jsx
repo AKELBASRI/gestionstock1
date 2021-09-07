@@ -18,6 +18,8 @@ import { useForm } from "react-hook-form";
 
 import customAxios from "../../../../axios/CustomAxios";
 import { FetchService } from "../../../../store/actions";
+import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
+import { MenuItem } from "@material-ui/core";
 
 function AddEditServiceModal(Props) {
   const {
@@ -25,6 +27,7 @@ function AddEditServiceModal(Props) {
     handleSubmit,
     reset,
     setValue,
+    control,
 
     formState: { errors },
   } = useForm();
@@ -36,9 +39,17 @@ function AddEditServiceModal(Props) {
         )
       : null
   );
+  const services = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE?.data
+  );
   useEffect(() => {
+    console.log(Props.CodeSce);
+    if (!services) {
+      dispatch(FetchService());
+    }
     if (service) {
       setValue("object", service);
+      console.log(service);
     } else {
       reset();
     }
@@ -48,6 +59,7 @@ function AddEditServiceModal(Props) {
   }, [service, Props.show]);
 
   const AddService = (data) => {
+    console.log(data.object);
     const { user } = isAuthenticated();
     customAxios
       .post(`/service/create/${user.Mle}`, JSON.stringify(data.object))
@@ -173,6 +185,65 @@ function AddEditServiceModal(Props) {
           {errors["object"]?.service_name && (
             <p className={classes.para}>
               {errors["object"].service_name?.message}
+            </p>
+          )}
+          <label className={classes.label}>Hiearchy Level</label>
+          <input
+            type="number"
+            className={classes.input}
+            id="object.hierarchyLevel"
+            name="object.hierarchyLevel"
+            {...register(
+              "object.hierarchyLevel",
+              {
+                required: "You must enter Hiearchy Level",
+                min: 1,
+                max: 5,
+              },
+              { min: 2, max: 5 }
+            )}
+          />
+          {errors["object"]?.hierarchyLevel && (
+            <p className={classes.para}>
+              {errors["object"].hierarchyLevel?.message ||
+                "Hiearchy level must between 2 and 5"}
+            </p>
+          )}
+
+          {service?.hierarchyLevel !== 1 ? (
+            <>
+              <label className={classes.label}>Parent</label>
+              <ReactHookFormSelect
+                className={classes.select}
+                label="Selectionner un service"
+                id="object.parentId"
+                name="object.parentId"
+                control={control}
+                defaultValue={"0"}
+                reef={register("object.parentId", {
+                  validate: (value) => value !== "0",
+                })}
+              >
+                <MenuItem value="0" style={{ cursor: "pointer" }}>
+                  Selectionner un service
+                </MenuItem>
+                {services &&
+                  services.map((service, i) => (
+                    <MenuItem
+                      key={i + 1}
+                      value={service.id}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {service.service_name}
+                    </MenuItem>
+                  ))}
+              </ReactHookFormSelect>
+            </>
+          ) : null}
+          {errors["object"]?.service_id && (
+            <p className={classes.para}>
+              {errors["object"]?.service_id?.message ||
+                "You must select a service"}
             </p>
           )}
         </DialogContent>

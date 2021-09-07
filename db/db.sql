@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `gestion_stock` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `gestion_stock`;
--- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.22, for macos10.15 (x86_64)
 --
--- Host: 127.0.0.1    Database: gestion_stock
+-- Host: localhost    Database: gestion_stock
 -- ------------------------------------------------------
--- Server version	8.0.25
+-- Server version	8.0.23
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,7 @@ CREATE TABLE `admin` (
   `nom` varchar(405) DEFAULT NULL,
   `password` varchar(400) DEFAULT NULL,
   PRIMARY KEY (`Mle`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +53,7 @@ CREATE TABLE `agencies` (
   `id` int NOT NULL AUTO_INCREMENT,
   `agency_name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `agents` (
   UNIQUE KEY `agent_number` (`agent_number`),
   KEY `agents_agent_agency` (`agency_id`),
   CONSTRAINT `agency_fk` FOREIGN KEY (`agency_id`) REFERENCES `agencies` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +117,7 @@ CREATE TABLE `designation` (
   PRIMARY KEY (`idDesignation`),
   KEY `idtype_idx` (`idtype`) /*!80000 INVISIBLE */,
   CONSTRAINT `idtype` FOREIGN KEY (`idtype`) REFERENCES `typemateriel` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +141,7 @@ CREATE TABLE `fournisseur` (
   `idFournisseur` int NOT NULL AUTO_INCREMENT,
   `NomFournisseur` varchar(45) NOT NULL,
   PRIMARY KEY (`idFournisseur`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +185,7 @@ CREATE TABLE `materiel` (
   CONSTRAINT `fk_idfournisseur` FOREIGN KEY (`IDFournisseur`) REFERENCES `fournisseur` (`idFournisseur`),
   CONSTRAINT `fk_typeid` FOREIGN KEY (`idtype`) REFERENCES `typemateriel` (`id`),
   CONSTRAINT `iddesignation_FK` FOREIGN KEY (`iddesignation`) REFERENCES `designation` (`idDesignation`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,13 +207,13 @@ DROP TABLE IF EXISTS `services`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `services` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `service_name` varchar(50) NOT NULL,
+  `service_name` varchar(300) NOT NULL,
   `hierarchyLevel` int unsigned DEFAULT NULL,
   `parentId` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `parentId` (`parentId`),
   CONSTRAINT `services_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `services` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +222,7 @@ CREATE TABLE `services` (
 
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
-INSERT INTO `services` VALUES (1,'Direction',1,NULL),(2,'Division Support',2,1),(3,'Division Ingénieurie et investissement',2,1),(4,'Division Exploitation',2,1),(5,'Division Clientèle',2,1),(6,'Service Gestion des Ressources Humaine',2,1),(7,'Service Audit et Contrôle Interne',2,1),(8,'Service Contrôle de Gestion',2,1),(9,'Service Qualité, Securité et Environement',2,1),(10,'Service Ingénierie',3,3),(11,'Service SIG et patrimoine',3,3),(12,'Service grands travaux',3,3),(13,'Service équipement en réseaux',3,3),(14,'Service exploitation réseau eau potable',3,4);
+INSERT INTO `services` VALUES (1,'Direction',1,NULL),(2,'Division Support',2,1),(3,'Division Ingénieurie et investissement',2,1),(4,'Division Exploitation',2,1),(5,'Division Clientèle',2,1),(6,'Service Gestion des Ressources Humaine',2,1),(7,'Service Audit et Contrôle Interne',2,1),(8,'Service Contrôle de Gestion',2,1),(9,'Service Qualité, Securité et Environement',2,1),(10,'Service Ingénierie',3,3),(11,'Service SIG et patrimoine',3,3),(12,'Service grands travaux',3,3),(13,'Service équipement en réseaux',3,3),(14,'Service exploitation réseau eau potable',3,4),(15,'Service exploitation réseau  d\'assinissement liquide',3,4);
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,7 +250,7 @@ CREATE TABLE `servicesancestors` (
 
 LOCK TABLES `servicesancestors` WRITE;
 /*!40000 ALTER TABLE `servicesancestors` DISABLE KEYS */;
-INSERT INTO `servicesancestors` VALUES (2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(10,3),(11,3),(12,3),(13,3);
+INSERT INTO `servicesancestors` VALUES (2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(15,1),(10,3),(11,3),(12,3),(13,3),(15,4);
 /*!40000 ALTER TABLE `servicesancestors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +266,7 @@ CREATE TABLE `typemateriel` (
   `type` varchar(200) NOT NULL,
   `inventoryornot` bit(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,4 +296,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-09-07 16:21:10
+-- Dump completed on 2021-09-07 23:14:19
