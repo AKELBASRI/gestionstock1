@@ -72,6 +72,32 @@ exports.getAllServiceswithhiearchy = (req, res) => {
       res.status(500).json(error);
     });
 };
+function searchTree(element, id) {
+  if (element.id === id) {
+    return element;
+  } if (element.children != null) {
+    let i;
+    let result = null;
+    for (i = 0; result == null && i < element.children.length; i += 1) {
+      result = searchTree(element.children[i], id);
+    }
+    return result;
+  }
+  return null;
+}
+exports.getOneServiceHiearchy = async (req, res) => {
+  try {
+    const data = await models.services.findAll({ hierarchy: true });
+    if (data !== undefined) {
+      const element = data[0];
+      const result = searchTree(element, req.body.id);
+      res.status(200).json(result);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+    console.log(error);
+  }
+};
 exports.getAllParentsOfService = async (req, res) => {
   try {
     const firstobj = await models.services.findOne({

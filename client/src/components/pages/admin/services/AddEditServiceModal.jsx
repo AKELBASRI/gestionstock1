@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,6 +32,7 @@ function AddEditServiceModal(Props) {
     formState: { errors },
   } = useForm();
   const dispatch = useDispatch();
+  const [parents, setparents] = useState([]);
   const service = useSelector((state) =>
     Props.CodeSce
       ? state.requests?.queries?.FETCH_SERVICE?.data.find(
@@ -154,7 +155,14 @@ function AddEditServiceModal(Props) {
       updateService(data);
     }
   };
-
+  const onChange = (e) => {
+    console.log(e.target.value);
+    setparents(
+      services.filter(
+        (service) => service.hierarchyLevel === e.target.value - 1
+      )
+    );
+  };
   const classes = useStyles();
   return (
     <div>
@@ -187,8 +195,8 @@ function AddEditServiceModal(Props) {
               {errors["object"].service_name?.message}
             </p>
           )}
-          <label className={classes.label}>Hiearchy Level</label>
-          <input
+
+          {/* <input
             type="number"
             className={classes.input}
             id="object.hierarchyLevel"
@@ -202,11 +210,44 @@ function AddEditServiceModal(Props) {
               },
               { min: 2, max: 5 }
             )}
-          />
+          /> */}
+
+          <label className={classes.label}>Hiearchy Level</label>
+          <ReactHookFormSelect
+            className={classes.select}
+            label="Selectionner une hiearchy"
+            id="object.hierarchyLevel"
+            name="object.hierarchyLevel"
+            control={control}
+            defaultValue={"0"}
+            onchange={onChange}
+            garentiereg={register("object.hierarchyLevel", {
+              validate: (value) => value !== "0",
+            })}
+          >
+            <MenuItem value="0" style={{ cursor: "pointer" }}>
+              Selectionner hiearchy
+            </MenuItem>
+            <MenuItem key="1" value="1" style={{ cursor: "pointer" }}>
+              Direction
+            </MenuItem>
+            <MenuItem key="2" value="2" style={{ cursor: "pointer" }}>
+              Division
+            </MenuItem>
+            <MenuItem key="3" value="3" style={{ cursor: "pointer" }}>
+              Service
+            </MenuItem>
+            <MenuItem key="4" value="4" style={{ cursor: "pointer" }}>
+              Bureau
+            </MenuItem>
+            <MenuItem key="5" value="5" style={{ cursor: "pointer" }}>
+              Section
+            </MenuItem>
+          </ReactHookFormSelect>
           {errors["object"]?.hierarchyLevel && (
             <p className={classes.para}>
-              {errors["object"].hierarchyLevel?.message ||
-                "Hiearchy level must between 2 and 5"}
+              {errors["object"]?.hierarchyLevel?.message ||
+                "You must select a hiearchy"}
             </p>
           )}
 
@@ -227,8 +268,8 @@ function AddEditServiceModal(Props) {
                 <MenuItem value="0" style={{ cursor: "pointer" }}>
                   Selectionner un service
                 </MenuItem>
-                {services &&
-                  services.map((service, i) => (
+                {parents &&
+                  parents.map((service, i) => (
                     <MenuItem
                       key={i + 1}
                       value={service.id}

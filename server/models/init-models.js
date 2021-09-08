@@ -37,6 +37,17 @@ function initModels(sequelize) {
   materiel.belongsTo(typemateriel, { as: 'idtype_typemateriel', foreignKey: 'idtype' });
   typemateriel.hasMany(materiel, { as: 'materiels', foreignKey: 'idtype' });
   services.isHierarchy();
+  // services.belongsTo(services, {
+  //   as: 'parent',
+  //   foreignKey: 'parentId',
+  //   targetKey: 'id',
+  // });
+
+  // // relate parent to child categories
+  // services.hasMany(services, {
+  //   as: 'childrens',
+  //   foreignKey: 'parentId',
+  // });
   // (async () => {
   //   try {
   //     await services.sync();
