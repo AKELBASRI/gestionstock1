@@ -12,11 +12,10 @@ import {
   DialogContentText,
   DialogTitle,
   InputLabel,
-  MenuItem,
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
-import ReactHookFormSelect from "../../../../core/Components/ReactHookReactSelect";
+// import ReactHookFormSelect from "../../../../core/Components/ReactHookReactSelect";
 import customAxios from "../../../../axios/CustomAxios";
 import { getdesignationbytype } from "../../../../core/ApiCore";
 import {
@@ -27,6 +26,7 @@ import {
   FetchTotalAvailableMateriels,
   FetchTotalMateriels,
 } from "../../../../store/actions";
+import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
 
 function AffecterMaterielModal(Props) {
   const [, setDesignation, Designations] = useStateRef([]);
@@ -54,14 +54,14 @@ function AffecterMaterielModal(Props) {
         )
       : null
   );
-  const [, setaffctMaterial, affctMateriel] = useStateRef({});
+  // const [, setaffctMaterial] = useStateRef({});
   const dispatch = useDispatch();
-  const handleChange = (e) => {
-    setaffctMaterial({
-      ...affctMateriel.current,
-      [e.target.id]: e.target.value,
-    });
-  };
+  // const handleChange = (e) => {
+  //   setaffctMaterial({
+  //     ...affctMateriel.current,
+  //     [e.target.id]: e.target.value,
+  //   });
+  // };
   const LoadDesignations = async (material) => {
     if (material !== undefined) {
       getdesignationbytype(material.idtype)
@@ -131,13 +131,25 @@ function AffecterMaterielModal(Props) {
     } else {
       reset();
     }
-  }, [material1, setaffctMaterial]);
+  }, [material1]);
   const classes = useStyles();
-  const options =
+  const optionsservices =
     ListeService &&
     ListeService.map((service) => ({
       value: service.id,
       label: service.service_name,
+    }));
+  const optionagent =
+    ListAgents &&
+    ListAgents.map((agent) => ({
+      value: agent.agent_number,
+      label: agent.agent_full_name,
+    }));
+  const optionagency =
+    Listagencies &&
+    Listagencies.map((agency) => ({
+      value: agency.id,
+      label: agency.agency_name,
     }));
   return (
     <div>
@@ -150,12 +162,27 @@ function AffecterMaterielModal(Props) {
         <DialogTitle id="form-dialog-title" className={classes.bg}>
           Affectation Materiel
         </DialogTitle>
-        <DialogContent className={classes.bg} style={{ height: "400px" }}>
+        <DialogContent className={classes.bg} style={{ height: "480px" }}>
           <DialogContentText className={classes.bg}></DialogContentText>
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Agent
           </InputLabel>
-          <ReactHookFormSelect
+          <ReactHookFormReactSelect
+            options={optionagent}
+            className={classes.SelectSearch}
+            menuColor="black"
+            id="object.mleagent"
+            Name="object.mleagent"
+            control={control}
+            reef={register("object.mleagent", { required: true })}
+          />
+          {errors["object"]?.mleagent && (
+            <p className={classes.para}>
+              {errors["object"]?.mleagent?.message ||
+                "You must select an agent"}
+            </p>
+          )}
+          {/* <ReactHookFormSelect
             onchange={handleChange}
             className={classes.select}
             label="Selectionner une categorie"
@@ -187,29 +214,44 @@ function AffecterMaterielModal(Props) {
               {errors["object"]?.mleagent?.message ||
                 "You must select an agent"}
             </p>
-          )}
+          )} */}
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Service
           </InputLabel>
-          <ReactHookFormSelect
-            options={options}
+          <ReactHookFormReactSelect
+            options={optionsservices}
             className={classes.SelectSearch}
             menuColor="black"
             id="object.idservice"
             Name="object.idservice"
             control={control}
-            reef={register("object.idservice", { required: true })}
+            reef={register("object.idservice")}
+          />
+          {/* {errors["object"]?.idservice && (
+            <p className={classes.para}>
+              {errors["object"]?.idservice?.message ||
+                "You must select a service"}
+            </p> 
+          )}*/}
+          <InputLabel htmlFor="age-native-simple" className={classes.label}>
+            Agence
+          </InputLabel>
+          <ReactHookFormReactSelect
+            options={optionagency}
+            className={classes.SelectSearch}
+            menuColor="black"
+            id="object.idagence"
+            Name="object.idagence"
+            control={control}
+            reef={register("object.idagence", { required: true })}
           />
           {errors["object"]?.idservice && (
             <p className={classes.para}>
               {errors["object"]?.idservice?.message ||
-                "You must select a service"}
+                "You must select an agency"}
             </p>
           )}
-          <InputLabel htmlFor="age-native-simple" className={classes.label}>
-            Agence
-          </InputLabel>
-          <ReactHookFormSelect
+          {/* <ReactHookFormSelect
             onchange={handleChange}
             className={classes.select}
             label="Selectionner une categorie"
@@ -241,7 +283,7 @@ function AffecterMaterielModal(Props) {
               {errors["object"]?.idagence?.message ||
                 "You must select an agency"}
             </p>
-          )}
+          )} */}
         </DialogContent>
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <DialogActions className={classes.bg}>
