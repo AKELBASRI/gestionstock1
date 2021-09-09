@@ -52,9 +52,9 @@ function ListMateriels() {
     setMateriel(materiel);
   };
   useEffect(() => {
-    if (!listmateriels1) {
-      dispatch(FetchMateriels());
-    }
+    // if (!listmateriels1) {
+    dispatch(FetchMateriels());
+    // }
   }, [dispatch]);
   const ActiongetMateriels = () => {
     dispatch(FetchMateriels());

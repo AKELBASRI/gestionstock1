@@ -14,7 +14,7 @@ const ReactHookFormReactSelect = (Props) => {
           <Select
             inputRef={reef?.ref}
             options={options}
-            value={options.find((c) => c.value === value)}
+            value={options?.find((c) => c.value === value)}
             onChange={(val) => onChange(val?.value)}
             isClearable={true}
           />
