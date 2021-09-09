@@ -1,4 +1,5 @@
 const express = require('express');
+const { createbackupMateriel } = require('../controllers/materielController');
 
 const {
   saveMateriel, getallmateriels, updateMateriel,
@@ -11,6 +12,7 @@ const { requireSignIn, isAuth } = require('../middleware/auth');
 const router = express.Router();
 router.get('/all/:mle', requireSignIn, isAuth, getallmateriels);
 router.post('/create/:mle', requireSignIn, isAuth, saveMateriel);
+router.post('/createbackupMateriel/:mle', requireSignIn, isAuth, createbackupMateriel);
 router.put('/update/:mle', requireSignIn, isAuth, updateMateriel);
 router.put('/affecter/:mle', requireSignIn, isAuth, AffecterMaterielle);
 router.delete('/delete/:mle', requireSignIn, isAuth, deletemateriel);
