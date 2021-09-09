@@ -57,6 +57,7 @@ function AddEditCategoryModal(Props) {
 
   const AddCategory = (data) => {
     const { user } = isAuthenticated();
+    delete data.object.id;
     customAxios
       .post(`/category/create/${user.Mle}`, JSON.stringify(data.object))
 
