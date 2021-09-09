@@ -88,13 +88,12 @@ function ChangePasswordModal(Props) {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title" className={classes.bg}>
-          {" "}
           {`Modification mot de passe du : ${Props.usernormal.nom} Matricule :${Props.usernormal.Mle}
            `}
         </DialogTitle>
         <DialogContent className={classes.bg}>
           <DialogContentText className={classes.bg}>
-            Changement Mot de passe{" "}
+            Changement Mot de passe
           </DialogContentText>
 
           <label className={classes.label}>Mot de Passe</label>

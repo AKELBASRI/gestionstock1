@@ -70,8 +70,8 @@ const Sidebar = (props) => {
             <CloseBtn onClick={closeNav}>&times;</CloseBtn>
           ) : (
             <Humberger>
-              {" "}
-              <GiHamburgerMenu onClick={openNav} />{" "}
+              
+              <GiHamburgerMenu onClick={openNav} />
             </Humberger>
           )}
 

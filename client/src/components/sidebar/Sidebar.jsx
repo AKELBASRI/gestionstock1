@@ -86,7 +86,6 @@ const Sidebar = (props) => {
               })}
               noWrap
             >
-              {" "}
               Gestion Stock
             </Typography>
 
