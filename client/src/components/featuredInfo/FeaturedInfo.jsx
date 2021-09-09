@@ -39,18 +39,20 @@ function FeaturedInfo() {
   const FeaturedItemList = (title, total, color) => {
     return (
       <Box>
-        <Typography variant="h5">{title}</Typography>
-        <Box my="10px"></Box>
-        <Box display="flex">
-          {total.length > 0 &&
-            total.map((totalmateriel, i) => (
-              <FeaturedItem
-                totalmateriel={totalmateriel}
-                key={i}
-                color={color}
-              />
-            ))}
-        </Box>
+        {total.length > 0 && (
+          <>
+            <Typography variant="h5">{title}</Typography> <Box my="10px"></Box>
+            <Box display="flex">
+              {total.map((totalmateriel, i) => (
+                <FeaturedItem
+                  totalmateriel={totalmateriel}
+                  key={i}
+                  color={color}
+                />
+              ))}
+            </Box>
+          </>
+        )}
       </Box>
     );
   };
