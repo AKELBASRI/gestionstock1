@@ -1,4 +1,6 @@
 const Joi = require('joi');
+const xlsx = require('node-xlsx');
+// const db = require('../models');
 const models = require('../models');
 
 exports.saveDesignation = (req, res) => {
@@ -39,7 +41,105 @@ exports.saveDesignation = (req, res) => {
       });
     });
 };
+let idresult;
+const getTypeNumberOfCategory = (value) => {
+  switch (value) {
+    case 'IM':
+      idresult = 5;
+      break;
 
+    case 'MO':
+      idresult = 3;
+      break;
+    case 'LC':
+      idresult = 25;
+      break;
+    case 'TS':
+      idresult = 26;
+      break;
+
+    case 'MR':
+      idresult = 28;
+      break;
+    case 'AR':
+      idresult = 29;
+      break;
+    case 'AD':
+      idresult = 32;
+      break;
+    case 'DD':
+      idresult = 31;
+      break;
+
+    case 'GO':
+      idresult = 33;
+      break;
+    case 'GR':
+      idresult = 34;
+      break;
+    case 'HB':
+      idresult = 37;
+      break;
+    case 'UTM':
+      idresult = 35;
+      break;
+    case 'SW':
+      idresult = 39;
+      break;
+
+    case 'ON':
+      idresult = 42;
+      break;
+    case 'SR':
+      idresult = 41;
+      break;
+    case 'SC':
+      idresult = 43;
+      break;
+    case 'UT':
+      idresult = 44;
+      break;
+    case 'RB':
+      idresult = 45;
+      break;
+    case 'PH':
+      idresult = 46;
+      break;
+    case 'CH':
+      idresult = 47;
+      break;
+    case 'SS':
+      idresult = 48;
+      break;
+    default:
+      idresult = null;
+      break;
+  }
+  return idresult;
+};
+
+exports.importDesignation = (req, res) => {
+  const obj = xlsx.parse(`${`${__dirname}/../`}\\typedesignationinventaire.xlsx`); // parses a file
+  obj[0].data.map((designation) => {
+    designation[0] = designation[0].substring(4, 6);
+    designation[2] = getTypeNumberOfCategory(designation[0]);
+    // if (getTypeNumberOfCategory(designation[0]) !== null) {
+    const designationi = {
+      designation: designation[1],
+      idtype: designation[2],
+    };
+    models.designation.create(designationi).then((result1) => {
+      res.status(201).json({ message: 'La designation a été crée avec succés', designation: result1 });
+    })
+      .catch((error1) => {
+        res.status(500).json({ message: 'Something went wrong', error1 });
+      });
+    // }
+    return true;
+  });
+
+  // let obj = xlsx.parse(fs.readFileSync(`${__dirname}/myFile.xlsx`)); // parses a buffer
+};
 exports.getAllDesignation = (req, res) => {
   models.typemateriel.hasMany(models.designation, { foreignKey: 'idtype', sourceKey: 'id' });
   models.designation.belongsTo(models.typemateriel, { foreignKey: 'idtype', sourceKey: 'id' });

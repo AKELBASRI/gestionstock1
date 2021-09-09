@@ -2,7 +2,7 @@ const express = require('express');
 
 const {
   getAllDesignation, saveDesignation, updateDesignation,
-  deleteDesignation, showDesignation, DesignationById,
+  deleteDesignation, showDesignation, DesignationById, importDesignation,
 } = require('../controllers/designationController');
 
 const { userById } = require('../middleware/admin');
@@ -11,7 +11,7 @@ const { requireSignIn, isAuth } = require('../middleware/auth');
 
 const router = express.Router();
 router.get('/all/:mle', requireSignIn, isAuth, getAllDesignation);
-
+router.get('/importDesignation', importDesignation);
 router.get('/getdesignationbytype/:mle/:idtype', requireSignIn, isAuth, showDesignation);
 router.post('/create/:mle', requireSignIn, isAuth, saveDesignation);
 router.put('/update/:mle', requireSignIn, isAuth, updateDesignation);
