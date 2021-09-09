@@ -34,9 +34,9 @@ function ListeDesignation() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [designation, setDesignation] = useState({});
   useEffect(() => {
-    if (!listdesignations1) {
-      dispatch(FetchDesignation());
-    }
+    // if (!listdesignations1) {
+    dispatch(FetchDesignation());
+    // }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
