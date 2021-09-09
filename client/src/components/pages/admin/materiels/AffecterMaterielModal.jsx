@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { isAuthenticated } from "../../../../auth/helpers";
-
 import { useDispatch, useSelector } from "react-redux";
 import useStateRef from "react-usestateref";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
-
 import {
   Button,
   Dialog,
@@ -18,8 +16,7 @@ import {
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
-import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
-
+import ReactHookFormSelect from "../../../../core/Components/ReactHookReactSelect";
 import customAxios from "../../../../axios/CustomAxios";
 import { getdesignationbytype } from "../../../../core/ApiCore";
 import {
@@ -38,19 +35,15 @@ function AffecterMaterielModal(Props) {
     handleSubmit,
     reset,
     setValue,
-
     control,
     formState: { errors },
   } = useForm();
-
   const ListAgents = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENTS?.data
   );
-
   const ListeService = useSelector(
     (state) => state.requests?.queries?.FETCH_SERVICE?.data
   );
-
   const Listagencies = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENCIES?.data
   );
@@ -87,23 +80,18 @@ function AffecterMaterielModal(Props) {
     )[0].designation;
     customAxios
       .put(`/materiels/affecter/${user.Mle}`, JSON.stringify(data.object))
-
       .then((res) => {
         if (res.error) {
           toastr.warning(
             res.error,
             "S'il vous plaît Veuillez vérifier le Formulaire",
-            {
-              positionClass: "toast-bottom-left",
-            }
+            { positionClass: "toast-bottom-left" }
           );
         } else {
           toastr.success(
-            `Le Materiel  ${marque} est  affecté avec succés `,
+            `Le Materiel ${marque} est affecté avec succés `,
             "Modification Materiel",
-            {
-              positionClass: "toast-bottom-left",
-            }
+            { positionClass: "toast-bottom-left" }
           );
           reset();
           dispatch(FetchMateriels());
@@ -117,9 +105,7 @@ function AffecterMaterielModal(Props) {
           toastr.warning(
             err.response.data.error,
             "S'il vous plaît Veuillez vérifier le Formulaire",
-            {
-              positionClass: "toast-bottom-left",
-            }
+            { positionClass: "toast-bottom-left" }
           );
         } else {
           toastr.error(err.response.data.error, "Erreur du serveur", {
@@ -147,6 +133,12 @@ function AffecterMaterielModal(Props) {
     }
   }, [material1, setaffctMaterial]);
   const classes = useStyles();
+  const options =
+    ListeService &&
+    ListeService.map((service) => ({
+      value: service.id,
+      label: service.service_name,
+    }));
   return (
     <div>
       <Dialog
@@ -158,9 +150,8 @@ function AffecterMaterielModal(Props) {
         <DialogTitle id="form-dialog-title" className={classes.bg}>
           Affectation Materiel
         </DialogTitle>
-        <DialogContent className={classes.bg}>
+        <DialogContent className={classes.bg} style={{ height: "400px" }}>
           <DialogContentText className={classes.bg}></DialogContentText>
-
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Agent
           </InputLabel>
@@ -197,44 +188,24 @@ function AffecterMaterielModal(Props) {
                 "You must select an agent"}
             </p>
           )}
-
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Service
           </InputLabel>
           <ReactHookFormSelect
-            onchange={handleChange}
-            className={classes.select}
-            label="Selectionner une categorie"
+            options={options}
+            className={classes.SelectSearch}
+            menuColor="black"
             id="object.idservice"
-            name="object.idservice"
+            Name="object.idservice"
             control={control}
-            defaultValue={0}
-            reef={register("object.idservice", {
-              validate: (value) => value !== 0,
-              required: true,
-            })}
-          >
-            <MenuItem value="0" style={{ cursor: "pointer" }}>
-              Selectionner un service
-            </MenuItem>
-            {ListeService &&
-              ListeService.map((service, i) => (
-                <MenuItem
-                  key={i + 1}
-                  value={service.id}
-                  style={{ cursor: "pointer" }}
-                >
-                  {service.service_name}
-                </MenuItem>
-              ))}
-          </ReactHookFormSelect>
+            reef={register("object.idservice", { required: true })}
+          />
           {errors["object"]?.idservice && (
             <p className={classes.para}>
               {errors["object"]?.idservice?.message ||
                 "You must select a service"}
             </p>
           )}
-
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Agence
           </InputLabel>
@@ -281,7 +252,6 @@ function AffecterMaterielModal(Props) {
             >
               Cancel
             </Button>
-
             <Button color="primary" variant="contained" type="submit">
               Affecter
             </Button>
@@ -291,5 +261,4 @@ function AffecterMaterielModal(Props) {
     </div>
   );
 }
-
 export default AffecterMaterielModal;

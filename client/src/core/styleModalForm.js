@@ -34,6 +34,15 @@ export const useStyles = makeStyles(() => ({
     padding: "5px 10px",
     marginBottom: "20px",
   },
+  SelectSearch: {
+    width: "100%",
+    borderRadius: "4px",
+
+    backgroundColor: "white",
+    color: "black",
+
+    marginBottom: "20px",
+  },
   bg: {
     background: "#011627",
     color: "white",
