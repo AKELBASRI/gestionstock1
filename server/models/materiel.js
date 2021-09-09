@@ -1,124 +1,16 @@
+const materialchamps = require('../utils/MaterielFields');
+
 module.exports = function materiel(sequelize, DataTypes) {
-  return sequelize.define('materiel', {
-    idmateriel: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-    },
-    iddesignation: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'designation',
-        key: 'idDesignation',
-      },
-    },
-    numeroinventaire: {
-      type: DataTypes.STRING(90),
-      allowNull: true,
-    },
-    garentie: {
-      type: DataTypes.STRING(45),
-      allowNull: true,
-    },
-    datereceptionprovisoire: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    IDFournisseur: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'fournisseur',
-        key: 'idFournisseur',
-      },
-    },
-    Affecter: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-      defaultValue: false,
-    },
-    datesaisie: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    idtype: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'typemateriel',
-        key: 'id',
-      },
-    },
-    idagence: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'agencies',
-        key: 'id',
-      },
-    },
-    mleagent: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'agents',
-        key: 'agent_number',
-      },
-    },
-    idservice: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-  }, {
+  return sequelize.define('materiel', materialchamps(DataTypes), {
     sequelize,
     tableName: 'materiel',
     timestamps: false,
-    indexes: [
-      {
-        name: 'PRIMARY',
-        unique: true,
-        using: 'BTREE',
-        fields: [
-          { name: 'idmateriel' },
-        ],
-      },
-      {
-        name: 'fk_agenceid_idx',
-        using: 'BTREE',
-        fields: [
-          { name: 'idagence' },
-        ],
-      },
-      {
-        name: 'fk_typeid_idx',
-        using: 'BTREE',
-        fields: [
-          { name: 'idtype' },
-        ],
-      },
-      {
-        name: 'fk_agentid_idx',
-        using: 'BTREE',
-        fields: [
-          { name: 'mleagent' },
-        ],
-      },
-      {
-        name: 'fk_idfournisseur_idx',
-        using: 'BTREE',
-        fields: [
-          { name: 'IDFournisseur' },
-        ],
-      },
-      {
-        name: 'iddesignation_FK',
-        using: 'BTREE',
-        fields: [
-          { name: 'iddesignation' },
-        ],
-      },
-    ],
+    indexes: [{
+      name: 'PRIMARY', unique: true, using: 'BTREE', fields: [{ name: 'idmateriel' }],
+    }, { name: 'fk_agenceid_idx', using: 'BTREE', fields: [{ name: 'idagence' }] },
+    { name: 'fk_typeid_idx', using: 'BTREE', fields: [{ name: 'idtype' }] },
+    { name: 'fk_agentid_idx', using: 'BTREE', fields: [{ name: 'mleagent' }] },
+    { name: 'fk_idfournisseur_idx', using: 'BTREE', fields: [{ name: 'IDFournisseur' }] },
+    { name: 'iddesignation_FK', using: 'BTREE', fields: [{ name: 'iddesignation' }] }],
   });
 };

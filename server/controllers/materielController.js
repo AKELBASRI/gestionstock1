@@ -3,8 +3,12 @@ const Joi = require('joi')
   .extend(require('@joi/date'));
 const sequelize = require('sequelize');
 const dateFormat = require('dateformat');
-const models = require('../models');
+// const models = require('../models');
+const db = require('../models');
+const initModels = require('../models/init-models');
+const materialFields = require('../utils/MaterielFields');
 
+const models = initModels(db.sequelize);
 exports.saveMateriel = (req, res) => {
   const current = new Date();
   const materiel = {
@@ -88,26 +92,19 @@ exports.updateMateriel = (req, res) => {
       });
     });
 };
+exports.createbackupMateriel = (req, res) => {
+  const ladate = new Date();
+  const nameofTable = `Materiel_${ladate.getFullYear()}`;
 
+  db.sequelize.queryInterface.createTable(nameofTable,
+    materialFields(db.Sequelize.DataTypes))
+    .then(() => {
+      db.sequelize.query(`insert into ${nameofTable} select * from materiel`, { })
+        .then(() => res.status(200).json('Data is inserted successfully'))
+        .catch((error) => res.status(500).json({ error: error.errors[0].message }));
+    }).catch((error) => { console.log(error); res.status(500).json({ error: `Something went wrong${error}` }); });
+};
 exports.getallmateriels = (req, res) => {
-  models.agents.hasMany(models.materiel, { foreignKey: 'mleagent', sourceKey: 'agent_number' });
-  models.materiel.belongsTo(models.agents, { foreignKey: 'mleagent', sourceKey: 'agent_number' });
-
-  models.agencies.hasMany(models.materiel, { foreignKey: 'idagence', sourceKey: 'id' });
-  models.materiel.belongsTo(models.agencies, { foreignKey: 'idagence', sourceKey: 'id' });
-
-  models.typemateriel.hasMany(models.materiel, { foreignKey: 'idtype', sourceKey: 'id' });
-  models.materiel.belongsTo(models.typemateriel, { foreignKey: 'idtype', sourceKey: 'idtype' });
-
-  models.services.hasMany(models.materiel, { foreignKey: 'idservice', sourceKey: 'id' });
-  models.materiel.belongsTo(models.services, { foreignKey: 'idservice', sourceKey: 'idservice' });
-
-  models.fournisseur.hasMany(models.materiel, { foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur' });
-  models.materiel.belongsTo(models.fournisseur, { foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur' });
-
-  models.designation.hasMany(models.materiel, { foreignKey: 'iddesignation', sourceKey: 'idDesignation' });
-  models.materiel.belongsTo(models.designation, { foreignKey: 'iddesignation', sourceKey: 'idDesignation' });
-
   models.materiel.findAll({
     attributes: ['idmateriel', 'iddesignation', 'numeroinventaire', 'garentie', 'datereceptionprovisoire', 'Affecter', 'idtype', 'IDFournisseur', 'idagence', 'mleagent', 'idservice'],
     include: [

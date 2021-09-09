@@ -228,9 +228,9 @@ function AddEditServiceModal(Props) {
             <MenuItem value="0" style={{ cursor: "pointer" }}>
               Selectionner hiearchy
             </MenuItem>
-            <MenuItem key="1" value="1" style={{ cursor: "pointer" }}>
+            {/* <MenuItem key="1" value="1" style={{ cursor: "pointer" }}>
               Direction
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem key="2" value="2" style={{ cursor: "pointer" }}>
               Division
             </MenuItem>

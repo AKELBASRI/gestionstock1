@@ -18,24 +18,43 @@ function initModels(sequelize) {
   const services = _services(sequelize, DataTypes);
   const typemateriel = _typemateriel(sequelize, DataTypes);
 
-  agents.belongsTo(agencies, { as: 'agency', foreignKey: 'agency_id' });
-  agencies.hasMany(agents, { as: 'agents', foreignKey: 'agency_id' });
-  materiel.belongsTo(agencies, { as: 'idagence_agency', foreignKey: 'idagence' });
-  agencies.hasMany(materiel, { as: 'materiels', foreignKey: 'idagence' });
-  materiel.belongsTo(agents, { as: 'mleagent_agent', foreignKey: 'mleagent' });
-  agents.hasMany(materiel, { as: 'materiels', foreignKey: 'mleagent' });
-  materiel.belongsTo(designation, { as: 'iddesignation_designation', foreignKey: 'iddesignation' });
-  designation.hasMany(materiel, { as: 'materiels', foreignKey: 'iddesignation' });
-  materiel.belongsTo(fournisseur, { as: 'IDFournisseur_fournisseur', foreignKey: 'IDFournisseur' });
-  fournisseur.hasMany(materiel, { as: 'materiels', foreignKey: 'IDFournisseur' });
-  agents.belongsTo(services, { as: 'service', foreignKey: 'service_id' });
-  services.hasMany(agents, { as: 'agents', foreignKey: 'service_id' });
-  materiel.belongsTo(services, { as: 'idservice_service', foreignKey: 'idservice' });
-  services.hasMany(materiel, { as: 'materiels', foreignKey: 'idservice' });
-  designation.belongsTo(typemateriel, { as: 'idtype_typemateriel', foreignKey: 'idtype' });
-  typemateriel.hasMany(designation, { as: 'designations', foreignKey: 'idtype' });
-  materiel.belongsTo(typemateriel, { as: 'idtype_typemateriel', foreignKey: 'idtype' });
-  typemateriel.hasMany(materiel, { as: 'materiels', foreignKey: 'idtype' });
+  // agents.belongsTo(agencies, { as: 'agency', foreignKey: 'agency_id' });
+  // agencies.hasMany(agents, { as: 'agents', foreignKey: 'agency_id' });
+  // materiel.belongsTo(agencies, { as: 'idagence_agency', foreignKey: 'idagence' });
+  // agencies.hasMany(materiel, { as: 'materiels', foreignKey: 'idagence' });
+  // materiel.belongsTo(agents, { as: 'mleagent_agent', foreignKey: 'mleagent' });
+  // agents.hasMany(materiel, { as: 'materiels', foreignKey: 'mleagent' });
+  // materiel.belongsTo(designation,
+  // { as: 'iddesignation_designation', foreignKey: 'iddesignation' });
+  // designation.hasMany(materiel, { as: 'materiels', foreignKey: 'iddesignation' });
+  // materiel.belongsTo(fournisseur,
+  // { as: 'IDFournisseur_fournisseur', foreignKey: 'IDFournisseur' });
+  // fournisseur.hasMany(materiel, { as: 'materiels', foreignKey: 'IDFournisseur' });
+  // agents.belongsTo(services, { as: 'service', foreignKey: 'service_id' });
+  // services.hasMany(agents, { as: 'agents', foreignKey: 'service_id' });
+  // materiel.belongsTo(services, { as: 'idservice_service', foreignKey: 'idservice' });
+  // services.hasMany(materiel, { as: 'materiels', foreignKey: 'idservice' });
+  // designation.belongsTo(typemateriel, { as: 'idtype_typemateriel', foreignKey: 'idtype' });
+  // typemateriel.hasMany(designation, { as: 'designations', foreignKey: 'idtype' });
+  // materiel.belongsTo(typemateriel, { as: 'idtype_typemateriel', foreignKey: 'idtype' });
+  // typemateriel.hasMany(materiel, { as: 'materiels', foreignKey: 'idtype' });
+  agents.hasMany(materiel, { foreignKey: 'mleagent', sourceKey: 'agent_number' });
+  materiel.belongsTo(agents, { foreignKey: 'mleagent', sourceKey: 'agent_number' });
+
+  agencies.hasMany(materiel, { foreignKey: 'idagence', sourceKey: 'id' });
+  materiel.belongsTo(agencies, { foreignKey: 'idagence', sourceKey: 'id' });
+
+  typemateriel.hasMany(materiel, { foreignKey: 'idtype', sourceKey: 'id' });
+  materiel.belongsTo(typemateriel, { foreignKey: 'idtype', sourceKey: 'idtype' });
+
+  services.hasMany(materiel, { foreignKey: 'idservice', sourceKey: 'id' });
+  materiel.belongsTo(services, { foreignKey: 'idservice', sourceKey: 'idservice' });
+
+  fournisseur.hasMany(materiel, { foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur' });
+  materiel.belongsTo(fournisseur, { foreignKey: 'IDFournisseur', sourceKey: 'idFournisseur' });
+
+  designation.hasMany(materiel, { foreignKey: 'iddesignation', sourceKey: 'idDesignation' });
+  materiel.belongsTo(designation, { foreignKey: 'iddesignation', sourceKey: 'idDesignation' });
   services.isHierarchy();
   // services.belongsTo(services, {
   //   as: 'parent',
@@ -52,7 +71,7 @@ function initModels(sequelize) {
   //   try {
   //     await services.sync();
 
-  //     await sequelize.models.servicesancestor.sync();
+  //     await sequelize.servicesancestor.sync();
   //     // console.log('Tables are created or updated successfully.');
   //   } catch (error) {
   //     console.error('Unable to create tables:', error);
