@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 const useStyles = makeStyles(() => ({
   Featured: {
     width: "100%",
@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
   },
   Item: {
     flex: "1",
-    margin: "0px 20px",
+    margin: "20px 14px",
     padding: "30px",
     borderRadius: "10px",
     cursor: "pointer",
@@ -27,8 +27,13 @@ const useStyles = makeStyles(() => ({
 function FeaturedItem(Props) {
   const classes = useStyles();
   return (
-    <Box className={classes.Featured}>
-      <Box className={classes.Item} style={{ backgroundColor: Props.color }}>
+    <div>
+      {/* <Box className={classes.Item} style={{ backgroundColor: Props.color }}> */}
+      <Grid
+        className={classes.Item}
+        item
+        style={{ backgroundColor: Props.color }}
+      >
         <Box fontSize="20px">{`Nombre Total des ${Props.totalmateriel[1]}s`}</Box>
         <Box>
           <Box
@@ -39,8 +44,8 @@ function FeaturedItem(Props) {
             {Props.totalmateriel[0]}
           </Box>
         </Box>
-      </Box>
-    </Box>
+      </Grid>
+    </div>
   );
 }
 export default FeaturedItem;

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { flattenObject } from "../../core/ApiCore";
@@ -42,7 +42,7 @@ function FeaturedInfo() {
         {total.length > 0 && (
           <>
             <Typography variant="h5">{title}</Typography> <Box my="10px"></Box>
-            <Box display="flex">
+            <Grid container>
               {total.map((totalmateriel, i) => (
                 <FeaturedItem
                   totalmateriel={totalmateriel}
@@ -50,7 +50,7 @@ function FeaturedInfo() {
                   color={color}
                 />
               ))}
-            </Box>
+            </Grid>
           </>
         )}
       </Box>
