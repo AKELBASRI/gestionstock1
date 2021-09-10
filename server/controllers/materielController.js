@@ -4,6 +4,7 @@ const Joi = require('joi')
 const sequelize = require('sequelize');
 const dateFormat = require('dateformat');
 // const models = require('../models');
+const xlsx = require('node-xlsx');
 const db = require('../models');
 const initModels = require('../models/init-models');
 const materialFields = require('../utils/MaterielFields');
@@ -91,6 +92,38 @@ exports.updateMateriel = (req, res) => {
 
       });
     });
+};
+exports.importmateriel = (req, res) => {
+  const obj = xlsx.parse(`${`${__dirname}/../`}\\typedesignationinventaire.xlsx`); // parses a file
+  const promises = obj[0].data.map((materiel) => models.designation
+    .findOne({ where: { designation: materiel[1] } })
+    .then((result1) => [result1, materiel[0]])
+
+    .catch((error1) => {
+      res.status(500).json({ message: 'Something went wrong', error1 });
+    }));
+    // item[0].idDesignation, item[1]
+  Promise.all(promises).then((result) => {
+    const current = new Date();
+    result.map((item) => {
+      const materiel1 = {
+        iddesignation: item[0].idDesignation,
+        numeroinventaire: item[1],
+
+        datesaisie: dateFormat(current, 'yyyy-mm-dd'),
+        idtype: item[0].idtype,
+
+      };
+      return models.materiel.create(materiel1).then((result1) => {
+        res.status(201).json({ message: 'Le materiel a été crée avec succés', service: result1 });
+      })
+        .catch((error1) => {
+          console.log(error1);
+          res.status(500).json({ message: 'Something went wrong', error1 });
+        });
+    });
+    res.status(201).json(result);
+  });
 };
 exports.createbackupMateriel = (req, res) => {
   const ladate = new Date();
