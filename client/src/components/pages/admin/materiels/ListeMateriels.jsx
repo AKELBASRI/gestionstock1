@@ -133,9 +133,16 @@ function ListMateriels() {
       options: {
         filter: true,
         sort: false,
+        print: false,
         customBodyRender: function an(value) {
           return (
-            <Box>{parseInt(value) === 1 ? value + " an" : value + " ans"}</Box>
+            <Box>
+              {parseInt(value) === 1
+                ? value + " an"
+                : value && parseInt(value) === 2
+                ? value + " ans"
+                : null}
+            </Box>
           );
         },
       },
@@ -145,6 +152,7 @@ function ListMateriels() {
       name: "datereceptionprovisoire",
       options: {
         filter: true,
+        print: false,
       },
     },
     {
@@ -153,6 +161,7 @@ function ListMateriels() {
       options: {
         filter: true,
         sort: false,
+        print: false,
         customBodyRender: function checked(value) {
           return (
             <Box>
@@ -210,11 +219,12 @@ function ListMateriels() {
     },
 
     {
-      label: "idservice",
-      name: "idservice",
+      label: "service",
+      name: "service.service_name",
       options: {
+        print: true,
         filter: false,
-        display: false,
+        display: true,
       },
     },
     {
@@ -243,6 +253,7 @@ function ListMateriels() {
       label: "Fournisseur",
       name: "fournisseur.NomFournisseur",
       options: {
+        print: false,
         filter: true,
       },
     },
