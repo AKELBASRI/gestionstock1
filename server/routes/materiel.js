@@ -1,5 +1,5 @@
 const express = require('express');
-const { createbackupMateriel, importmateriel } = require('../controllers/materielController');
+const { createbackupMateriel } = require('../controllers/materielController');
 
 const {
   saveMateriel, getallmateriels, updateMateriel,
