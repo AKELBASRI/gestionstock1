@@ -7,6 +7,7 @@ import DevicesIcon from "@material-ui/icons/Devices";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import PrintIcon from "@material-ui/icons/Print";
+import { VscChecklist } from "react-icons/vsc";
 export const SidebarData = [
   {
     title: "Home",
@@ -100,5 +101,10 @@ export const SidebarData = [
     title: "Print Materiels",
     path: "/printmateriels",
     icon: <PrintIcon style={{ width: "20px", height: "20px" }} />,
+  },
+  {
+    title: "Inventaire",
+    path: "/inventory",
+    icon: <VscChecklist style={{ width: "20px", height: "20px" }} />,
   },
 ];
