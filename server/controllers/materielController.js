@@ -16,7 +16,7 @@ exports.saveMateriel = (req, res) => {
     iddesignation: req.body.iddesignation,
     numeroinventaire: req.body.numeroinventaire.trim(),
     garentie: req.body.garentie,
-    datereceptionprovisoire: dateFormat(req.body.datereceptionprovisoire, 'yyyy-mm-dd'),
+    datereceptionprovisoire: req.body.datereceptionprovisoire ? dateFormat(req.body.datereceptionprovisoire, 'yyyy-mm-dd') : null,
     IDFournisseur: req.body.IDFournisseur,
     datesaisie: dateFormat(current, 'yyyy-mm-dd'),
     idtype: req.body.idtype,
