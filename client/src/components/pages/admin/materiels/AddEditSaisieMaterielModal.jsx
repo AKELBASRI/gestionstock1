@@ -400,7 +400,7 @@ const AddEditSaisieMaterielModal = (Props) => {
             control={control}
             defaultValue={"0"}
             garentiereg={register("object.garentie", {
-              validate: (value) => value !== "0",
+              // validate: (value) => value !== "0",
             })}
           >
             <MenuItem value="0" style={{ cursor: "pointer" }}>
@@ -445,7 +445,7 @@ const AddEditSaisieMaterielModal = (Props) => {
               }}
               disableToolbar
               inputRef={register("object.datereceptionprovisoire", {
-                required: "You must specify a date",
+                // required: "You must specify a date",
               })}
             />
           </MuiPickersUtilsProvider>
@@ -465,7 +465,7 @@ const AddEditSaisieMaterielModal = (Props) => {
             control={control}
             defaultValue={"0"}
             reef={register("object.IDFournisseur", {
-              validate: (value) => value !== "0",
+              // validate: (value) => value !== "0",
             })}
           >
             <MenuItem value="0" style={{ cursor: "pointer" }}>
