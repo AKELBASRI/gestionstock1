@@ -58,11 +58,11 @@ function FeaturedInfo() {
   };
   return (
     <div>
+      {listTotalAvailableByType1 &&
+        FeaturedItemList("Disponible", listTotalAvailableByType1, "#ceefce")}
       {listTotalCountbyType1 &&
         FeaturedItemList("Total", listTotalCountbyType1, "white")}
       <Box my="10px"></Box>
-      {listTotalAvailableByType1 &&
-        FeaturedItemList("Disponible", listTotalAvailableByType1, "#ceefce")}
     </div>
   );
 }
