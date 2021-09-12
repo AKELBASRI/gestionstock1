@@ -2,7 +2,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 const ReactHookFormReactSelect = (Props) => {
-  const { options, control, Name, reef, ...props } = Props;
+  const { options, control, Name, reef, Value, ...props } = Props;
 
   return (
     <FormControl {...props}>
@@ -14,7 +14,7 @@ const ReactHookFormReactSelect = (Props) => {
           <Select
             inputRef={reef?.ref}
             options={options}
-            value={options?.find((c) => c.value === value)}
+            value={options?.find((c) => c.value === value) || Value}
             onChange={(val) => onChange(val?.value)}
             isClearable={true}
           />
