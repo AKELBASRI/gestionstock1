@@ -170,7 +170,6 @@ function AffecterMaterielModal(Props) {
           <ReactHookFormReactSelect
             options={optionagent}
             className={classes.SelectSearch}
-            menuColor="black"
             id="object.mleagent"
             Name="object.mleagent"
             control={control}
@@ -221,7 +220,6 @@ function AffecterMaterielModal(Props) {
           <ReactHookFormReactSelect
             options={optionsservices}
             className={classes.SelectSearch}
-            menuColor="black"
             id="object.idservice"
             Name="object.idservice"
             control={control}
@@ -239,7 +237,6 @@ function AffecterMaterielModal(Props) {
           <ReactHookFormReactSelect
             options={optionagency}
             className={classes.SelectSearch}
-            menuColor="black"
             id="object.idagence"
             Name="object.idagence"
             control={control}
