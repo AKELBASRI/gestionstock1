@@ -1,5 +1,5 @@
 const express = require('express');
-const { createbackupMateriel } = require('../controllers/materielController');
+const { createbackupMateriel, AffecterMaterielbynumberofinventory } = require('../controllers/materielController');
 
 const {
   saveMateriel, getallmateriels, updateMateriel,
@@ -20,4 +20,5 @@ router.delete('/delete/:mle', requireSignIn, isAuth, deletemateriel);
 router.param('mle', userById);
 router.get('/countMaterielbyType/:mle', requireSignIn, isAuth, GetTotalbyType);
 router.get('/countMaterielavailablebyType/:mle', requireSignIn, isAuth, GetAvailableMaterielTotal);
+router.put('/AffecterMaterielbynumberofinventory/:mle', requireSignIn, isAuth, AffecterMaterielbynumberofinventory);
 module.exports = router;

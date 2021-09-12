@@ -1,6 +1,6 @@
 // const Joi = require('joi');
-const Joi = require('joi')
-  .extend(require('@joi/date'));
+// const Joi = require('joi')
+// .extend(require('@joi/date'));
 const sequelize = require('sequelize');
 const dateFormat = require('dateformat');
 // const models = require('../models');
@@ -33,27 +33,27 @@ exports.saveMateriel = (req, res) => {
         res.status(403).json({ error: 'materiel existe deja !' });
         return false;
       }
-      const schema = Joi.object({
-        idservice: Joi.number(),
-        garentie: Joi.string(),
-        numeroinventaire: Joi.optional().allow(''),
-        iddesignation: Joi.number().required(),
-        datereceptionprovisoire: Joi.date().required(),
-        IDFournisseur: Joi.number().required(),
-        idtype: Joi.number().required(),
-      });
-      const { error } = schema.validate(req.body);
-      if (error) {
-        return res.status(400).json({
-          error: error.details[0].message,
-        });
-      }
+      // const schema = Joi.object({
+      //   idservice: Joi.number(),
+      //   garentie: Joi.string(),
+      //   numeroinventaire: Joi.optional().allow(''),
+      //   iddesignation: Joi.number().required(),
+      //   datereceptionprovisoire: Joi.date().optional().allow(null),
+      //   IDFournisseur: Joi.number().optional().required(),
+      //   idtype: Joi.number().required(),
+      // });
+      // const { error } = schema.validate(req.body);
+      // if (error) {
+      //   return res.status(400).json({
+      //     error: error.details[0].message,
+      //   });
+      // }
       models.materiel.create(materiel).then((result1) => {
         res.status(201).json({ message: 'Le materiel a été crée avec succés', service: result1 });
       })
         .catch((error1) => {
           console.log(error1);
-          res.status(500).json({ message: 'Something went wrong', error });
+          res.status(500).json({ message: 'Something went wrong', error1 });
         });
       return true;
     }).catch((error) => {
@@ -164,7 +164,40 @@ exports.deletemateriel = (req, res) => {
       res.status(500).json({ error: `Something went wrong${error}` });
     });
 };
+exports.AffecterMaterielbynumberofinventory = (req, res) => {
+  const materielaffct = {
+    idagence: req.body.idagence,
+    mleagent: req.body.mleagent,
+    idservice: req.body.idservice,
+    Affecter: true,
+  };
+  models.materiel
+    .findOne({
+      where: {
+        numeroinventaire: req.body.numeroinventaire.trim(),
 
+      },
+    }).then((result) => {
+      if (result) {
+        models.materiel.update(materielaffct, {
+          where:
+          { numeroinventaire: req.body.numeroinventaire },
+        })
+          .then((result1) => res.status(201)
+            .json({ message: 'le materiel a été affecté avec succés ', materiel: result1 }))
+          .catch((error) => {
+            console.log(error);
+            res.status(500).json({ error: `Something went wrong${error}` });
+          });
+        return true;
+      }
+      res.status(404).json({ error: "le materiel avec ce numero d'inventaire n'existe pas" });
+      return false;
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: `Something went wrong${error}` });
+    });
+};
 exports.AffecterMaterielle = (req, res) => {
   const materielaffct = {
     idagence: req.body.idagence,
