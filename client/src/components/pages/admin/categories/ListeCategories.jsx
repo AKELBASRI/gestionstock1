@@ -25,9 +25,9 @@ function ListeCategories() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [category, setcategory] = useState({});
   useEffect(() => {
-    if (!listcategories) {
-      dispatch(FetchCategory());
-    }
+    // if (!listcategories) {
+    dispatch(FetchCategory());
+    // }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);
