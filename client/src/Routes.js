@@ -17,6 +17,7 @@ import ListeFournisseur from "./components/pages/admin/fournisseurs/ListeFournis
 import ListMateriels from "./components/pages/admin/materiels/ListeMateriels";
 import ListeDesignation from "./components/pages/admin/designations/ListeDesignation";
 import PrintMateriels from "./components/pages/admin/materiels/PrintMateriels";
+import Affectation from "./components/pages/admin/inventaire/Affectation";
 
 function Routes() {
   return (
@@ -60,6 +61,7 @@ function Routes() {
               exact
               component={PrintMateriels}
             />
+            <PrivateRoute path="/inventory" exact component={Affectation} />
             <AuthRoute path="/signin" exact component={Signin} />
 
             {/* </div>  */}

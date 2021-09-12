@@ -17,16 +17,15 @@
     "@redux-requests/react": "^1.6.1",
     "antd": "^4.16.13",
     "axios": "^0.21.1",
-    
     "datatables.net-buttons-dt": "^2.0.0",
     "datatables.net-dt": "^1.11.2",
-    
     "date-fns": "^2.23.0",
     "dotenv": "^8.2.0",
     "jszip": "^3.7.1",
     "mui-datatables": "^3.7.7",
     "pdfmake": "^0.2.2",
     "react": "^17.0.2",
+    "react-barcode-reader": "^0.0.2",
     "react-confirm-alert": "^2.7.0",
     "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.2",
@@ -46,7 +45,6 @@
     "toastr": "^2.1.4"
   },
   "devDependencies": {
-   
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
