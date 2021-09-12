@@ -1,0 +1,48 @@
+.entete{
+    display:flex;
+    height:200px;
+    align-items:center
+  }
+  .division{
+    align-self:flex-start;
+  }
+  .title{
+    flex-grow:2;
+    text-align:center;
+    font-size:30px;
+    align-self:flex-end;
+    /* background-color: aqua; */
+    padding:20px; 
+  
+    margin-bottom:20px;
+    border:1px solid rgb(0, 139, 255);
+   }
+  .image{
+    text-align:right;
+    align-self:flex-start;
+    flex-grow:1;
+    padding:0;
+   
+  }
+  /* .image > img{  
+    width:"60px" ;
+    height:"90px";
+ } */
+
+  .buttons-print,.buttons-excel  {
+    color: white;
+    width: 80px;
+    
+    padding: 15px;
+    border:none;
+    box-shadow: -2px -1px 15px 1px rgb(0 0 0 / 40%);
+    border-radius: 2px;
+    background-color: #011627;
+  }
+  .buttons-print:hover,.buttons-excel:hover{
+    background-color: white;
+    color: #011627;
+  }  
+  .buttons-excel >span > i,.buttons-print >span > i{
+      font-size:20px
+  }
