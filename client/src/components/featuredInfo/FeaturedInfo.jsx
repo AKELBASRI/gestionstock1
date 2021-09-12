@@ -18,12 +18,12 @@ function FeaturedInfo() {
     (state) => state.requests?.queries?.FETCH_TOTAL_MATERIELS?.data
   );
   useEffect(() => {
-    if (!listTotalCountbyType) {
-      dispatch(FetchTotalMateriels());
-    }
-    if (!listTotalAvailableByType) {
-      dispatch(FetchTotalAvailableMateriels());
-    }
+    // if (!listTotalCountbyType) {
+    dispatch(FetchTotalMateriels());
+    // }
+    // if (!listTotalAvailableByType) {
+    dispatch(FetchTotalAvailableMateriels());
+    // }
   }, []);
 
   const listTotalCountbyType1 =
