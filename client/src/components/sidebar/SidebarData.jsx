@@ -6,7 +6,7 @@ import CasinoIcon from "@material-ui/icons/Casino";
 import DevicesIcon from "@material-ui/icons/Devices";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-
+import PrintIcon from "@material-ui/icons/Print";
 export const SidebarData = [
   {
     title: "Home",
@@ -95,5 +95,10 @@ export const SidebarData = [
     title: "Saisie et Affectation Materiels",
     path: "/addmtrl",
     icon: <DevicesIcon style={{ width: "20px", height: "20px" }} />,
+  },
+  {
+    title: "Print Materiels",
+    path: "/printmateriels",
+    icon: <PrintIcon style={{ width: "20px", height: "20px" }} />,
   },
 ];
