@@ -144,6 +144,7 @@ function ListServices() {
     // filterType: 'dropdown',
     responsive: "standard",
     selectableRows: "none",
+    caseSensitive: true,
   };
   return (
     <Layout>
