@@ -20,7 +20,7 @@ exports.saveMateriel = (req, res) => {
     IDFournisseur: req.body.IDFournisseur,
     datesaisie: dateFormat(current, 'yyyy-mm-dd'),
     idtype: req.body.idtype,
-
+    idlieu: req.body.idlieu,
   };
   models.materiel
     .findOne({
@@ -70,6 +70,8 @@ exports.updateMateriel = (req, res) => {
       where: {
         numeroinventaire: req.body.numeroinventaire.trim()
       || true,
+        idtype: req.body.idtype,
+        idlieu: req.body.idlieu,
       },
     }).then((result) => {
       if (result) {
@@ -139,7 +141,7 @@ exports.createbackupMateriel = (req, res) => {
 };
 exports.getallmateriels = (req, res) => {
   models.materiel.findAll({
-    attributes: ['idmateriel', 'iddesignation', 'numeroinventaire', 'garentie', 'datereceptionprovisoire', 'Affecter', 'idtype', 'IDFournisseur', 'idagence', 'mleagent', 'idservice'],
+    attributes: ['idmateriel', 'iddesignation', 'numeroinventaire', 'garentie', 'datereceptionprovisoire', 'Affecter', 'idtype', 'IDFournisseur', 'idagence', 'mleagent', 'idservice', 'disponible', 'idlieu'],
     include: [
       { model: models.services, attributes: ['service_name'] },
       { model: models.agencies, attributes: ['agency_name'] },
@@ -147,6 +149,7 @@ exports.getallmateriels = (req, res) => {
       { model: models.typemateriel, attributes: ['type'] },
       { model: models.fournisseur, attributes: ['NomFournisseur'] },
       { model: models.designation, attributes: ['designation'] },
+      { model: models.lieu, attributes: ['lieu'] },
     ],
   })
     .then((materiels) => res.status(200).json(materiels))
@@ -170,6 +173,8 @@ exports.AffecterMaterielbynumberofinventory = (req, res) => {
     mleagent: req.body.mleagent,
     idservice: req.body.idservice,
     Affecter: true,
+    disponible: req.body.disponible,
+    idlieu: req.body.idlieu,
   };
   models.materiel
     .findOne({
@@ -204,6 +209,7 @@ exports.AffecterMaterielle = (req, res) => {
     mleagent: req.body.mleagent,
     idservice: req.body.idservice,
     Affecter: true,
+    idlieu: req.body.idlieu,
   };
   models.materiel.update(materielaffct, { where: { idmateriel: req.body.idmateriel } })
     .then((result) => {
