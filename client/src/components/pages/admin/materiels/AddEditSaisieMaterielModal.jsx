@@ -33,6 +33,7 @@ import customAxios from "../../../../axios/CustomAxios";
 import {
   FetchCategory,
   FetchFournisseur,
+  FetchLieu,
   FetchMateriels,
   FetchTotalAvailableMateriels,
   FetchTotalMateriels,
@@ -56,7 +57,9 @@ const AddEditSaisieMaterielModal = (Props) => {
   const categories = useSelector(
     (state) => state.requests?.queries?.FETCH_CATEGORY?.data
   );
-
+  const ListeLieux = useSelector(
+    (state) => state.requests?.queries?.FETCH_LIEUX?.data
+  );
   const Fournisseurs = useSelector(
     (state) => state.requests?.queries?.FETCH_FOURNISSEUR?.data
   );
@@ -81,7 +84,7 @@ const AddEditSaisieMaterielModal = (Props) => {
     if (!Fournisseurs) {
       dispatch(FetchFournisseur());
     }
-
+    dispatch(FetchLieu());
     if (material1) {
       setValue("object", material1);
       LoadDesignations(material1);
@@ -136,6 +139,12 @@ const AddEditSaisieMaterielModal = (Props) => {
       });
     }
   };
+  const optionsLienx =
+    ListeLieux &&
+    ListeLieux.map((lieu) => ({
+      value: lieu.id,
+      label: lieu.lieu,
+    }));
   const optionsCategories =
     categories &&
     categories.map((category) => ({
@@ -206,7 +215,7 @@ const AddEditSaisieMaterielModal = (Props) => {
       });
   };
   const AjoutMateriel = (data) => {
-    const marque = Designations.current.filter(
+    const marque = Designations?.current.filter(
       (designation) =>
         parseInt(designation?.idDesignation) ===
         parseInt(data.object?.iddesignation)
@@ -306,7 +315,9 @@ const AddEditSaisieMaterielModal = (Props) => {
             id="object.idtype"
             Name="object.idtype"
             control={control}
-            reef={register("object.idtype")}
+            reef={register("object.idtype", {
+              required: "You must specify a type",
+            })}
             onchange={handleChange}
           />
 
@@ -372,7 +383,9 @@ const AddEditSaisieMaterielModal = (Props) => {
                 id="object.iddesignation"
                 Name="object.iddesignation"
                 control={control}
-                reef={register("object.iddesignation")}
+                reef={register("object.iddesignation", {
+                  required: "You must specify a Designation",
+                })}
               />
 
               {errors["object"]?.iddesignation && (
@@ -393,9 +406,8 @@ const AddEditSaisieMaterielModal = (Props) => {
             name="object.garentie"
             control={control}
             defaultValue={"0"}
-            garentiereg={register("object.garentie", {
-              // validate: (value) => value !== "0",
-            })}
+            reef={register("object.garentie")}
+            // , {validate: (value) => value !== "0", }
           >
             <MenuItem value="0" style={{ cursor: "pointer" }}>
               Selectionner la garentie
@@ -463,6 +475,25 @@ const AddEditSaisieMaterielModal = (Props) => {
             <p className={classes.para}>
               {errors["object"]?.IDFournisseur?.message ||
                 "You must select a fournisseur"}
+            </p>
+          )}
+
+          <InputLabel htmlFor="age-native-simple" className={classes.label}>
+            Lieu
+          </InputLabel>
+          <ReactHookFormReactSelect
+            options={optionsLienx}
+            className={classes.SelectSearch}
+            id="object.idlieu"
+            Name="object.idlieu"
+            control={control}
+            reef={register("object.idlieu")}
+            onchange={handleChange}
+          />
+
+          {errors["object"]?.idlieu && (
+            <p className={classes.para}>
+              {errors["object"]?.idtype?.message || "You must select a place"}
             </p>
           )}
         </DialogContent>

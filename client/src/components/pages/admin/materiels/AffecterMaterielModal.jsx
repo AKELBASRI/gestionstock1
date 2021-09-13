@@ -54,6 +54,9 @@ function AffecterMaterielModal(Props) {
         )
       : null
   );
+  const ListeLieux = useSelector(
+    (state) => state.requests?.queries?.FETCH_LIEUX?.data
+  );
   // const [, setaffctMaterial] = useStateRef({});
   const dispatch = useDispatch();
   // const handleChange = (e) => {
@@ -62,6 +65,12 @@ function AffecterMaterielModal(Props) {
   //     [e.target.id]: e.target.value,
   //   });
   // };
+  const optionsLienx =
+    ListeLieux &&
+    ListeLieux.map((lieu) => ({
+      value: lieu.id,
+      label: lieu.lieu,
+    }));
   const LoadDesignations = async (material) => {
     if (material !== undefined) {
       getdesignationbytype(material.idtype)
@@ -181,39 +190,7 @@ function AffecterMaterielModal(Props) {
                 "You must select an agent"}
             </p>
           )}
-          {/* <ReactHookFormSelect
-            onchange={handleChange}
-            className={classes.select}
-            label="Selectionner une categorie"
-            id="object.mleagent"
-            name="object.mleagent"
-            control={control}
-            defaultValue={0}
-            reef={register("object.mleagent", {
-              validate: (value) => value !== 0,
-              required: true,
-            })}
-          >
-            <MenuItem value="0" style={{ cursor: "pointer" }}>
-              Selectionner un agent
-            </MenuItem>
-            {ListAgents &&
-              ListAgents.map((agent, i) => (
-                <MenuItem
-                  key={i + 1}
-                  value={agent.agent_number}
-                  style={{ cursor: "pointer" }}
-                >
-                  {agent.agent_full_name}
-                </MenuItem>
-              ))}
-          </ReactHookFormSelect>
-          {errors["object"]?.mleagent && (
-            <p className={classes.para}>
-              {errors["object"]?.mleagent?.message ||
-                "You must select an agent"}
-            </p>
-          )} */}
+
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Service
           </InputLabel>
@@ -248,39 +225,24 @@ function AffecterMaterielModal(Props) {
                 "You must select an agency"}
             </p>
           )}
-          {/* <ReactHookFormSelect
-            onchange={handleChange}
-            className={classes.select}
-            label="Selectionner une categorie"
-            id="object.idagence"
-            name="object.idagence"
+          <InputLabel htmlFor="age-native-simple" className={classes.label}>
+            Lieu
+          </InputLabel>
+          <ReactHookFormReactSelect
+            options={optionsLienx}
+            className={classes.SelectSearch}
+            id="object.idlieu"
+            Name="object.idlieu"
             control={control}
-            defaultValue={0}
-            reef={register("object.idagence", {
-              validate: (value) => value !== 0,
-              required: true,
-            })}
-          >
-            <MenuItem value="0" style={{ cursor: "pointer" }}>
-              Selectionner une agence
-            </MenuItem>
-            {Listagencies &&
-              Listagencies.map((agency, i) => (
-                <MenuItem
-                  key={i + 1}
-                  value={agency.id}
-                  style={{ cursor: "pointer" }}
-                >
-                  {agency.agency_name}
-                </MenuItem>
-              ))}
-          </ReactHookFormSelect>
-          {errors["object"]?.idagence && (
+            reef={register("object.idlieu")}
+          />
+
+          {errors["object"]?.idlieu && (
             <p className={classes.para}>
-              {errors["object"]?.idagence?.message ||
-                "You must select an agency"}
+              {errors["object"]?.idtype?.message ||
+                "You must select a category"}
             </p>
-          )} */}
+          )}
         </DialogContent>
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <DialogActions className={classes.bg}>
