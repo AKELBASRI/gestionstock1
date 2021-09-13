@@ -12,6 +12,7 @@ import {
   FETCH_TOTAL_MATERIELS,
   FETCH_TOTAL_AVAILABLE_MATERIELS,
   FETCH_SERVICE_HIARCHY,
+  FETCH_LIEUX,
 } from "./constants";
 
 // const { user } = isAuthenticated();
@@ -88,6 +89,14 @@ export const FetchTotalAvailableMateriels = () => {
       url: `/materiels/countMaterielavailablebyType/${
         isAuthenticated().user.Mle
       }`,
+    },
+  };
+};
+export const FetchLieu = () => {
+  return {
+    type: FETCH_LIEUX,
+    request: {
+      url: `/lieux/alllieux/${isAuthenticated().user.Mle}`,
     },
   };
 };
