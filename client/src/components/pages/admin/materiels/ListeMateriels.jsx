@@ -219,6 +219,28 @@ function ListMateriels() {
     },
 
     {
+      label: "Disponible",
+      name: "disponible",
+      options: {
+        filter: true,
+        customBodyRender: function checked(value) {
+          return (
+            <Box>
+              <Switch checked={value} disableRipple />
+            </Box>
+          );
+        },
+      },
+    },
+    {
+      label: "idlieu",
+      name: "idlieu",
+      options: {
+        filter: true,
+        display: false,
+      },
+    },
+    {
       label: "service",
       name: "service.service_name",
       options: {
@@ -265,6 +287,13 @@ function ListMateriels() {
       },
     },
 
+    {
+      label: "Lieu",
+      name: "lieu.lieu",
+      options: {
+        filter: true,
+      },
+    },
     {
       name: "Actions",
       options: {
