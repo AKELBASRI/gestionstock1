@@ -8,6 +8,7 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import PrintIcon from "@material-ui/icons/Print";
 import { VscChecklist } from "react-icons/vsc";
+import RoomIcon from "@material-ui/icons/Room";
 export const SidebarData = [
   {
     title: "Home",
@@ -91,7 +92,11 @@ export const SidebarData = [
     // iconClosed: <span className="fas fa-caret-down caret"></span>,
     // iconOpened: <span className="fas fa-caret-up caret"></span>,
   },
-
+  {
+    title: "Les Lieux",
+    path: "/lieu",
+    icon: <RoomIcon style={{ width: "20px", height: "20px" }} />,
+  },
   {
     title: "Saisie et Affectation Materiels",
     path: "/addmtrl",
