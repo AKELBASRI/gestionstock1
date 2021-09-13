@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import BarcodeReader from "react-barcode-reader";
 import { useDispatch, useSelector } from "react-redux";
 import toastr from "toastr";
 import "toastr/build/toastr.css";
@@ -40,6 +40,7 @@ import {
 import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
 
 const AddEditSaisieMaterielModal = (Props) => {
+  // const [Numeroinventairecodebar, setnuminventaire] = useState("");
   const [date, setDate] = useState(null);
   const {
     register,
@@ -48,6 +49,7 @@ const AddEditSaisieMaterielModal = (Props) => {
     setValue,
     getValues,
     control,
+    watch,
     formState: { errors },
   } = useForm();
 
@@ -270,7 +272,13 @@ const AddEditSaisieMaterielModal = (Props) => {
     }
   };
   const classes = useStyles();
-
+  const handleScan = (data) => {
+    setValue("object.numeroinventaire", data);
+    // setnuminventaire(data);
+  };
+  const handleError = (err) => {
+    console.error(err);
+  };
   return (
     <div>
       <Dialog
@@ -285,6 +293,8 @@ const AddEditSaisieMaterielModal = (Props) => {
             : "Ajout Materiel"}
         </DialogTitle>
         <DialogContent className={classes.bg} style={{ height: "651px" }}>
+          {JSON.stringify(watch("object"))}
+          <BarcodeReader onError={handleError} onScan={handleScan} />
           <DialogContentText className={classes.bg}></DialogContentText>
 
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
@@ -318,6 +328,7 @@ const AddEditSaisieMaterielModal = (Props) => {
                 {...register("object.numeroinventaire", {
                   required: "You must specify a number of inventory",
                 })}
+                // value={Numeroinventairecodebar || ""}
               />
               {errors["object"]?.numeroinventaire && (
                 <p className={classes.para}>

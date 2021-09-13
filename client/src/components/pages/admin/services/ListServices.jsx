@@ -40,9 +40,9 @@ function ListServices() {
   const [showEditAddModal, setshowEditAddModal] = useState(false);
   const [service, setservice] = useState({});
   useEffect(() => {
-    if (!listservices) {
-      dispatch(FetchService());
-    }
+    // if (!listservices) {
+    dispatch(FetchService());
+    // }
   }, [dispatch]);
   const handleClose = () => {
     setshowEditAddModal(false);

@@ -20,7 +20,7 @@ import AddEditSaisieMaterielModal from "../materiels/AddEditSaisieMaterielModal"
 function Affectation() {
   const dispatch = useDispatch();
   const [showEditAddModal, setshowEditAddModal] = useState(false);
-  const [object, setobject] = useState({ id: "", name: "" });
+  const [Numeroinventairecodebar, setobject] = useState({ id: "", name: "" });
   const ListAgents = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENTS?.data
   );
@@ -63,7 +63,7 @@ function Affectation() {
     register,
     handleSubmit,
     control,
-
+    reset,
     watch,
     setValue,
     formState: { errors },
@@ -104,10 +104,11 @@ function Affectation() {
       )
       .then(() => {
         toastr.success(
-          `Le Materiel avec le numero d'inventaire : ${data.numeroinventaire} est affecté avec succés `,
-          "Modification Materiel",
+          `Le Materiel numero ${data.object.numeroinventaire} est affecté avec succés `,
+          "Affectation Materiel",
           { positionClass: "toast-bottom-left" }
         );
+        reset();
       })
       .catch((err) => {
         if (err.response.status >= 400 && err.response.status < 500) {
@@ -132,7 +133,7 @@ function Affectation() {
     <Layout>
       <BarcodeReader onError={handleError} onScan={handleScan} />
       {JSON.stringify(watch("object"))}
-      {JSON.stringify(object)}
+      {/*{JSON.stringify(Numeroinventairecodebar)} */}
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <Typography variant="h4">
           Inventaire {currentDate.getFullYear()}
@@ -155,7 +156,14 @@ function Affectation() {
           id="object.numeroinventaire"
           Name="object.numeroinventaire"
           control={control}
-          Value={object.id === "" ? "" : { id: object.id, label: object.name }}
+          Value={
+            Numeroinventairecodebar.id === ""
+              ? ""
+              : {
+                  id: Numeroinventairecodebar.id,
+                  label: Numeroinventairecodebar.name,
+                }
+          }
           reef={register("object.numeroinventaire", { required: true })}
         />
         {errors["object"]?.numeroinventaire && (
@@ -174,6 +182,7 @@ function Affectation() {
           id="object.mleagent"
           Name="object.mleagent"
           control={control}
+          Value=""
           reef={register("object.mleagent", { required: true })}
         />
         {errors["object"]?.mleagent && (
@@ -191,6 +200,7 @@ function Affectation() {
           Name="object.idservice"
           control={control}
           reef={register("object.idservice")}
+          Value=""
         />
 
         <InputLabel htmlFor="age-native-simple" className={classes.label1}>
@@ -203,6 +213,7 @@ function Affectation() {
           Name="object.idagence"
           control={control}
           reef={register("object.idagence", { required: true })}
+          Value=""
         />
         {errors["object"]?.idagence && (
           <p className={classes.para}>
@@ -215,6 +226,11 @@ function Affectation() {
           <Box my="40px" />
           <ColorButton type="button" onClick={() => handleShowEditAddModal()}>
             Ajout Materiel
+          </ColorButton>
+          <Box mx="10px" />
+          <Box my="40px" />
+          <ColorButton type="button" onClick={() => handleShowEditAddModal()}>
+            Fin Inventaire ?
           </ColorButton>
         </Grid>
       </form>
