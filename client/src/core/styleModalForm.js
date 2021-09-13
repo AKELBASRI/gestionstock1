@@ -87,7 +87,7 @@ export const useStyles = makeStyles(() => ({
     marginBottom: "20px",
     marginTop: "0px",
     color: "black",
-    fontSize: "14px",
-    fontWeight: "200",
+    fontSize: "16px",
+    fontWeight: "400",
   },
 }));
