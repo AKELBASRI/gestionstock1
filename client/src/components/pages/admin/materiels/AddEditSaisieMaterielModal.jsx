@@ -37,6 +37,7 @@ import {
   FetchTotalAvailableMateriels,
   FetchTotalMateriels,
 } from "../../../../store/actions";
+import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
 
 const AddEditSaisieMaterielModal = (Props) => {
   const [date, setDate] = useState(null);
@@ -133,6 +134,25 @@ const AddEditSaisieMaterielModal = (Props) => {
       });
     }
   };
+  const optionsCategories =
+    categories &&
+    categories.map((category) => ({
+      value: category.id,
+      label: category.type,
+    }));
+  const optionsFournisseurs =
+    Fournisseurs &&
+    Fournisseurs.map((fournisseur) => ({
+      value: fournisseur.idFournisseur,
+      label: fournisseur.NomFournisseur,
+    }));
+
+  const optionsDesignation =
+    Designations &&
+    Designations.current.map((marque) => ({
+      value: marque.idDesignation,
+      label: marque.designation,
+    }));
   const UpdateMateriel = (data) => {
     const marque = Designations.current.filter(
       (designation) =>
@@ -243,16 +263,11 @@ const AddEditSaisieMaterielModal = (Props) => {
   };
 
   const onSubmit = (data) => {
-    // setValue('object.datereceptionprovisoire',dateFormat(data.object.datereceptionprovisoire,"dd-mm-yyyy"))
-    // e.preventDefault();
-    // if (validate()) {
-
     if (material1) {
       UpdateMateriel(data);
     } else {
       AjoutMateriel(data);
     }
-    // }
   };
   const classes = useStyles();
 
@@ -269,39 +284,22 @@ const AddEditSaisieMaterielModal = (Props) => {
             ? `Modification  du materiel : ${material1.designation.designation}`
             : "Ajout Materiel"}
         </DialogTitle>
-        <DialogContent className={classes.bg}>
+        <DialogContent className={classes.bg} style={{ height: "651px" }}>
           <DialogContentText className={classes.bg}></DialogContentText>
 
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Type
           </InputLabel>
-          <ReactHookFormSelect
-            onchange={handleChange}
-            className={classes.select}
-            label="Selectionner une categorie"
+          <ReactHookFormReactSelect
+            options={optionsCategories}
+            className={classes.SelectSearch}
             id="object.idtype"
-            name="object.idtype"
+            Name="object.idtype"
             control={control}
-            defaultValue={0}
-            reef={register("object.idtype", {
-              validate: (value) => value !== 0,
-              required: true,
-            })}
-          >
-            <MenuItem value="0" style={{ cursor: "pointer" }}>
-              Selectionner une categorie
-            </MenuItem>
-            {categories &&
-              categories.map((category, i) => (
-                <MenuItem
-                  key={i + 1}
-                  value={category.id}
-                  style={{ cursor: "pointer" }}
-                >
-                  {category.type}
-                </MenuItem>
-              ))}
-          </ReactHookFormSelect>
+            reef={register("object.idtype")}
+            onchange={handleChange}
+          />
+
           {errors["object"]?.idtype && (
             <p className={classes.para}>
               {errors["object"]?.idtype?.message ||
@@ -357,31 +355,15 @@ const AddEditSaisieMaterielModal = (Props) => {
           {Designations.current.length > 0 && (
             <div>
               <label className={classes.label}>Designation</label>
-              <ReactHookFormSelect
-                className={classes.select}
-                label="Selectionner une Designation"
+              <ReactHookFormReactSelect
+                options={optionsDesignation}
+                className={classes.SelectSearch}
                 id="object.iddesignation"
-                name="object.iddesignation"
+                Name="object.iddesignation"
                 control={control}
-                defaultValue={"0"}
-                reef={register("object.iddesignation", {
-                  validate: (value) => value !== "0",
-                })}
-              >
-                <MenuItem value="0" style={{ cursor: "pointer" }}>
-                  Selectionner Designation du materiel
-                </MenuItem>
-                {Designations.current &&
-                  Designations.current.map((marque, i) => (
-                    <MenuItem
-                      key={i + 1}
-                      value={marque.idDesignation}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {marque.designation}
-                    </MenuItem>
-                  ))}
-              </ReactHookFormSelect>
+                reef={register("object.iddesignation")}
+              />
+
               {errors["object"]?.iddesignation && (
                 <p className={classes.para}>
                   {errors["object"]?.iddesignation?.message ||
@@ -392,6 +374,7 @@ const AddEditSaisieMaterielModal = (Props) => {
           )}
 
           <label className={classes.label}>Garentie</label>
+
           <ReactHookFormSelect
             className={classes.select}
             label="Selectionner une gerentie"
@@ -456,32 +439,15 @@ const AddEditSaisieMaterielModal = (Props) => {
           )}
 
           <label className={classes.label}>Fournisseur</label>
-          <ReactHookFormSelect
-            className={classes.select}
-            value={getValues("object.IDFournisseur")}
-            label="Selectionner un fournisseur"
+          <ReactHookFormReactSelect
+            options={optionsFournisseurs}
+            className={classes.SelectSearch}
             id="object.IDFournisseur"
-            name="object.IDFournisseur"
+            Name="object.IDFournisseur"
             control={control}
-            defaultValue={"0"}
-            reef={register("object.IDFournisseur", {
-              // validate: (value) => value !== "0",
-            })}
-          >
-            <MenuItem value="0" style={{ cursor: "pointer" }}>
-              Selectionner un Fournisseur
-            </MenuItem>
-            {Fournisseurs &&
-              Fournisseurs.map((fournisseur, i) => (
-                <MenuItem
-                  key={i + 1}
-                  value={fournisseur.idFournisseur}
-                  style={{ cursor: "pointer" }}
-                >
-                  {fournisseur.NomFournisseur}
-                </MenuItem>
-              ))}
-          </ReactHookFormSelect>
+            reef={register("object.IDFournisseur")}
+          />
+
           {errors["object"]?.IDFournisseur && (
             <p className={classes.para}>
               {errors["object"]?.IDFournisseur?.message ||
