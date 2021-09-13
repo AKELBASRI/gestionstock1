@@ -9,7 +9,7 @@ exports.getalllieux = (req, res) => {
     .catch((error) => res.status(500).json(error));
 };
 exports.importlieu = (req, res) => {
-  const obj = xlsx.parse(`${`${__dirname}/../`}\\lieu.xlsx`); // parses a file
+  const obj = xlsx.parse(`${`${__dirname}/../`}lieu.xlsx`); // parses a file
   obj[0].data.map((lieu1) => models.lieu.create({ lieu: lieu1[0] }).then((result1) => {
     res.status(201).json({ message: 'Le lieu a été crée avec succés', lieu: result1 });
   })
@@ -20,7 +20,7 @@ exports.importlieu = (req, res) => {
 exports.savelieu = (req, res) => {
   const lieu = {
     lieu: req.body.lieu.trim(),
-
+    id: req.body.id,
   };
   models.lieu
     .findOne({ where: { lieu: req.body.lieu.trim() } })

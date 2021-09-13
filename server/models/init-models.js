@@ -7,6 +7,7 @@ const _fournisseur = require('./fournisseur');
 const _materiel = require('./materiel');
 const _services = require('./services');
 const _typemateriel = require('./typemateriel');
+const _lieu = require('./lieu');
 
 function initModels(sequelize) {
   const admin = _admin(sequelize, DataTypes);
@@ -17,7 +18,7 @@ function initModels(sequelize) {
   const materiel = _materiel(sequelize, DataTypes);
   const services = _services(sequelize, DataTypes);
   const typemateriel = _typemateriel(sequelize, DataTypes);
-
+  const lieu = _lieu(sequelize, DataTypes);
   // agents.belongsTo(agencies, { as: 'agency', foreignKey: 'agency_id' });
   // agencies.hasMany(agents, { as: 'agents', foreignKey: 'agency_id' });
   // materiel.belongsTo(agencies, { as: 'idagence_agency', foreignKey: 'idagence' });
@@ -38,6 +39,7 @@ function initModels(sequelize) {
   // typemateriel.hasMany(designation, { as: 'designations', foreignKey: 'idtype' });
   // materiel.belongsTo(typemateriel, { as: 'idtype_typemateriel', foreignKey: 'idtype' });
   // typemateriel.hasMany(materiel, { as: 'materiels', foreignKey: 'idtype' });
+
   agents.hasMany(materiel, { foreignKey: 'mleagent', sourceKey: 'agent_number' });
   materiel.belongsTo(agents, { foreignKey: 'mleagent', sourceKey: 'agent_number' });
 
@@ -55,6 +57,9 @@ function initModels(sequelize) {
 
   designation.hasMany(materiel, { foreignKey: 'iddesignation', sourceKey: 'idDesignation' });
   materiel.belongsTo(designation, { foreignKey: 'iddesignation', sourceKey: 'idDesignation' });
+
+  materiel.belongsTo(lieu, { foreignKey: 'idlieu', sourceKey: 'id' });
+  lieu.hasMany(materiel, { foreignKey: 'idlieu', sourceKey: 'id' });
   services.isHierarchy();
   // services.belongsTo(services, {
   //   as: 'parent',
@@ -86,6 +91,7 @@ function initModels(sequelize) {
     materiel,
     services,
     typemateriel,
+    lieu,
   };
 }
 
