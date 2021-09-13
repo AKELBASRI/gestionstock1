@@ -67,7 +67,7 @@ exports.deleteCategory = (req, res) => {
 
 exports.updateCategory = (req, res) => {
   models.typemateriel
-    .findOne({ where: { type: req.body.type.trim() } })
+    .findOne({ where: { type: req.body.type.trim(), inventoryornot: req.body.inventoryornot } })
     .then((result) => {
       if (result) {
         res.status(403).json({ error: 'Categorie existe deja !' });
