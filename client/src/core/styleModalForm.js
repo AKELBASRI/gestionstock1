@@ -14,6 +14,21 @@ export const ColorButton = withStyles(() => ({
     },
   },
 }))(Button);
+export const ButtonDanger = withStyles(() => ({
+  root: {
+    height: "45px",
+    width: "160px",
+    color: "white",
+    borderRadius: "2px",
+    backgroundColor: "red",
+    padding: "30px 12px",
+    boxShadow: "-2px -1px 15px 1px rgba(0,0,0,0.40)",
+    "&:hover": {
+      backgroundColor: "white",
+      color: "#011627",
+    },
+  },
+}))(Button);
 export const useStyles = makeStyles(() => ({
   input: {
     display: "block",
