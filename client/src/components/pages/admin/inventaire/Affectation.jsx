@@ -20,16 +20,25 @@ import Layout from "../../Layout/Layout";
 import customAxios from "../../../../axios/CustomAxios";
 import { isAuthenticated } from "../../../../auth/helpers";
 import AddEditSaisieMaterielModal from "../materiels/AddEditSaisieMaterielModal";
+import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
+import reactUsestateref from "react-usestateref";
+
+// import Switch from "@material-ui/core/Switch";
 // import ReactHookTextField from "../../../../core/Components/ReactHookTextField";
 function Affectation() {
   const dispatch = useDispatch();
   const [showEditAddModal, setshowEditAddModal] = useState(false);
-  const [Numeroinventairecodebar, setobject] = useState({ id: "", name: "" });
+  const [Numeroinventairecodebar, setobject] = useState({ id: "" });
+
+  const [, setmaterielselect, materielselect] = reactUsestateref({});
   const ListAgents = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENTS?.data
   );
   const ListeService = useSelector(
     (state) => state.requests?.queries?.FETCH_SERVICE?.data
+  );
+  const ListeLieux = useSelector(
+    (state) => state.requests?.queries?.FETCH_LIEUX?.data
   );
   const Listagencies = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENCIES?.data
@@ -48,6 +57,12 @@ function Affectation() {
     ListAgents.map((agent) => ({
       value: agent.agent_number,
       label: agent.agent_full_name,
+    }));
+  const optionsLienx =
+    ListeLieux &&
+    ListeLieux.map((lieu) => ({
+      value: lieu.id,
+      label: lieu.lieu,
     }));
   const optionagency =
     Listagencies &&
@@ -68,8 +83,9 @@ function Affectation() {
     handleSubmit,
     control,
     reset,
-    watch,
+    // watch,
     setValue,
+    // getValues,
     formState: { errors },
   } = useForm();
   const handleShowEditAddModal = () => {
@@ -81,7 +97,10 @@ function Affectation() {
   };
   const handleScan = (data) => {
     setValue("object.numeroinventaire", data);
+    if (materielselect?.current[0])
+      setValue("object", materielselect?.current[0]);
     setobject({ id: data, name: data });
+    getmaterielchoosed(data);
   };
   const handleError = (err) => {
     console.error(err);
@@ -112,6 +131,7 @@ function Affectation() {
           "Affectation Materiel",
           { positionClass: "toast-bottom-left" }
         );
+        dispatch(FetchMateriels());
         reset();
       })
       .catch((err) => {
@@ -128,15 +148,23 @@ function Affectation() {
         }
       });
   };
-  // const handleChange = (data) => {
-  //   setValue("object.numeroinventaire", data.value);
-  //   setobject({ id: data.value, name: data.label });
-  //   // console.log(object);
-  // };
+  const getmaterielchoosed = (data) => {
+    setmaterielselect(
+      listmateriels1.filter((materiel) => {
+        return materiel.numeroinventaire === data.value;
+      })
+    );
+  };
+  const handleChange = (data) => {
+    console.log(data);
+    getmaterielchoosed(data);
+    if (materielselect?.current[0])
+      setValue("object", materielselect?.current[0]);
+  };
   return (
     <Layout>
       <BarcodeReader onError={handleError} onScan={handleScan} />
-      {JSON.stringify(watch("object"))}
+      {/* {JSON.stringify(watch("object"))} */}
       {/*{JSON.stringify(Numeroinventairecodebar)} */}
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <Typography variant="h4">
@@ -160,12 +188,13 @@ function Affectation() {
           id="object.numeroinventaire"
           Name="object.numeroinventaire"
           control={control}
+          onchange={handleChange}
           Value={
             Numeroinventairecodebar.id === ""
               ? ""
               : {
                   id: Numeroinventairecodebar.id,
-                  label: Numeroinventairecodebar.name,
+                  label: Numeroinventairecodebar.id,
                 }
           }
           reef={register("object.numeroinventaire", { required: true })}
@@ -224,6 +253,54 @@ function Affectation() {
             {errors["object"]?.idagence?.message || "You must select an agency"}
           </p>
         )}
+        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
+          Lieux
+        </InputLabel>
+        <ReactHookFormReactSelect
+          options={optionsLienx}
+          className={classes.SelectSearch}
+          id="object.idlieu"
+          Name="object.idlieu"
+          control={control}
+          reef={register("object.idlieu", { required: true })}
+          Value=""
+        />
+        {errors["object"]?.idagence && (
+          <p className={classes.para}>
+            {errors["object"]?.idagence?.message || "You must select a place"}
+          </p>
+        )}
+        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
+          Disponible
+        </InputLabel>
+        <ReactHookFormSwitch
+          name="object.disponible"
+          id="object.disponible"
+          control={control}
+          reef={register("object.disponible", {})}
+          // value={getValues("object.disponible")}
+        ></ReactHookFormSwitch>
+        {materielselect[0] && (
+          <div>
+            <InputLabel htmlFor="age-native-simple" className={classes.label1}>
+              Agent : {materielselect[0]?.agent?.agent_full_name}
+            </InputLabel>
+            <InputLabel htmlFor="age-native-simple" className={classes.label1}>
+              Service : {materielselect[0]?.service?.service_name}
+            </InputLabel>
+            <InputLabel htmlFor="age-native-simple" className={classes.label1}>
+              Agence : {materielselect[0]?.agency?.agency_name}
+            </InputLabel>
+            <InputLabel htmlFor="age-native-simple" className={classes.label1}>
+              Lieu : {materielselect[0]?.lieu?.lieu}
+            </InputLabel>
+            <InputLabel htmlFor="age-native-simple" className={classes.label1}>
+              Disponible :{materielselect[0]?.disponible}
+              {/* <Switch checked={materielselect[0]?.disponible} disableRipple /> */}
+            </InputLabel>
+          </div>
+        )}
+        <Box my="40px" />
         <Grid container>
           <ColorButton type="submit">Affecter</ColorButton>
           <Box mx="10px" />
