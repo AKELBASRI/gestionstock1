@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, Grid, InputLabel, Typography } from "@material-ui/core";
-import { ColorButton, useStyles } from "../../../../core/styleModalForm";
+import {
+  ButtonDanger,
+  ColorButton,
+  useStyles,
+} from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
 import { useDispatch, useSelector } from "react-redux";
@@ -229,9 +233,9 @@ function Affectation() {
           </ColorButton>
           <Box mx="10px" />
           <Box my="40px" />
-          <ColorButton type="button" onClick={() => handleShowEditAddModal()}>
+          <ButtonDanger type="button" onClick={() => null}>
             Fin Inventaire ?
-          </ColorButton>
+          </ButtonDanger>
         </Grid>
       </form>
       <AddEditSaisieMaterielModal
