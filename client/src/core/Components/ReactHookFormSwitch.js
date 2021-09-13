@@ -18,7 +18,7 @@ const ReactHookFormSwitch = (Props) => {
             onChange={onChange}
             defaultValue={false}
             inputRef={reef?.ref}
-            checked={value || false}
+            checked={Boolean(value) || false}
           />
         )}
         name={name}
