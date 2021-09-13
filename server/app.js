@@ -10,6 +10,7 @@ const fournisseurRoutes = require('./routes/fournisseur');
 const materielRoutes = require('./routes/materiel');
 const designationRoutes = require('./routes/designation');
 const authRoutes = require('./routes/auth');
+const lieuRoutes = require('./routes/lieu');
 // Import Routes
 
 // config App
@@ -31,4 +32,5 @@ app.use('/api/category', categoryRoutes);
 app.use('/api/fournisseurs', fournisseurRoutes);
 app.use('/api/materiels', materielRoutes);
 app.use('/api/designations', designationRoutes);
+app.use('/api/lieux', lieuRoutes);
 module.exports = app;

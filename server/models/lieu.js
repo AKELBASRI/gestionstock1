@@ -7,7 +7,7 @@ module.exports = function lieu(sequelize, DataTypes) {
       primaryKey: true,
     },
     lieu: {
-      type: DataTypes.STRING(345),
+      type: DataTypes.STRING(945),
       allowNull: true,
     },
   }, {
