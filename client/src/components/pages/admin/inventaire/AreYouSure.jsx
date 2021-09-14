@@ -5,7 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
+import { EndOfInventory } from "./EndOfInventory";
 export default function AreYouSure(Props) {
   //   const [open, setOpen] = React.useState(false);
   const { show, handleClose } = Props;
@@ -16,7 +16,9 @@ export default function AreYouSure(Props) {
   //   const handleClose = () => {
   //     setOpen(false);
   //   };
-
+  const ActionClose = () => {
+    handleClose();
+  };
   return (
     <div>
       <Dialog
@@ -30,7 +32,9 @@ export default function AreYouSure(Props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {"Le Systeme va cloturer l'inventaire pour cette Année"}
+            {
+              "Le Systeme va cloturer l'inventaire pour cette Année et reseter vers non disponible"
+            }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -38,7 +42,11 @@ export default function AreYouSure(Props) {
             Cancel
           </Button>
 
-          <Button color="primary" variant="contained" type="submit">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => EndOfInventory(ActionClose)}
+          >
             oui
           </Button>
         </DialogActions>

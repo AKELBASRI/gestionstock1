@@ -135,7 +135,15 @@ exports.createbackupMateriel = (req, res) => {
     materialFields(db.Sequelize.DataTypes))
     .then(() => {
       db.sequelize.query(`insert into ${nameofTable} select * from materiel`, { })
-        .then(() => res.status(200).json('Data is inserted successfully'))
+        .then(() => {
+          db.sequelize.query('update materiel set disponible=0 where 1=1', { })
+            .then((result1) => res.status(201)
+              .json({ message: `All materiels are not available and table Materiel_${ladate.getFullYear()} is created successfully`, materiel: result1 }))
+            .catch((error) => {
+              console.log(error);
+              res.status(500).json({ error: `Something went wrong${error}` });
+            });
+        })
         .catch((error) => res.status(500).json({ error: error.errors[0].message }));
     }).catch((error) => { console.log(error); res.status(500).json({ error: `Something went wrong${error}` }); });
 };
