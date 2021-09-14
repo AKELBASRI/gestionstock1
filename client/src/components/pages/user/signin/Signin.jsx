@@ -207,45 +207,45 @@ function Signin(Props) {
               />
             </Grid>
           </Box>
-          <Box flexGrow="1" className={classes.box2}>
-            <Box component="div" className={classes.card2} py={5}>
-              <Box display="flex" alignItems="center">
+          <form className={classes.root} noValidate autoComplete="off">
+            <Box flexGrow="1" className={classes.box2}>
+              <Box component="div" className={classes.card2} py={5}>
+                <Box display="flex" alignItems="center">
+                  <Box display="flex" flexDirection="column">
+                    <Box component="div" mb="2" className={classes.textsm}>
+                      Matricule
+                    </Box>
+
+                    <TextField
+                      className={classes.root}
+                      variant="outlined"
+                      placeholder="Matricule"
+                      InputProps={{ classes: { input: classes["input"] } }}
+                      onChange={handleChange}
+                      id="Mle"
+                      autoFocus
+                    />
+                  </Box>
+                </Box>
+
                 <Box display="flex" flexDirection="column">
                   <Box component="div" mb="2" className={classes.textsm}>
-                    Matricule
+                    Mot de passe
                   </Box>
 
                   <TextField
                     className={classes.root}
+                    id="password"
                     variant="outlined"
-                    placeholder="Matricule"
+                    placeholder="Mot de passe"
                     InputProps={{ classes: { input: classes["input"] } }}
                     onChange={handleChange}
-                    id="Mle"
-                    autoFocus
+                    type="password"
                   />
                 </Box>
-              </Box>
 
-              <Box display="flex" flexDirection="column">
-                <Box component="div" mb="2" className={classes.textsm}>
-                  Mot de passe
-                </Box>
-
-                <TextField
-                  className={classes.root}
-                  id="password"
-                  variant="outlined"
-                  placeholder="Mot de passe"
-                  InputProps={{ classes: { input: classes["input"] } }}
-                  onChange={handleChange}
-                  type="password"
-                />
-              </Box>
-
-              <Box mb="20px"></Box>
-              <Grid>
-                <form className={classes.root} noValidate autoComplete="off">
+                <Box mb="20px"></Box>
+                <Grid>
                   <ColorButton
                     variant="contained"
                     type="submit"
@@ -255,10 +255,10 @@ function Signin(Props) {
                   >
                     LOGIN
                   </ColorButton>
-                </form>
-              </Grid>
+                </Grid>
+              </Box>
             </Box>
-          </Box>
+          </form>
         </Box>
       </Layout>
     </div>
