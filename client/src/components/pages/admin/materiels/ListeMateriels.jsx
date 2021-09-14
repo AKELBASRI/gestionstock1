@@ -329,6 +329,9 @@ function ListMateriels() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
+    // onRowsDelete: (e) => {
+    //   e.data.map((data) => console.log(listmateriels1[data.dataIndex]));
+    // },
     selectableRows: "none",
   };
   return (
