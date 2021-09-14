@@ -50,7 +50,7 @@ const AddEditSaisieMaterielModal = (Props) => {
     setValue,
     getValues,
     control,
-    watch,
+
     formState: { errors },
   } = useForm();
 
@@ -302,7 +302,6 @@ const AddEditSaisieMaterielModal = (Props) => {
             : "Ajout Materiel"}
         </DialogTitle>
         <DialogContent className={classes.bg} style={{ height: "651px" }}>
-          {JSON.stringify(watch("object"))}
           <BarcodeReader onError={handleError} onScan={handleScan} />
           <DialogContentText className={classes.bg}></DialogContentText>
 

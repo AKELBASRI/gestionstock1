@@ -21,7 +21,14 @@ function PrintMateriels() {
   }, [dispatch]);
 
   return (
-    <Layout>{listmateriels1 && <Datatables data={listmateriels1} />}</Layout>
+    <Layout>
+      {listmateriels1 && (
+        <Datatables
+          data={listmateriels1}
+          title={"Inventaire Informatique RADEEO"}
+        />
+      )}
+    </Layout>
   );
 }
 
