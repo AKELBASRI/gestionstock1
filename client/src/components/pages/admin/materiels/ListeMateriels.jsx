@@ -165,7 +165,7 @@ function ListMateriels() {
         customBodyRender: function checked(value) {
           return (
             <Box>
-              <Switch checked={value} disableRipple />
+              <Switch checked={Boolean(value)} disableRipple />
             </Box>
           );
         },
@@ -227,7 +227,7 @@ function ListMateriels() {
         customBodyRender: function checked(value) {
           return (
             <Box>
-              <Switch checked={value} disableRipple />
+              <Switch checked={Boolean(value)} disableRipple />
             </Box>
           );
         },
@@ -249,7 +249,7 @@ function ListMateriels() {
         customBodyRender: function checked(value) {
           return (
             <Box>
-              <Switch checked={value} disableRipple />
+              <Switch checked={Boolean(value)} disableRipple />
             </Box>
           );
         },
