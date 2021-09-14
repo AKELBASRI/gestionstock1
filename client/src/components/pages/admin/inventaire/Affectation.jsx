@@ -22,14 +22,16 @@ import { isAuthenticated } from "../../../../auth/helpers";
 import AddEditSaisieMaterielModal from "../materiels/AddEditSaisieMaterielModal";
 import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
 import reactUsestateref from "react-usestateref";
+import AreYouSure from "./AreYouSure";
 
 // import Switch from "@material-ui/core/Switch";
 // import ReactHookTextField from "../../../../core/Components/ReactHookTextField";
+
 function Affectation() {
   const dispatch = useDispatch();
   const [showEditAddModal, setshowEditAddModal] = useState(false);
-  const [Numeroinventairecodebar, setobject] = useState({ id: "" });
-
+  // const [Numeroinventairecodebar, setobject] = useState({});
+  const [showAreYouSure, setshowAreYouSure] = useState(false);
   const [, setmaterielselect, materielselect] = reactUsestateref({});
   const ListAgents = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENTS?.data
@@ -94,13 +96,29 @@ function Affectation() {
   };
   const handleClose = () => {
     setshowEditAddModal(false);
+    setshowAreYouSure(false);
   };
   const handleScan = (data) => {
-    setValue("object.numeroinventaire", data);
-    if (materielselect?.current[0])
-      setValue("object", materielselect?.current[0]);
-    setobject({ id: data, name: data });
-    getmaterielchoosed(data);
+    // console.log(data);
+    // getmaterielchoosed({ value: data });
+    // setValue("object.numeroinventaire", data);
+    // if (materielselect?.current[0])
+    //   setValue("object", materielselect?.current[0]);
+    // // setobject({ id: data, name: data });
+    getmaterielchoosed({ value: data });
+
+    // if (materielselect?.current[0] !== null) {
+    //   console.log(materielselect?.current[0]);
+    //   setValue("object", materielselect?.current[0]);
+    // }
+    for (const property in materielselect.current[0]) {
+      if (materielselect.current[0][property] !== null) {
+        console.log(`object.${property}`, materielselect?.current[0][property]);
+        setValue(`object.${property}`, materielselect?.current[0][property]);
+      } else {
+        setValue(`object.${property}`, "");
+      }
+    }
   };
   const handleError = (err) => {
     console.error(err);
@@ -156,10 +174,20 @@ function Affectation() {
     );
   };
   const handleChange = (data) => {
-    console.log(data);
     getmaterielchoosed(data);
-    if (materielselect?.current[0])
-      setValue("object", materielselect?.current[0]);
+
+    // if (materielselect?.current[0] !== null) {
+    //   console.log(materielselect?.current[0]);
+    //   setValue("object", materielselect?.current[0]);
+    // }
+    for (const property in materielselect.current[0]) {
+      if (materielselect.current[0][property] !== null) {
+        console.log(`object.${property}`, materielselect?.current[0][property]);
+        setValue(`object.${property}`, materielselect?.current[0][property]);
+      } else {
+        setValue(`object.${property}`, "");
+      }
+    }
   };
   return (
     <Layout>
@@ -179,108 +207,198 @@ function Affectation() {
           control={control}
           reef={register("object.numeroinventaire", { required: true })}
         /> */}
-        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
-          Numero Inventaire
-        </InputLabel>
-        <ReactHookFormReactSelect
-          options={optionmateriels}
-          className={classes.SelectSearch}
-          id="object.numeroinventaire"
-          Name="object.numeroinventaire"
-          control={control}
-          onchange={handleChange}
-          Value={
-            Numeroinventairecodebar.id === ""
-              ? ""
-              : {
-                  id: Numeroinventairecodebar.id,
-                  label: Numeroinventairecodebar.id,
-                }
-          }
-          reef={register("object.numeroinventaire", { required: true })}
-        />
-        {errors["object"]?.numeroinventaire && (
-          <p className={classes.para}>
-            {errors["object"]?.numeroinventaire?.message ||
-              "You must enter number of inventory"}
-          </p>
-        )}
+        <Box display="flex" justifyContent="center">
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            flexWrap="wrap"
+            width="96%"
+          >
+            <Box display="flex" alignItems="center" flexGrow="1" flex="60%">
+              {/* <Box > */}
+              <InputLabel
+                htmlFor="age-native-simple"
+                className={classes.label1}
+              >
+                N° Invt
+              </InputLabel>
+              <Box flexGrow="1">
+                <ReactHookFormReactSelect
+                  options={optionmateriels}
+                  className={classes.SelectSearch}
+                  id="object.numeroinventaire"
+                  Name="object.numeroinventaire"
+                  control={control}
+                  onchange={handleChange}
+                  Value={""}
+                  reef={register("object.numeroinventaire", {
+                    required: true,
+                  })}
+                />
 
-        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
-          Agent
-        </InputLabel>
-        <ReactHookFormReactSelect
-          options={optionagent}
-          className={classes.SelectSearch}
-          id="object.mleagent"
-          Name="object.mleagent"
-          control={control}
-          Value=""
-          reef={register("object.mleagent", { required: true })}
-        />
-        {errors["object"]?.mleagent && (
-          <p className={classes.para}>
-            {errors["object"]?.mleagent?.message || "You must select an agent"}
-          </p>
-        )}
-        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
-          Service
-        </InputLabel>
-        <ReactHookFormReactSelect
-          options={optionsservices}
-          className={classes.SelectSearch}
-          id="object.idservice"
-          Name="object.idservice"
-          control={control}
-          reef={register("object.idservice")}
-          Value=""
-        />
+                {errors["object"]?.numeroinventaire && (
+                  <p className={classes.para}>
+                    {errors["object"]?.numeroinventaire?.message ||
+                      "You must enter number of inventory"}
+                  </p>
+                )}
+              </Box>
+            </Box>
 
-        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
-          Agence
-        </InputLabel>
-        <ReactHookFormReactSelect
-          options={optionagency}
-          className={classes.SelectSearch}
-          id="object.idagence"
-          Name="object.idagence"
-          control={control}
-          reef={register("object.idagence", { required: true })}
-          Value=""
-        />
-        {errors["object"]?.idagence && (
-          <p className={classes.para}>
-            {errors["object"]?.idagence?.message || "You must select an agency"}
-          </p>
-        )}
-        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
-          Lieux
-        </InputLabel>
-        <ReactHookFormReactSelect
-          options={optionsLienx}
-          className={classes.SelectSearch}
-          id="object.idlieu"
-          Name="object.idlieu"
-          control={control}
-          reef={register("object.idlieu", { required: true })}
-          Value=""
-        />
-        {errors["object"]?.idagence && (
-          <p className={classes.para}>
-            {errors["object"]?.idagence?.message || "You must select a place"}
-          </p>
-        )}
-        <InputLabel htmlFor="age-native-simple" className={classes.label1}>
-          Disponible
-        </InputLabel>
-        <ReactHookFormSwitch
-          name="object.disponible"
-          id="object.disponible"
-          control={control}
-          reef={register("object.disponible", {})}
-          // value={getValues("object.disponible")}
-        ></ReactHookFormSwitch>
-        {materielselect[0] && (
+            <Box display="flex" alignItems="center" flexGrow="1" flex="50%">
+              <InputLabel
+                htmlFor="age-native-simple"
+                className={classes.label1}
+              >
+                Agent
+              </InputLabel>
+
+              <Box flexGrow="3">
+                <ReactHookFormReactSelect
+                  options={optionagent}
+                  className={classes.SelectSearch}
+                  id="object.mleagent"
+                  Name="object.mleagent"
+                  control={control}
+                  Value=""
+                  reef={register("object.mleagent", { required: true })}
+                />
+
+                {errors["object"]?.mleagent && (
+                  <p className={classes.para}>
+                    {errors["object"]?.mleagent?.message ||
+                      "You must select an agent"}
+                  </p>
+                )}
+              </Box>
+            </Box>
+
+            <Box display="flex" alignItems="center" flexGrow="1" flex="50%">
+              <Box>
+                <InputLabel
+                  htmlFor="age-native-simple"
+                  className={classes.label1}
+                >
+                  Service
+                </InputLabel>
+              </Box>
+              <Box flexGrow="1">
+                <ReactHookFormReactSelect
+                  options={optionsservices}
+                  className={classes.SelectSearch}
+                  id="object.idservice"
+                  Name="object.idservice"
+                  control={control}
+                  reef={register("object.idservice", { required: true })}
+                  Value=""
+                />
+
+                {errors["object"]?.idservice && (
+                  <p className={classes.para}>
+                    {errors["object"]?.idservice?.message ||
+                      "You must select an service"}
+                  </p>
+                )}
+              </Box>
+            </Box>
+
+            <Box display="flex" alignItems="center" flexGrow="1" flex="50%">
+              <Box>
+                <InputLabel
+                  htmlFor="age-native-simple"
+                  className={classes.label1}
+                >
+                  Agence
+                </InputLabel>
+              </Box>
+              <Box flexGrow="1">
+                <ReactHookFormReactSelect
+                  options={optionagency}
+                  className={classes.SelectSearch}
+                  id="object.idagence"
+                  Name="object.idagence"
+                  control={control}
+                  reef={register("object.idagence", { required: true })}
+                  Value=""
+                />
+
+                {errors["object"]?.idagence && (
+                  <p className={classes.para}>
+                    {errors["object"]?.idagence?.message ||
+                      "You must select an agency"}
+                  </p>
+                )}
+              </Box>
+            </Box>
+
+            <Box display="flex" alignItems="center" flexGrow="1" flex="50%">
+              <InputLabel
+                htmlFor="age-native-simple"
+                className={classes.label1}
+              >
+                Lieux
+              </InputLabel>
+              <Box flexGrow="1">
+                <ReactHookFormReactSelect
+                  options={optionsLienx}
+                  className={classes.SelectSearch}
+                  id="object.idlieu"
+                  Name="object.idlieu"
+                  control={control}
+                  reef={register("object.idlieu", { required: true })}
+                  Value=""
+                />
+
+                {errors["object"]?.idagence && (
+                  <p className={classes.para}>
+                    {errors["object"]?.idagence?.message ||
+                      "You must select a place"}
+                  </p>
+                )}
+              </Box>
+            </Box>
+
+            <Box display="flex" flexDirection="column" flexGrow="1" flex="50%">
+              <Box>
+                <InputLabel
+                  htmlFor="age-native-simple"
+                  className={classes.label1}
+                >
+                  Disponible
+                </InputLabel>
+              </Box>
+              <Box>
+                <ReactHookFormSwitch
+                  name="object.disponible"
+                  id="object.disponible"
+                  control={control}
+                  reef={register("object.disponible", {})}
+                ></ReactHookFormSwitch>
+              </Box>
+            </Box>
+            <Box display="flex" flexDirection="column" flexGrow="1" flex="50%">
+              <Box>
+                <InputLabel
+                  htmlFor="age-native-simple"
+                  className={classes.label1}
+                >
+                  Proposer Reforme
+                </InputLabel>
+              </Box>
+              <Box>
+                <ReactHookFormSwitch
+                  name="object.proposerreforme"
+                  id="object.proposerreforme"
+                  control={control}
+                  reef={register("object.proposerreforme", {})}
+                ></ReactHookFormSwitch>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        {/* {materielselect[0] && (
           <div>
             <InputLabel htmlFor="age-native-simple" className={classes.label1}>
               Agent : {materielselect[0]?.agent?.agent_full_name}
@@ -296,25 +414,36 @@ function Affectation() {
             </InputLabel>
             <InputLabel htmlFor="age-native-simple" className={classes.label1}>
               Disponible :{materielselect[0]?.disponible}
-              {/* <Switch checked={materielselect[0]?.disponible} disableRipple /> */}
+              <Switch checked={materielselect[0]?.disponible} disableRipple /> 
             </InputLabel>
           </div>
-        )}
+        )} */}
         <Box my="40px" />
-        <Grid container>
-          <ColorButton type="submit">Affecter</ColorButton>
-          <Box mx="10px" />
-          <Box my="40px" />
-          <ColorButton type="button" onClick={() => handleShowEditAddModal()}>
-            Ajout Materiel
-          </ColorButton>
-          <Box mx="10px" />
-          <Box my="40px" />
-          <ButtonDanger type="button" onClick={() => null}>
-            Fin Inventaire ?
-          </ButtonDanger>
-        </Grid>
+        <Box mx="15px">
+          <Grid container spacing={3}>
+            <Grid item>
+              <ColorButton type="submit">Affecter</ColorButton>
+            </Grid>
+            <Grid item>
+              <ColorButton
+                type="button"
+                onClick={() => handleShowEditAddModal()}
+              >
+                Ajout Materiel
+              </ColorButton>
+            </Grid>
+            <Grid item>
+              <ButtonDanger
+                type="button"
+                onClick={() => setshowAreYouSure(true)}
+              >
+                Fin Inventaire ?
+              </ButtonDanger>
+            </Grid>
+          </Grid>
+        </Box>
       </form>
+      <AreYouSure show={showAreYouSure} handleClose={handleClose} />
       <AddEditSaisieMaterielModal
         show={showEditAddModal}
         handleClose={handleClose}
