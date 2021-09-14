@@ -5,13 +5,13 @@ import logo from "../../../../logo_radeeo.jpg";
 // var imglogo = document.createElement("img");
 // imglogo.src = logo;
 
-const Entete = () => {
+const Entete = (title) => {
   return `<div class="entete">\
   <div class="division">\
   <div>Division : Support </div>\
   <div>Service : Systeme d\`information </div>\
   </div>\
-  <div class="title">Inventaire Informatique RADEEO</div>\
+  <div class="title">${title}</div>\
     <div class="image">\
       <img src="
         ${

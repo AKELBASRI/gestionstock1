@@ -25,7 +25,7 @@ $.DataTable = require("datatables.net-dt");
 window.JSZip = jsZip;
 // import Entete from "./Entete";
 function Datatables(Props) {
-  const { data } = Props;
+  const { data, title } = Props;
   useEffect(() => {
     $(main.current).DataTable({
       scrollX: true,
@@ -45,7 +45,7 @@ function Datatables(Props) {
           customize: function (win) {
             $(win.document.body)
               // .css("font-size", "10pt")
-              .prepend($(Entete()));
+              .prepend($(Entete(title)));
           },
         },
         {
@@ -54,7 +54,7 @@ function Datatables(Props) {
           },
           extend: "excel",
           text: '<i class="fas fa-file-excel" ></i>',
-          title: "Inventaire Informatique RADEEO",
+          title: { title },
           orientation: "landscape",
         },
       ],
@@ -125,8 +125,8 @@ function Datatables(Props) {
     },
 
     {
-      title: "Service",
-      data: "service.service_name",
+      title: "lieu",
+      data: "lieu.lieu",
       defaultContent: "",
     },
     {
