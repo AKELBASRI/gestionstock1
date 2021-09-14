@@ -13,6 +13,7 @@ import {
   FETCH_TOTAL_AVAILABLE_MATERIELS,
   FETCH_SERVICE_HIARCHY,
   FETCH_LIEUX,
+  FETCH_TABLE_EXIST,
 } from "./constants";
 
 // const { user } = isAuthenticated();
@@ -106,3 +107,19 @@ export const showorhide = (state) => {
     payload: state,
   };
 };
+export const Fetch_table_exist = () => {
+  return {
+    type: FETCH_TABLE_EXIST,
+    request: {
+      url: `/materiels/checkiftableexist/${isAuthenticated().user.Mle}`,
+    },
+  };
+};
+// export const Fetch_table_comparaison = () => {
+//   return {
+//     type: FETCH_TABLE_COMPARAISON,
+//     request: {
+//       url: `/materiels/comparaison/${isAuthenticated().user.Mle}`,
+//     },
+//   };
+// };

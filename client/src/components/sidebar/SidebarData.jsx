@@ -10,6 +10,7 @@ import PrintIcon from "@material-ui/icons/Print";
 import { VscChecklist } from "react-icons/vsc";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import RoomIcon from "@material-ui/icons/Room";
+import { VscCompareChanges } from "react-icons/vsc";
 export const SidebarData = [
   {
     title: "Home",
@@ -118,5 +119,10 @@ export const SidebarData = [
     title: "Materiel Proposer Reforme ",
     path: "/reforme",
     icon: <RiDeleteBin5Fill style={{ width: "20px", height: "20px" }} />,
+  },
+  {
+    title: "Comparaison",
+    path: "/comparaison",
+    icon: <VscCompareChanges style={{ width: "20px", height: "20px" }} />,
   },
 ];

@@ -9,6 +9,8 @@ const db = require('../models');
 const initModels = require('../models/init-models');
 const materialFields = require('../utils/MaterielFields');
 
+// const env = process.env.NODE_ENV || 'development';
+// const config = require(`${__dirname}/../config/config.json`)[env];
 const models = initModels(db.sequelize);
 exports.saveMateriel = (req, res) => {
   const current = new Date();
@@ -147,6 +149,37 @@ exports.createbackupMateriel = (req, res) => {
         .catch((error) => res.status(500).json({ error: error.errors[0].message }));
     }).catch((error) => { console.log(error); res.status(500).json({ error: `Something went wrong${error}` }); });
 };
+exports.getcomparaison = (req, res) => {
+  const nameofTable = `Materiel_${req?.query.year}`;
+  db.sequelize.query(`SELECT 
+        materiel.numeroinventaire,
+        designation.designation as "designationname",
+        materiellieu.lieu as "nouveaulieu",
+        agencynew.agency_name as "newagency",
+        servicenew.service_name as "newservice" ,
+        materielancien.lieu  as "oldPlace",
+        agencyancien.agency_name as "oldagency",
+        serviceancien.service_name as "oldservice"
+        FROM materiel  join ${nameofTable} on
+        materiel.idmateriel=${nameofTable}.idmateriel
+        join lieu as materiellieu on materiellieu.id=materiel.idlieu 
+        join lieu as materielancien on materielancien.id=${nameofTable}.idlieu
+        join agencies as agencyancien on agencyancien.id=${nameofTable}.idagence
+        join agencies as agencynew on agencynew.id=materiel.idagence
+        Join services as servicenew on servicenew.id=materiel.idservice
+        join designation on designation.idDesignation=materiel.iddesignation
+        join services as serviceancien on serviceancien.id=${nameofTable}.idservice
+      where 
+        materiel.idlieu<>${nameofTable}.idlieu 
+        or materiel.idservice<>${nameofTable}.idservice
+        or materiel.idagence<>${nameofTable}.idagence`, { }).then((result1) => {
+    res.status(201).json(result1[0]);
+  })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: `Something went wrong  ${error}` });
+    });
+};
 exports.getallmateriels = (req, res) => {
   models.materiel.findAll({
     attributes: ['idmateriel', 'iddesignation', 'numeroinventaire', 'garentie', 'datereceptionprovisoire', 'Affecter', 'idtype', 'IDFournisseur', 'idagence', 'mleagent', 'idservice', 'disponible', 'idlieu', 'proposerreforme'],
@@ -170,6 +203,16 @@ exports.deletemateriel = (req, res) => {
       res.status(201)
         .json({ message: 'le materiel a été supprimé avec succés ', materiel: result });
     })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: `Something went wrong${error}` });
+    });
+};
+exports.checkiftableexist = (req, res) => {
+  const ladate = new Date();
+  const nameofTable = `Materiel_${ladate.getFullYear()}`;
+  db.sequelize.query(`SHOW TABLES LIKE '${nameofTable}';`)
+    .then((result) => res.status(200).json(result[0][0]))
     .catch((error) => {
       console.log(error);
       res.status(500).json({ error: `Something went wrong${error}` });

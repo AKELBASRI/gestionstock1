@@ -20,6 +20,7 @@ import PrintMateriels from "./components/pages/admin/materiels/PrintMateriels";
 import Affectation from "./components/pages/admin/inventaire/Affectation";
 import ListeLieux from "./components/pages/admin/lieu/ListeLieux";
 import ProposerReforme from "./components/pages/admin/materiels/ProposerReforme";
+import ComparaisonMaterieloldnew from "./components/pages/admin/materiels/ComparaisonMaterieloldnew";
 
 function Routes() {
   return (
@@ -62,6 +63,11 @@ function Routes() {
               path="/printmateriels"
               exact
               component={PrintMateriels}
+            />
+            <PrivateRoute
+              path="/comparaison"
+              exact
+              component={ComparaisonMaterieloldnew}
             />
             <PrivateRoute path="/reforme" exact component={ProposerReforme} />
             <PrivateRoute path="/lieu" exact component={ListeLieux} />
