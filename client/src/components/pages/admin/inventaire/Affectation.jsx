@@ -15,6 +15,7 @@ import {
   FetchAgent,
   FetchMateriels,
   FetchService,
+  Fetch_table_exist,
 } from "../../../../store/actions";
 import Layout from "../../Layout/Layout";
 import customAxios from "../../../../axios/CustomAxios";
@@ -23,6 +24,7 @@ import AddEditSaisieMaterielModal from "../materiels/AddEditSaisieMaterielModal"
 import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch";
 import reactUsestateref from "react-usestateref";
 import AreYouSure from "./AreYouSure";
+import Popupend from "./popupendofinventory";
 
 // import Switch from "@material-ui/core/Switch";
 // import ReactHookTextField from "../../../../core/Components/ReactHookTextField";
@@ -30,6 +32,7 @@ import AreYouSure from "./AreYouSure";
 function Affectation() {
   const dispatch = useDispatch();
   const [showEditAddModal, setshowEditAddModal] = useState(false);
+  const [showendpopup, setshowpopup] = useState(false);
   // const [Numeroinventairecodebar, setobject] = useState({});
   const [showAreYouSure, setshowAreYouSure] = useState(false);
   const [, setmaterielselect, materielselect] = reactUsestateref({});
@@ -47,6 +50,9 @@ function Affectation() {
   );
   const listmateriels1 = useSelector(
     (state) => state.requests?.queries?.FETCH_MATERIELS?.data
+  );
+  const tableexist = useSelector(
+    (state) => state.requests?.queries?.FETCH_TABLE_EXIST?.data
   );
   const optionsservices =
     ListeService &&
@@ -99,18 +105,8 @@ function Affectation() {
     setshowAreYouSure(false);
   };
   const handleScan = (data) => {
-    // console.log(data);
-    // getmaterielchoosed({ value: data });
-    // setValue("object.numeroinventaire", data);
-    // if (materielselect?.current[0])
-    //   setValue("object", materielselect?.current[0]);
-    // // setobject({ id: data, name: data });
     getmaterielchoosed({ value: data });
 
-    // if (materielselect?.current[0] !== null) {
-    //   console.log(materielselect?.current[0]);
-    //   setValue("object", materielselect?.current[0]);
-    // }
     for (const property in materielselect.current[0]) {
       if (materielselect.current[0][property] !== null) {
         console.log(`object.${property}`, materielselect?.current[0][property]);
@@ -124,6 +120,11 @@ function Affectation() {
     console.error(err);
   };
   useEffect(() => {
+    dispatch(Fetch_table_exist());
+    console.log(tableexist);
+    if (tableexist !== "") {
+      setshowpopup(true);
+    }
     // handleScan();
     dispatch(FetchMateriels());
     if (!ListeService) {
@@ -443,7 +444,12 @@ function Affectation() {
           </Grid>
         </Box>
       </form>
-      <AreYouSure show={showAreYouSure} handleClose={handleClose} />
+      <AreYouSure
+        show={showAreYouSure}
+        handleClose={handleClose}
+        showpopup={(popup) => setshowpopup(popup)}
+      />
+      <Popupend show={showendpopup} />
       <AddEditSaisieMaterielModal
         show={showEditAddModal}
         handleClose={handleClose}

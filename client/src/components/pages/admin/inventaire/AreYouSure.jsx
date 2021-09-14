@@ -6,9 +6,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { EndOfInventory } from "./EndOfInventory";
+import { useDispatch } from "react-redux";
+import { Fetch_table_exist } from "../../../../store/actions";
 export default function AreYouSure(Props) {
   //   const [open, setOpen] = React.useState(false);
-  const { show, handleClose } = Props;
+  const { show, handleClose, showpopup } = Props;
+  const dispatch = useDispatch();
   //   const handleClickOpen = () => {
   //     setOpen(true);
   //   };
@@ -16,9 +19,7 @@ export default function AreYouSure(Props) {
   //   const handleClose = () => {
   //     setOpen(false);
   //   };
-  const ActionClose = () => {
-    handleClose();
-  };
+
   return (
     <div>
       <Dialog
@@ -45,7 +46,15 @@ export default function AreYouSure(Props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => EndOfInventory(ActionClose)}
+            onClick={() => {
+              EndOfInventory().then((result) => {
+                if (result) {
+                  handleClose();
+                  dispatch(Fetch_table_exist());
+                  showpopup(true);
+                }
+              });
+            }}
           >
             oui
           </Button>
