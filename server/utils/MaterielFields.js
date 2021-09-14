@@ -84,5 +84,10 @@ const materialFields = (DataTypes) => (
       allowNull: true,
       defaultValue: 0,
     },
+    proposerreforme: {
+      type: DataTypes.TINYINT,
+      allowNull: true,
+      defaultValue: 0,
+    },
   }
 ); module.exports = materialFields;

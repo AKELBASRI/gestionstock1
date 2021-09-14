@@ -223,6 +223,7 @@ function ListMateriels() {
       name: "disponible",
       options: {
         filter: true,
+        sort: true,
         customBodyRender: function checked(value) {
           return (
             <Box>
@@ -238,6 +239,20 @@ function ListMateriels() {
       options: {
         filter: true,
         display: false,
+      },
+    },
+    {
+      label: "Reforme",
+      name: "proposerreforme",
+      options: {
+        filter: true,
+        customBodyRender: function checked(value) {
+          return (
+            <Box>
+              <Switch checked={value} disableRipple />
+            </Box>
+          );
+        },
       },
     },
     {
@@ -294,6 +309,7 @@ function ListMateriels() {
         filter: true,
       },
     },
+
     {
       name: "Actions",
       options: {

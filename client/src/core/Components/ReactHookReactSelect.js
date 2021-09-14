@@ -17,7 +17,7 @@ const ReactHookFormReactSelect = (Props) => {
           <Select
             ignoreAccents={true}
             inputRef={reef?.ref}
-            options={options.sort(compare)}
+            options={options?.sort(compare)}
             value={options?.find((c) => c.value === value) || Value}
             onChange={(val) => {
               onChange(val?.value);

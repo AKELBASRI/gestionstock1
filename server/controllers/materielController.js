@@ -141,7 +141,7 @@ exports.createbackupMateriel = (req, res) => {
 };
 exports.getallmateriels = (req, res) => {
   models.materiel.findAll({
-    attributes: ['idmateriel', 'iddesignation', 'numeroinventaire', 'garentie', 'datereceptionprovisoire', 'Affecter', 'idtype', 'IDFournisseur', 'idagence', 'mleagent', 'idservice', 'disponible', 'idlieu'],
+    attributes: ['idmateriel', 'iddesignation', 'numeroinventaire', 'garentie', 'datereceptionprovisoire', 'Affecter', 'idtype', 'IDFournisseur', 'idagence', 'mleagent', 'idservice', 'disponible', 'idlieu', 'proposerreforme'],
     include: [
       { model: models.services, attributes: ['service_name'] },
       { model: models.agencies, attributes: ['agency_name'] },
@@ -175,6 +175,7 @@ exports.AffecterMaterielbynumberofinventory = (req, res) => {
     Affecter: true,
     disponible: req.body.disponible,
     idlieu: req.body.idlieu,
+    proposerreforme: req.body.proposerreforme,
   };
   models.materiel
     .findOne({

@@ -8,6 +8,7 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import PrintIcon from "@material-ui/icons/Print";
 import { VscChecklist } from "react-icons/vsc";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import RoomIcon from "@material-ui/icons/Room";
 export const SidebarData = [
   {
@@ -111,5 +112,11 @@ export const SidebarData = [
     title: "Inventaire",
     path: "/inventory",
     icon: <VscChecklist style={{ width: "20px", height: "20px" }} />,
+  },
+
+  {
+    title: "Materiel Proposer Reforme ",
+    path: "/reforme",
+    icon: <RiDeleteBin5Fill style={{ width: "20px", height: "20px" }} />,
   },
 ];
