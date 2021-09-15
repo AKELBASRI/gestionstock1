@@ -15,7 +15,6 @@ import {
   FetchAgent,
   FetchMateriels,
   FetchService,
-  Fetch_table_exist,
 } from "../../../../store/actions";
 import Layout from "../../Layout/Layout";
 import customAxios from "../../../../axios/CustomAxios";
@@ -120,7 +119,6 @@ function Affectation() {
     console.error(err);
   };
   useEffect(() => {
-    dispatch(Fetch_table_exist());
     console.log(tableexist);
     if (tableexist !== "") {
       setshowpopup(true);
