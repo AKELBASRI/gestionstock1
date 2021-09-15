@@ -150,7 +150,7 @@ exports.createbackupMateriel = (req, res) => {
     }).catch((error) => { console.log(error); res.status(500).json({ error: `Something went wrong${error}` }); });
 };
 exports.getcomparaison = (req, res) => {
-  const nameofTable = `Materiel_${req?.query.year}`;
+  const nameofTable = `Materiel_${req.query.year}`;
   db.sequelize.query(`SELECT 
         materiel.numeroinventaire,
         designation.designation as "designationname",
