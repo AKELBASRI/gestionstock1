@@ -1,0 +1,9 @@
+git config core.autocrlf false 
+git rm --cached -r . 
+git reset --hard
+
+
+pm2 delete 1
+pm2 serve build 3000 --spa 
+https://stackoverflow.com/questions/34135555/recursive-include-sequelize
+https://stackoverflow.com/questions/38426683/add-property-to-object-that-is-returned-by-sequelize-findone
