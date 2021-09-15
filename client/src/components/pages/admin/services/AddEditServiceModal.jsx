@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import customAxios from "../../../../axios/CustomAxios";
 import { FetchService } from "../../../../store/actions";
 import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
+import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
 import { MenuItem } from "@material-ui/core";
 
 function AddEditServiceModal(Props) {
@@ -43,6 +44,18 @@ function AddEditServiceModal(Props) {
   const services = useSelector(
     (state) => state.requests?.queries?.FETCH_SERVICE?.data
   );
+  const optionsParents =
+    parents &&
+    parents.map((parentsce) => ({
+      value: parentsce.id,
+      label: parentsce.service_name,
+    }));
+  const optionsService =
+    services &&
+    services.map((service) => ({
+      value: service.id,
+      label: service.service_name,
+    }));
   useEffect(() => {
     console.log(Props.CodeSce);
     if (!services) {
@@ -177,7 +190,7 @@ function AddEditServiceModal(Props) {
             ? `Modification  du service : ${service.service_name} `
             : "Ajout Service"}
         </DialogTitle>
-        <DialogContent className={classes.bg}>
+        <DialogContent className={classes.bg} style={{ height: "451px" }}>
           <DialogContentText className={classes.bg}></DialogContentText>
 
           <label className={classes.label}>Libelle</label>
@@ -254,31 +267,20 @@ function AddEditServiceModal(Props) {
           {service?.hierarchyLevel !== 1 ? (
             <>
               <label className={classes.label}>Parent</label>
-              <ReactHookFormSelect
-                className={classes.select}
-                label="Selectionner un service"
+              <ReactHookFormReactSelect
+                options={Props.CodeSce ? optionsService : optionsParents}
+                className={classes.SelectSearch}
                 id="object.parentId"
-                name="object.parentId"
+                Name="object.parentId"
                 control={control}
-                defaultValue={"0"}
-                reef={register("object.parentId", {
-                  validate: (value) => value !== "0",
-                })}
-              >
-                <MenuItem value="0" style={{ cursor: "pointer" }}>
-                  Selectionner un service
-                </MenuItem>
-                {parents &&
-                  parents.map((service, i) => (
-                    <MenuItem
-                      key={i + 1}
-                      value={service.id}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {service.service_name}
-                    </MenuItem>
-                  ))}
-              </ReactHookFormSelect>
+                reef={register("object.parentId", { required: true })}
+              />
+              {errors["object"]?.parentId && (
+                <p className={classes.para}>
+                  {errors["object"]?.parentId?.message ||
+                    "You must select an agency"}
+                </p>
+              )}
             </>
           ) : null}
           {errors["object"]?.service_id && (

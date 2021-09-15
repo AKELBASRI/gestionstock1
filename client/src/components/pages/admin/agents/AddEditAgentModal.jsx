@@ -26,6 +26,7 @@ import {
   FetchAgent,
   FetchService,
 } from "../../../../store/actions";
+import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
 
 function AddEditAgentModal(Props) {
   const { agent_number, show, handleClose } = Props;
@@ -173,7 +174,12 @@ function AddEditAgentModal(Props) {
   const classes = useStyles();
 
   // let { ref1, ...rest1 } = register("object.agency_id");
-
+  const optionsservices =
+    services &&
+    services.map((service) => ({
+      value: service.id,
+      label: service.service_name,
+    }));
   return (
     <div>
       <Dialog
@@ -187,7 +193,7 @@ function AddEditAgentModal(Props) {
             ? `Modification  de l'agent : ${usernormal.agent_full_name} Matricule : ${usernormal.agent_number}`
             : "Ajout Utilisateur"}
         </DialogTitle>
-        <DialogContent className={classes.bg}>
+        <DialogContent className={classes.bg} style={{ height: "601px" }}>
           <DialogContentText className={classes.bg}></DialogContentText>
           <div>
             <label className={classes.label}>Nom</label>
@@ -245,8 +251,21 @@ function AddEditAgentModal(Props) {
             <InputLabel htmlFor="age-native-simple" className={classes.label}>
               Service
             </InputLabel>
-
-            <ReactHookFormSelect
+            <ReactHookFormReactSelect
+              options={optionsservices}
+              className={classes.SelectSearch}
+              id="object.service_id"
+              Name="object.service_id"
+              control={control}
+              reef={register("object.service_id", { required: true })}
+            />
+            {errors["object"]?.service_id && (
+              <p className={classes.para}>
+                {errors["object"]?.service_id?.message ||
+                  "You must select a service"}
+              </p>
+            )}
+            {/* <ReactHookFormSelect
               className={classes.select}
               label="Selectionner un service"
               id="object.service_id"
@@ -276,7 +295,7 @@ function AddEditAgentModal(Props) {
                 {errors["object"]?.service_id?.message ||
                   "You must select a service"}
               </p>
-            )}
+            )} */}
             <InputLabel htmlFor="age-native-simple" className={classes.label}>
               Agence
             </InputLabel>
