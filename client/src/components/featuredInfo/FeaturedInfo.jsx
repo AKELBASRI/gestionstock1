@@ -39,7 +39,7 @@ function FeaturedInfo() {
 
   const listTotalCountbyType1 =
     listTotalCountbyType &&
-    listTotalAvailableByType
+    listTotalCountbyType
       .filter((item) => item.idtype == cat.id)
       .map((_data) => {
         return flattenObject(_data);
