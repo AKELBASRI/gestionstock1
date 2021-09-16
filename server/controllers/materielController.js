@@ -307,7 +307,7 @@ exports.GetAvailableMaterielTotal = (req, res) => {
   models.materiel.belongsTo(models.designation, { foreignKey: 'iddesignation', sourceKey: 'idDesignation' });
 
   models.materiel.findAll({
-    attributes: [[sequelize.fn('count', sequelize.col('materiel.idtype')), 'nbrMaterielbyType']],
+    attributes: [[sequelize.fn('count', sequelize.col('materiel.idtype')), 'nbrMaterielbyType'], 'idtype'],
     where: { Affecter: false },
     include: [
       { model: models.typemateriel, attributes: ['type'] },

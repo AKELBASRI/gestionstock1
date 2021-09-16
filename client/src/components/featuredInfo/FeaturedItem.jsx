@@ -34,7 +34,7 @@ function FeaturedItem(Props) {
         item
         style={{ backgroundColor: Props.color }}
       >
-        <Box fontSize="20px">{`Nombre Total des ${Props.totalmateriel[1]}s`}</Box>
+        <Box fontSize="20px">{`Nombre Total des ${Props.totalmateriel[2]}s`}</Box>
         <Box>
           <Box
             className={classes.FeaturedMainContainer}

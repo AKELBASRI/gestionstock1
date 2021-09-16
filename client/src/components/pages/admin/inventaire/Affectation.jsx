@@ -168,7 +168,7 @@ function Affectation() {
   const getmaterielchoosed = (data) => {
     setmaterielselect(
       listmateriels1.filter((materiel) => {
-        return materiel.numeroinventaire === data.value;
+        return materiel.numeroinventaire === data?.value;
       })
     );
   };
@@ -191,21 +191,13 @@ function Affectation() {
   return (
     <Layout>
       <BarcodeReader onError={handleError} onScan={handleScan} />
-      {/* {JSON.stringify(watch("object"))} */}
-      {/*{JSON.stringify(Numeroinventairecodebar)} */}
+
       <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
         <Typography variant="h4">
           Inventaire {currentDate.getFullYear()}
         </Typography>
         <Box my="30px" />
 
-        {/* <ReactHookTextField
-          className={classes.SelectSearch}
-          label="Numero Inventaire"
-          Name="object.numeroinventaire"
-          control={control}
-          reef={register("object.numeroinventaire", { required: true })}
-        /> */}
         <Box display="flex" justifyContent="center">
           <Box
             display="flex"

@@ -13,19 +13,35 @@ const ReactHookFormReactSelect = (Props) => {
         control={control}
         // defaultValue={default_value}
         name={Name}
-        render={({ field: { onChange, value } }) => (
-          <Select
-            ignoreAccents={true}
-            inputRef={reef?.ref}
-            options={options?.sort(compare)}
-            value={options?.find((c) => c.value === value) || Value}
-            onChange={(val) => {
-              onChange(val?.value);
-              onchange && onchange(val);
-            }}
-            isClearable={true}
-          />
-        )}
+        render={({ field: { onChange, value } }) =>
+          Value ? (
+            <Select
+              defaultValue={{ id: Value.id, label: Value.type }}
+              ignoreAccents={true}
+              inputRef={reef?.ref}
+              options={options?.sort(compare)}
+              value={options?.find((c) => c.value === value)}
+              onChange={(val) => {
+                onChange(val?.value);
+                onchange && onchange(val);
+              }}
+              isClearable={true}
+            />
+          ) : (
+            <Select
+              defaultValue={""}
+              ignoreAccents={true}
+              inputRef={reef?.ref}
+              options={options?.sort(compare)}
+              value={options?.find((c) => c.value === value)}
+              onChange={(val) => {
+                onChange(val?.value);
+                onchange && onchange(val);
+              }}
+              isClearable={true}
+            />
+          )
+        }
       />
     </FormControl>
   );
