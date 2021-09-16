@@ -326,6 +326,8 @@ function ListMateriels() {
   ];
   const options = {
     pagination: true,
+    filter: true,
+    filterType: "multiselect",
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
