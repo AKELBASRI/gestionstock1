@@ -28,20 +28,23 @@ function Datatables(Props) {
   const { data, title } = Props;
   useEffect(() => {
     $(main.current).DataTable({
+      orderCellsTop: true,
+      fixedHeader: true,
       scrollX: true,
       responsive: true,
       dom: "Bfrtip",
+
       buttons: [
         {
           exportOptions: {
-            columns: [2, 11, 13, 14, 16], //Your Column value those you want
+            columns: [2, 11, 12, 15, 17], //Your Column value those you want
           },
           extend: "print",
           text: '<i class="fas fa-print"></i>',
           title: "",
           message: "",
           orientation: "landscape",
-
+          autoPrint: false,
           customize: function (win) {
             $(win.document.body)
               // .css("font-size", "10pt")
@@ -50,7 +53,7 @@ function Datatables(Props) {
         },
         {
           exportOptions: {
-            columns: [2, 11, 13, 14, 16], //Your Column value those you want
+            columns: [2, 11, 12, 15, 17], //Your Column value those you want
           },
           extend: "excel",
           text: '<i class="fas fa-file-excel" ></i>',
@@ -66,6 +69,9 @@ function Datatables(Props) {
       //   retrieve: true,
       //   ordering: false,
     });
+    return () => {
+      $(main.current).DataTable().destroy(true);
+    };
   }, []);
   const main = useRef(null);
   const columns = [
@@ -123,7 +129,12 @@ function Datatables(Props) {
       visible: false,
       defaultContent: "",
     },
+    {
+      title: "Disponible",
+      data: "disponible",
 
+      defaultContent: "",
+    },
     {
       title: "lieu",
       data: "lieu.lieu",
