@@ -30,7 +30,7 @@ function FeaturedInfo() {
   const listcategories = useSelector(
     (state) => state.requests?.queries?.FETCH_CATEGORY?.data
   );
-  const [cat, setcat] = useState(listcategories[2]);
+  const [cat, setcat] = useState(listcategories && listcategories[2]);
   useEffect(() => {
     dispatch(FetchCategory());
     dispatch(FetchTotalMateriels());
