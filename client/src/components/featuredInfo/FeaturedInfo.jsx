@@ -33,6 +33,7 @@ function FeaturedInfo() {
   const [cat, setcat] = useState(listcategories && listcategories[2]);
   useEffect(() => {
     dispatch(FetchCategory());
+
     dispatch(FetchTotalMateriels());
     dispatch(FetchTotalAvailableMateriels());
   }, []);
