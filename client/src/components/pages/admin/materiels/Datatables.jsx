@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
 
-import jsZip from "jszip";
+// import jsZip from "jszip";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -22,14 +22,12 @@ import "./styleentete.css";
 // import "bootstrap/dist/css/bootstrap.css";
 import Entete from "./Entete";
 $.DataTable = require("datatables.net-dt");
-window.JSZip = jsZip;
-// import Entete from "./Entete";
+
 function Datatables(Props) {
+  // window.JSZip = jsZip;
   const { data, title } = Props;
   useEffect(() => {
     $(main.current).DataTable({
-      orderCellsTop: true,
-      fixedHeader: true,
       scrollX: true,
       responsive: true,
       dom: "Bfrtip",
@@ -52,12 +50,13 @@ function Datatables(Props) {
           },
         },
         {
+          title: "",
           exportOptions: {
             columns: [2, 11, 12, 15, 17], //Your Column value those you want
           },
           extend: "excel",
           text: '<i class="fas fa-file-excel" ></i>',
-          title: { title },
+
           orientation: "landscape",
         },
       ],
@@ -133,7 +132,7 @@ function Datatables(Props) {
       title: "Disponible",
       data: "disponible",
 
-      defaultContent: "",
+      defaultContent: 0,
     },
     {
       title: "lieu",
