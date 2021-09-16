@@ -11,7 +11,8 @@ import {
 } from "../../store/actions";
 import { useStyles } from "../../core/styleModalForm";
 import FeaturedItem from "./FeaturedItem";
-function FeaturedInfo() {
+function FeaturedInfo(Props) {
+  const { listcategories } = Props;
   const classes = useStyles();
   const {
     register,
@@ -27,10 +28,8 @@ function FeaturedInfo() {
   const listTotalCountbyType = useSelector(
     (state) => state.requests?.queries?.FETCH_TOTAL_MATERIELS?.data
   );
-  const listcategories = useSelector(
-    (state) => state.requests?.queries?.FETCH_CATEGORY?.data
-  );
-  const [cat, setcat] = useState(listcategories && listcategories[2]);
+
+  const [cat, setcat] = useState(listcategories && listcategories[1]);
   useEffect(() => {
     dispatch(FetchCategory());
 

@@ -21,6 +21,7 @@
     "datatables.net-dt": "^1.11.2",
     "date-fns": "^2.23.0",
     "dotenv": "^8.2.0",
+    "jquery": "^3.6.0",
     "jszip": "^3.7.1",
     "mui-datatables": "^3.7.7",
     "pdfmake": "^0.2.2",
@@ -42,8 +43,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "styled-components": "^5.3.0",
-    "toastr": "^2.1.4",
-    "jquery": "^3.6.0"
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
