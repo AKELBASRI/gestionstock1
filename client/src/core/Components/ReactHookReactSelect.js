@@ -14,7 +14,7 @@ const ReactHookFormReactSelect = (Props) => {
         // defaultValue={default_value}
         name={Name}
         render={({ field: { onChange, value } }) =>
-          Value ? (
+          Value !== "" ? (
             <Select
               defaultValue={{ id: Value.id, label: Value.type }}
               ignoreAccents={true}
@@ -33,7 +33,7 @@ const ReactHookFormReactSelect = (Props) => {
               ignoreAccents={true}
               inputRef={reef?.ref}
               options={options?.sort(compare)}
-              value={options?.find((c) => c.value === value)}
+              value={options?.find((c) => c.value === value) || Value}
               onChange={(val) => {
                 onChange(val?.value);
                 onchange && onchange(val);
