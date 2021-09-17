@@ -388,37 +388,13 @@ function ListMateriels() {
         return false;
       }
       return true;
-      // Prevent expand/collapse of any row if there are 4 rows expanded already (but allow those already expanded to be collapsed)
     },
     onRowExpansionChange: (_, allRowsExpanded) => {
       setRowsExpanded(allRowsExpanded.slice(-1).map((item) => item.dataIndex));
       console.log(allRowsExpanded);
     },
-    // onTableChange: (action, tableState) => {
-    //   console.log(action);
-    //   switch (action) {
-    //     case "rowExpansionChange":
-    //       console.log(action);
-    //       console.dir(tableState);
-    //       var rowsExpanded = tableState.expandedRows.data.map(
-    //         (item) => item.index
-    //       );
 
-    //       if (rowsExpanded.length > 1) {
-    //         // limiting would go here
-    //         rowsExpanded = rowsExpanded.slice(-1);
-    //       }
-
-    //       console.dir(rowsExpanded);
-
-    //       setRowsExpanded(rowsExpanded);
-
-    //       break;
-    //   }
-    // },
     renderExpandableRow: function displayexpanded(rowData, rowMeta) {
-      // const colSpan = rowData.length + 1;
-
       const garentie = listmateriels[rowMeta.dataIndex][3];
       const agent = listmateriels[rowMeta.dataIndex][16];
       const fournisseur = listmateriels[rowMeta.dataIndex][18];
@@ -427,7 +403,6 @@ function ListMateriels() {
       const agence = listmateriels[rowMeta.dataIndex][15];
       // const colSpan = rowData.length;
       return (
-        // <React.Fragment>
         <tr>
           <td colSpan={7}>
             <TableContainer component={StyledPaper}>
