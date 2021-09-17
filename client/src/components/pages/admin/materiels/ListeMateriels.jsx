@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 function ListMateriels() {
-  const [rowsExpanded] = useState();
+  const [rowsExpanded, setRowsExpanded] = useState();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [materiel, setMateriel] = useState({});
@@ -391,7 +391,7 @@ function ListMateriels() {
       // Prevent expand/collapse of any row if there are 4 rows expanded already (but allow those already expanded to be collapsed)
     },
     onRowExpansionChange: (_, allRowsExpanded) => {
-      // setRowsExpanded(allRowsExpanded.slice(-1).map((item) => item.index));
+      setRowsExpanded(allRowsExpanded.slice(-1).map((item) => item.dataIndex));
       console.log(allRowsExpanded);
     },
     // onTableChange: (action, tableState) => {
