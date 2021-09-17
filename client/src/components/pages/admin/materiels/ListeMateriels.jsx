@@ -9,7 +9,7 @@ import AddEditSaisieMaterielModal from "./AddEditSaisieMaterielModal";
 import handleClickDelete from "./DeleteMateriel";
 import AffecterMaterielModal from "./AffecterMaterielModal";
 import { flattenObject } from "../../../../core/ApiCore";
-import { Delete } from "../../../../core/util";
+import { Delete, DeleteMessageBox } from "../../../../core/util";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -472,10 +472,22 @@ function ListMateriels() {
     // filter: true,
     // filterType: 'dropdown',
     responsive: "standard",
-    // onRowsDelete: (e) => {
-    //   e.data.map((data) => console.log(listmateriels1[data.dataIndex]));
-    // },
-    selectableRows: "none",
+    onRowsDelete: async (e) => {
+      const result = await DeleteMessageBox();
+      // let valueres = false;
+      if (result) {
+        // valueres = true;
+        e.data.map((data) =>
+          handleClickDelete(listmateriels1[data.dataIndex], ActiongetMateriels)
+        );
+      } else if (result === undefined) {
+        ActiongetMateriels();
+        // valueres = false;
+      } else {
+        ActiongetMateriels();
+      }
+    },
+    selectableRows: "multiselect",
   };
   return (
     <Layout>
