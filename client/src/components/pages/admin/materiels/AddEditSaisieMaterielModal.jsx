@@ -23,11 +23,9 @@ import {
   DialogTitle,
   FormControl,
   InputLabel,
-  MenuItem,
 } from "@material-ui/core";
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
-import ReactHookFormSelect from "../../../../core/Components/ReactHookFormSelect";
 
 import customAxios from "../../../../axios/CustomAxios";
 import {
@@ -164,6 +162,21 @@ const AddEditSaisieMaterielModal = (Props) => {
       value: marque.idDesignation,
       label: marque.designation,
     }));
+
+  const optionsGarentie = [
+    {
+      label: "1 an",
+      value: 1,
+    },
+    {
+      label: "2 ans",
+      value: 2,
+    },
+    {
+      label: "3 ans",
+      value: 3,
+    },
+  ];
   const UpdateMateriel = (data) => {
     const marque = Designations.current.filter(
       (designation) =>
@@ -318,6 +331,7 @@ const AddEditSaisieMaterielModal = (Props) => {
               required: "You must specify a type",
             })}
             onchange={handleChange}
+            Value=""
           />
 
           {errors["object"]?.idtype && (
@@ -385,6 +399,7 @@ const AddEditSaisieMaterielModal = (Props) => {
                 reef={register("object.iddesignation", {
                   required: "You must specify a Designation",
                 })}
+                Value=""
               />
 
               {errors["object"]?.iddesignation && (
@@ -397,30 +412,16 @@ const AddEditSaisieMaterielModal = (Props) => {
           )}
 
           <label className={classes.label}>Garentie</label>
-
-          <ReactHookFormSelect
-            className={classes.select}
-            label="Selectionner une gerentie"
+          <ReactHookFormReactSelect
+            Placeholder={"Selectionner une garentie"}
+            options={optionsGarentie}
+            className={classes.SelectSearch}
             id="object.garentie"
-            name="object.garentie"
+            Name="object.garentie"
             control={control}
-            defaultValue={"0"}
-            reef={register("object.garentie")}
-            // , {validate: (value) => value !== "0", }
-          >
-            <MenuItem value="0" style={{ cursor: "pointer" }}>
-              Selectionner la garentie
-            </MenuItem>
-            <MenuItem key="1" value="1" style={{ cursor: "pointer" }}>
-              1 an
-            </MenuItem>
-            <MenuItem key="2" value="2" style={{ cursor: "pointer" }}>
-              2 ans
-            </MenuItem>
-            <MenuItem key="3" value="3" style={{ cursor: "pointer" }}>
-              3 ans
-            </MenuItem>
-          </ReactHookFormSelect>
+            Value=""
+          />
+
           {errors["object"]?.garentie && (
             <p className={classes.para}>
               {errors["object"]?.garentie?.message ||
@@ -468,6 +469,7 @@ const AddEditSaisieMaterielModal = (Props) => {
             Name="object.IDFournisseur"
             control={control}
             reef={register("object.IDFournisseur")}
+            Value=""
           />
 
           {errors["object"]?.IDFournisseur && (
@@ -488,6 +490,7 @@ const AddEditSaisieMaterielModal = (Props) => {
             control={control}
             reef={register("object.idlieu")}
             onchange={handleChange}
+            Value=""
           />
 
           {errors["object"]?.idlieu && (
