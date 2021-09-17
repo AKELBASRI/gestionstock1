@@ -2,7 +2,16 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "react-select";
 import { Controller } from "react-hook-form";
 const ReactHookFormReactSelect = (Props) => {
-  const { options, control, Name, reef, Value, onchange, ...props } = Props;
+  const {
+    options,
+    control,
+    Name,
+    reef,
+    Value,
+    onchange,
+    Placeholder,
+    ...props
+  } = Props;
   function compare(a, b) {
     return a.label > b.label ? 1 : b.label > a.label ? -1 : 0;
   }
@@ -34,6 +43,7 @@ const ReactHookFormReactSelect = (Props) => {
               inputRef={reef?.ref}
               options={options?.sort(compare)}
               value={options?.find((c) => c.value === value) || Value}
+              placeholder={Placeholder}
               onChange={(val) => {
                 onChange(val?.value);
                 onchange && onchange(val);
