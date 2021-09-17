@@ -74,6 +74,8 @@ exports.updateMateriel = (req, res) => {
       || true,
         idtype: req.body.idtype,
         idlieu: req.body.idlieu,
+        garentie: req.body.garentie,
+        datereceptionprovisoire: req.body.datereceptionprovisoire,
       },
     }).then((result) => {
       if (result) {

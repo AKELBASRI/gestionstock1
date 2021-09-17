@@ -13,7 +13,7 @@ import RoomIcon from "@material-ui/icons/Room";
 import { VscCompareChanges } from "react-icons/vsc";
 export const SidebarData = [
   {
-    title: "Home",
+    title: "Acceuil",
     path: "/",
     icon: <HomeIcon style={{ width: "20px", height: "20px" }} />,
   },
@@ -105,7 +105,7 @@ export const SidebarData = [
     icon: <DevicesIcon style={{ width: "20px", height: "20px" }} />,
   },
   {
-    title: "Print Materiels",
+    title: "Imprimer Materiels",
     path: "/printmateriels",
     icon: <PrintIcon style={{ width: "20px", height: "20px" }} />,
   },
