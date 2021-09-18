@@ -9,7 +9,11 @@ import AddEditSaisieMaterielModal from "./AddEditSaisieMaterielModal";
 import handleClickDelete from "./DeleteMateriel";
 import AffecterMaterielModal from "./AffecterMaterielModal";
 import { flattenObject } from "../../../../core/ApiCore";
-import { Delete, DeleteMessageBox } from "../../../../core/util";
+import {
+  CustomSearchIgnoreAccent,
+  Delete,
+  DeleteMessageBox,
+} from "../../../../core/util";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -370,6 +374,8 @@ function ListMateriels() {
     expandableRowsHeader: false,
     expandableRowsOnClick: true,
     rowsExpanded: rowsExpanded,
+    customSearch: (searchQuery, currentRow) =>
+      CustomSearchIgnoreAccent(searchQuery, currentRow),
     isRowExpandable: (dataIndex) => {
       const garentie = listmateriels[dataIndex][3];
       const agent = listmateriels[dataIndex][16];

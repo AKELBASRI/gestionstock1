@@ -39,6 +39,7 @@ export const useStyles = makeStyles(() => ({
     padding: "10px 15px",
     marginBottom: "20px",
     fontSize: " 14px",
+    color: "black",
   },
   select: {
     width: "100%",
@@ -60,7 +61,9 @@ export const useStyles = makeStyles(() => ({
   },
   bg: {
     background: "#011627",
-    color: "white",
+    "& h2": {
+      color: "white !important",
+    },
   },
   para: {
     color: "#bf1650",

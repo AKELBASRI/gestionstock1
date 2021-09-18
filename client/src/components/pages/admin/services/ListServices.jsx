@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AddEditServiceModal from "./AddEditServiceModal";
 import handleClickDelete from "./DeleteService";
-import { Delete } from "../../../../core/util";
+import { CustomSearchIgnoreAccent, Delete } from "../../../../core/util";
 import { Box, makeStyles } from "@material-ui/core";
 
 import CreateIcon from "@material-ui/icons/Create";
@@ -145,6 +145,8 @@ function ListServices() {
     responsive: "standard",
     selectableRows: "none",
     caseSensitive: true,
+    customSearch: (searchQuery, currentRow) =>
+      CustomSearchIgnoreAccent(searchQuery, currentRow),
   };
   return (
     <Layout>

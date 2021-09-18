@@ -55,6 +55,59 @@ export const DeleteMessageBox = () => {
     });
   });
 };
+export const CustomSearchIgnoreAccent = (searchQuery, currentRow) => {
+  let isFound = false;
+  let stringSearch = searchQuery
+    ?.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  currentRow?.forEach((col) => {
+    if (
+      col
+        ?.toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .indexOf(stringSearch) >= 0
+    ) {
+      isFound = true;
+    }
+  });
+  return isFound;
+};
 export const RequestError = () => (
   <p>There was some error during fetching. Please try again.</p>
 );
+
+// export const replaceAll = (str) => {
+//   let mapObj = {
+//     service_name: "title",
+//     id: "value",
+//   };
+//   var re = new RegExp(Object.keys(mapObj).join("|"), "g");
+
+//   return JSON.parse(
+//     str.replace(re, function (matched) {
+//       return mapObj[matched.toLowerCase()];
+//     })
+//   );
+// };
+
+const affectvalueandtitle = (children) => {
+  if (children?.length >= 0) {
+    return children.map((service) => ({
+      value: service.id,
+      title: service.service_name,
+      children: affectvalueandtitle(service.children),
+    }));
+  } else {
+    return false;
+  }
+};
+
+export const replaceAll = (str) => {
+  return str.map((service) => ({
+    value: service.id,
+    title: service.service_name,
+    children: affectvalueandtitle(service.children),
+  }));
+};
