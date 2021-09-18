@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -9,6 +9,7 @@ import {
   InputLabel,
   MenuItem,
 } from "@material-ui/core";
+
 import { useStyles } from "../../../../core/styleModalForm";
 import { useForm } from "react-hook-form";
 
@@ -25,10 +26,14 @@ import {
   FetchAgencies,
   FetchAgent,
   FetchService,
+  FetchServiceHiearchy,
 } from "../../../../store/actions";
-import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
+// import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
+import { replaceAll } from "../../../../core/util";
+import ReactTreeSelect from "../../../../core/Components/TreeSelect";
 
 function AddEditAgentModal(Props) {
+  const [value, setvalue] = useState(null);
   const { agent_number, show, handleClose } = Props;
   // const [services, setservices] = useState([]);
   // const [agencies, setAgencies] = useState([]);
@@ -38,6 +43,9 @@ function AddEditAgentModal(Props) {
   const services = useSelector(
     (state) => state.requests?.queries?.FETCH_SERVICE?.data
   );
+  const servicesHiearchy = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE_HIARCHY?.data
+  );
   // const [, setIsValid, ref] = useStateRef(true);
   // const [errors, setErrors] = useState({});
   const {
@@ -46,7 +54,7 @@ function AddEditAgentModal(Props) {
     reset,
     setValue,
     clearErrors,
-
+    getValues,
     control,
     formState: { errors },
   } = useForm();
@@ -59,7 +67,28 @@ function AddEditAgentModal(Props) {
         )
       : null
   );
+
+  // const servicesHiearchylabel = [
+  //   JSON.parse(
+  //     JSON.stringify(
+  //       servicesHiearchy[0].replace(/"service_name"|"id"/g, function (matched) {
+  //         return mapObj[matched];
+  //       })
+  //     )
+  //   ),
+  // ];
+
+  // const servicesHiearchylabel = [
+  //   JSON.parse(
+  //     JSON.stringify(servicesHiearchy[0]).replace(/"service_name"/g, '"title"')
+  //   ),
+  // ];
+
+  // const servicesHiearchylabel = [replaceAll(JSON.stringify(servicesHiearchy))];
+  const servicesHiearchylabel = replaceAll(servicesHiearchy);
   useEffect(() => {
+    console.log(getValues("object.serviceid"));
+    dispatch(FetchServiceHiearchy());
     if (!services) {
       dispatch(FetchService());
     }
@@ -73,7 +102,10 @@ function AddEditAgentModal(Props) {
     } else {
       reset();
     }
-  }, [usernormal]);
+    if (!show) {
+      setvalue("");
+    }
+  }, [usernormal, show]);
 
   const UpdateUser = (data) => {
     const { user } = isAuthenticated();
@@ -174,12 +206,12 @@ function AddEditAgentModal(Props) {
   const classes = useStyles();
 
   // let { ref1, ...rest1 } = register("object.agency_id");
-  const optionsservices =
-    services &&
-    services.map((service) => ({
-      value: service.id,
-      label: service.service_name,
-    }));
+  // const optionsservices =
+  //   services &&
+  //   services.map((service) => ({
+  //     value: service.id,
+  //     label: service.service_name,
+  //   }));
   return (
     <div>
       <Dialog
@@ -251,51 +283,36 @@ function AddEditAgentModal(Props) {
             <InputLabel htmlFor="age-native-simple" className={classes.label}>
               Service
             </InputLabel>
-            <ReactHookFormReactSelect
+            {/* <ReactHookFormReactSelect
               options={optionsservices}
               className={classes.SelectSearch}
               id="object.service_id"
               Name="object.service_id"
+              Value={""}
               control={control}
               reef={register("object.service_id", { required: true })}
+            /> */}
+
+            <ReactTreeSelect
+              className={classes.SelectSearch}
+              control={control}
+              id="object.service_id"
+              Name="object.service_id"
+              data={servicesHiearchylabel}
+              onchange={(value) => {
+                setvalue(value);
+                setValue("object.service_id", value);
+              }}
+              Value={getValues("object.service_id") || value || null}
+              reef={register("object.service_id", {
+                required: "You must select a service",
+              })}
             />
             {errors["object"]?.service_id && (
               <p className={classes.para}>
-                {errors["object"]?.service_id?.message ||
-                  "You must select a service"}
+                {errors["object"]?.service_id?.message}
               </p>
             )}
-            {/* <ReactHookFormSelect
-              className={classes.select}
-              label="Selectionner un service"
-              id="object.service_id"
-              name="object.service_id"
-              control={control}
-              defaultValue={"0"}
-              reef={register("object.service_id", {
-                validate: (value) => value !== "0",
-              })}
-            >
-              <MenuItem value="0" style={{ cursor: "pointer" }}>
-                Selectionner un service
-              </MenuItem>
-              {services &&
-                services.map((service, i) => (
-                  <MenuItem
-                    key={i + 1}
-                    value={service.id}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {service.service_name}
-                  </MenuItem>
-                ))}
-            </ReactHookFormSelect>
-            {errors["object"]?.service_id && (
-              <p className={classes.para}>
-                {errors["object"]?.service_id?.message ||
-                  "You must select a service"}
-              </p>
-            )} */}
             <InputLabel htmlFor="age-native-simple" className={classes.label}>
               Agence
             </InputLabel>

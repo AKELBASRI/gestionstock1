@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { isAuthenticated } from "../../../../auth/helpers";
 import { useDispatch, useSelector } from "react-redux";
 import useStateRef from "react-usestateref";
@@ -27,14 +27,18 @@ import {
   FetchTotalMateriels,
 } from "../../../../store/actions";
 import ReactHookFormReactSelect from "../../../../core/Components/ReactHookReactSelect";
+import ReactTreeSelect from "../../../../core/Components/TreeSelect";
+import { replaceAll } from "../../../../core/util";
 
 function AffecterMaterielModal(Props) {
   const [, setDesignation, Designations] = useStateRef([]);
+  const [value, setvalue] = useState(null);
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    getValues,
     control,
     formState: { errors },
   } = useForm();
@@ -56,6 +60,9 @@ function AffecterMaterielModal(Props) {
   );
   const ListeLieux = useSelector(
     (state) => state.requests?.queries?.FETCH_LIEUX?.data
+  );
+  const servicesHiearchy = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE_HIARCHY?.data
   );
   // const [, setaffctMaterial] = useStateRef({});
   const dispatch = useDispatch();
@@ -142,12 +149,12 @@ function AffecterMaterielModal(Props) {
     }
   }, [material1]);
   const classes = useStyles();
-  const optionsservices =
-    ListeService &&
-    ListeService.map((service) => ({
-      value: service.id,
-      label: service.service_name,
-    }));
+  // const optionsservices =
+  //   ListeService &&
+  //   ListeService.map((service) => ({
+  //     value: service.id,
+  //     label: service.service_name,
+  //   }));
   const optionagent =
     ListAgents &&
     ListAgents.map((agent) => ({
@@ -160,6 +167,7 @@ function AffecterMaterielModal(Props) {
       value: agency.id,
       label: agency.agency_name,
     }));
+  const servicesHiearchylabel = replaceAll(servicesHiearchy);
   return (
     <div>
       <Dialog
@@ -183,6 +191,7 @@ function AffecterMaterielModal(Props) {
             Name="object.mleagent"
             control={control}
             reef={register("object.mleagent", { required: true })}
+            Value=""
           />
           {errors["object"]?.mleagent && (
             <p className={classes.para}>
@@ -194,13 +203,28 @@ function AffecterMaterielModal(Props) {
           <InputLabel htmlFor="age-native-simple" className={classes.label}>
             Service
           </InputLabel>
-          <ReactHookFormReactSelect
+          {/* <ReactHookFormReactSelect
             options={optionsservices}
             className={classes.SelectSearch}
             id="object.idservice"
             Name="object.idservice"
             control={control}
             reef={register("object.idservice")}
+          /> */}
+          <ReactTreeSelect
+            className={classes.SelectSearch}
+            control={control}
+            id="object.idservice"
+            Name="object.idservice"
+            data={servicesHiearchylabel}
+            onchange={(value) => {
+              setvalue(value);
+              setValue("object.idservice", value);
+            }}
+            Value={getValues("object.idservice") || value || null}
+            reef={register("object.idservice", {
+              // required: "You must select a service",
+            })}
           />
           {/* {errors["object"]?.idservice && (
             <p className={classes.para}>
@@ -218,6 +242,7 @@ function AffecterMaterielModal(Props) {
             Name="object.idagence"
             control={control}
             reef={register("object.idagence", { required: true })}
+            Value=""
           />
           {errors["object"]?.idservice && (
             <p className={classes.para}>
@@ -235,6 +260,7 @@ function AffecterMaterielModal(Props) {
             Name="object.idlieu"
             control={control}
             reef={register("object.idlieu")}
+            Value=""
           />
 
           {errors["object"]?.idlieu && (

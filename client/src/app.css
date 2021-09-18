@@ -1,3 +1,5 @@
+
+@import '~antd/dist/antd.css';
 /* @font-face {
   font-family: "Source Sans Pro";
   src: url("./fonts/SourceSansPro-Black.ttf");
@@ -39,8 +41,8 @@
   src: url("./fonts/SourceSansPro-Regular.ttf");
 }
 * {
-  font-family: "Source Sans Pro", "sans-serif";
-  margin: 0;
+  font-family: "Source Sans Pro", "sans-serif" !important;
+  margin: 0 ;
 }
 /* .rowFlex{
     display: flex;
@@ -66,7 +68,11 @@
   padding: 40px;
   background: #28bae6;
   box-shadow: 0 20px 75px rgb(0 0 0 / 23%);
-  color: #fff;
+  color: #fff ;
+
+}
+.custom-ui > h1{
+  color: #fff !important 
 }
 .custom-ui > button {
   width: 160px;

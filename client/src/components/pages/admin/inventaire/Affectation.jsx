@@ -15,6 +15,7 @@ import {
   FetchAgent,
   FetchMateriels,
   FetchService,
+  FetchServiceHiearchy,
   Fetch_table_exist,
 } from "../../../../store/actions";
 import Layout from "../../Layout/Layout";
@@ -25,6 +26,8 @@ import ReactHookFormSwitch from "../../../../core/Components/ReactHookFormSwitch
 import reactUsestateref from "react-usestateref";
 import AreYouSure from "./AreYouSure";
 import Popupend from "./popupendofinventory";
+import ReactTreeSelect from "../../../../core/Components/TreeSelect";
+import { replaceAll } from "../../../../core/util";
 
 // import Switch from "@material-ui/core/Switch";
 // import ReactHookTextField from "../../../../core/Components/ReactHookTextField";
@@ -54,12 +57,16 @@ function Affectation() {
   const tableexist = useSelector(
     (state) => state.requests?.queries?.FETCH_TABLE_EXIST?.data
   );
-  const optionsservices =
-    ListeService &&
-    ListeService.map((service) => ({
-      value: service.id,
-      label: service.service_name,
-    }));
+  const servicesHiearchy = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE_HIARCHY?.data
+  );
+  const [value, setvalue] = useState(null);
+  // const optionsservices =
+  //   ListeService &&
+  //   ListeService.map((service) => ({
+  //     value: service.id,
+  //     label: service.service_name,
+  //   }));
   const optionagent =
     ListAgents &&
     ListAgents.map((agent) => ({
@@ -93,7 +100,7 @@ function Affectation() {
     reset,
     // watch,
     setValue,
-    // getValues,
+    getValues,
     formState: { errors },
   } = useForm();
   const handleShowEditAddModal = () => {
@@ -119,7 +126,9 @@ function Affectation() {
   const handleError = (err) => {
     console.error(err);
   };
+  const servicesHiearchylabel = replaceAll(servicesHiearchy);
   useEffect(() => {
+    dispatch(FetchServiceHiearchy());
     dispatch(Fetch_table_exist());
     console.log(tableexist);
     if (tableexist !== "") {
@@ -278,7 +287,7 @@ function Affectation() {
                 </InputLabel>
               </Box>
               <Box flexGrow="1">
-                <ReactHookFormReactSelect
+                {/* <ReactHookFormReactSelect
                   options={optionsservices}
                   className={classes.SelectSearch}
                   id="object.idservice"
@@ -286,8 +295,22 @@ function Affectation() {
                   control={control}
                   reef={register("object.idservice", { required: true })}
                   Value=""
+                /> */}
+                <ReactTreeSelect
+                  className={classes.SelectSearch}
+                  control={control}
+                  id="object.idservice"
+                  Name="object.idservice"
+                  data={servicesHiearchylabel}
+                  onchange={(value) => {
+                    setvalue(value);
+                    setValue("object.idservice", value);
+                  }}
+                  Value={getValues("object.idservice") || value || null}
+                  reef={register("object.idservice", {
+                    required: "You must select a service",
+                  })}
                 />
-
                 {errors["object"]?.idservice && (
                   <p className={classes.para}>
                     {errors["object"]?.idservice?.message ||
@@ -326,7 +349,7 @@ function Affectation() {
               </Box>
             </Box>
 
-            <Box display="flex" alignItems="center" flexGrow="1" flex="50%">
+            <Box display="flex" alignItems="center" flexGrow="2" flex="50%">
               <InputLabel
                 htmlFor="age-native-simple"
                 className={classes.label1}
@@ -353,7 +376,7 @@ function Affectation() {
               </Box>
             </Box>
 
-            <Box display="flex" flexDirection="column" flexGrow="1" flex="50%">
+            <Box display="flex" flexDirection="column" flexGrow="1" flex="60%">
               <Box>
                 <InputLabel
                   htmlFor="age-native-simple"
@@ -371,7 +394,7 @@ function Affectation() {
                 ></ReactHookFormSwitch>
               </Box>
             </Box>
-            <Box display="flex" flexDirection="column" flexGrow="1" flex="50%">
+            <Box display="flex" flexDirection="column" flexGrow="1" flex="40%">
               <Box>
                 <InputLabel
                   htmlFor="age-native-simple"
