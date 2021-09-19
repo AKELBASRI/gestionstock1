@@ -370,6 +370,7 @@ function ListMateriels() {
     pagination: true,
     filter: true,
     filterType: "multiselect",
+    selectableRowsHeader: true,
     expandableRows: true,
     expandableRowsHeader: false,
     expandableRowsOnClick: true,
@@ -493,7 +494,6 @@ function ListMateriels() {
         ActiongetMateriels();
       }
     },
-    selectableRows: "multiselect",
   };
   return (
     <Layout>

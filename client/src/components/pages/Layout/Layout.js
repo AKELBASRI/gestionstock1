@@ -16,6 +16,9 @@ const useStyles = makeStyles(() => ({
     color: "#fff",
     backgroundColor: "#011627",
     padding: "15px",
+    "& h6": {
+      color: "white",
+    },
   },
 }));
 
