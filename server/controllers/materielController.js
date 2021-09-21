@@ -182,6 +182,15 @@ exports.getcomparaison = (req, res) => {
       res.status(500).json({ error: `Something went wrong  ${error}` });
     });
 };
+exports.getyears = (req, res) => {
+  db.sequelize.query(`SELECT SUBSTRING_INDEX(table_name,'_',-1) as 'year' FROM information_schema.tables
+  WHERE table_schema = 'gestion_stock' and table_name like 'materiel_%'`).then((result1) => {
+    res.status(201).json(result1[0]);
+  }).catch((error) => {
+    console.log(error);
+    res.status(500).json({ error: `Something went wrong  ${error}` });
+  });
+};
 exports.getallmateriels = (req, res) => {
   models.materiel.findAll({
     attributes: ['idmateriel', 'iddesignation', 'numeroinventaire', 'garentie', 'datereceptionprovisoire', 'Affecter', 'idtype', 'IDFournisseur', 'idagence', 'mleagent', 'idservice', 'disponible', 'idlieu', 'proposerreforme'],

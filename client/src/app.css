@@ -1,5 +1,6 @@
-
+/* @import "~@fortawesome/fontawesome-free/css/all.min.css"; */
 @import '~antd/dist/antd.css';
+
 /* @font-face {
   font-family: "Source Sans Pro";
   src: url("./fonts/SourceSansPro-Black.ttf");
@@ -41,7 +42,7 @@
   src: url("./fonts/SourceSansPro-Regular.ttf");
 }
 * {
-  font-family: "Source Sans Pro", "sans-serif" !important;
+  font-family: "Source Sans Pro", "sans-serif" ;
   margin: 0 ;
 }
 /* .rowFlex{
@@ -103,7 +104,7 @@
   list-style: none;
   box-sizing: border-box;
   text-decoration: none;
-
+  
   /* font-family: 'Montserrat', sans-serif; */
 }
 

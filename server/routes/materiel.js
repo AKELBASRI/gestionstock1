@@ -1,6 +1,7 @@
 const express = require('express');
 const {
-  createbackupMateriel, AffecterMaterielbynumberofinventory, checkiftableexist, getcomparaison,
+  createbackupMateriel, AffecterMaterielbynumberofinventory,
+  checkiftableexist, getcomparaison, getyears,
 } = require('../controllers/materielController');
 
 const {
@@ -25,4 +26,5 @@ router.get('/checkiftableexist/:mle', requireSignIn, isAuth, checkiftableexist);
 router.get('/countMaterielavailablebyType/:mle', requireSignIn, isAuth, GetAvailableMaterielTotal);
 router.put('/AffecterMaterielbynumberofinventory/:mle', requireSignIn, isAuth, AffecterMaterielbynumberofinventory);
 router.get('/comparaison/:mle', requireSignIn, isAuth, getcomparaison);
+router.get('/getyears/:mle', requireSignIn, isAuth, getyears);
 module.exports = router;

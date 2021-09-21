@@ -58,6 +58,7 @@ export const DeleteMessageBox = () => {
 export const CustomSearchIgnoreAccent = (searchQuery, currentRow) => {
   let isFound = false;
   let stringSearch = searchQuery
+    .toLowerCase()
     ?.normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
 
@@ -65,6 +66,7 @@ export const CustomSearchIgnoreAccent = (searchQuery, currentRow) => {
     if (
       col
         ?.toString()
+        .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .indexOf(stringSearch) >= 0

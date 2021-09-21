@@ -1,26 +1,26 @@
 import React from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
-import Home from "./components/pages/admin/home/Home";
+import Home from "./pages/admin/home/Home";
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import PrivateRoute from "./auth/PrivateRoute";
 import AuthRoute from "./auth/AuthRoute";
 import "./app.css";
 // import './app'
-import Signin from "./components/pages/user/signin/Signin";
-import ListUsers from "./components/pages/admin/admin/ListAdmins";
+import Signin from "./pages/user/signin/Signin";
+import ListUsers from "./pages/admin/admin/ListAdmins";
 
-import ListServices from "./components/pages/admin/services/ListServices";
-import ListAgents from "./components/pages/admin/agents/ListAgents";
-import ListeCategories from "./components/pages/admin/categories/ListeCategories";
-import ListeFournisseur from "./components/pages/admin/fournisseurs/ListeFournisseurs";
-import ListMateriels from "./components/pages/admin/materiels/ListeMateriels";
-import ListeDesignation from "./components/pages/admin/designations/ListeDesignation";
-import PrintMateriels from "./components/pages/admin/materiels/PrintMateriels";
-import Affectation from "./components/pages/admin/inventaire/Affectation";
-import ListeLieux from "./components/pages/admin/lieu/ListeLieux";
-import ProposerReforme from "./components/pages/admin/materiels/ProposerReforme";
-import ComparaisonMaterieloldnew from "./components/pages/admin/materiels/ComparaisonMaterieloldnew";
+import ListServices from "./pages/admin/services/ListServices";
+import ListAgents from "./pages/admin/agents/ListAgents";
+import ListeCategories from "./pages/admin/categories/ListeCategories";
+import ListeFournisseur from "./pages/admin/fournisseurs/ListeFournisseurs";
+import ListMateriels from "./pages/admin/materiels/ListeMateriels";
+import ListeDesignation from "./pages/admin/designations/ListeDesignation";
+import PrintMateriels from "./pages/admin/materiels/PrintMateriels";
+import Affectation from "./pages/admin/inventaire/Affectation";
+import ListeLieux from "./pages/admin/lieu/ListeLieux";
+import ProposerReforme from "./pages/admin/materiels/ProposerReforme";
+import ComparaisonMaterieloldnew from "./pages/admin/materiels/ComparaisonMaterieloldnew";
 
 function Routes() {
   return (

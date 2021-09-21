@@ -14,6 +14,7 @@ import {
   FETCH_SERVICE_HIARCHY,
   FETCH_LIEUX,
   FETCH_TABLE_EXIST,
+  FETCH_YEARS,
 } from "./constants";
 
 // const { user } = isAuthenticated();
@@ -112,6 +113,14 @@ export const Fetch_table_exist = () => {
     type: FETCH_TABLE_EXIST,
     request: {
       url: `/materiels/checkiftableexist/${isAuthenticated().user.Mle}`,
+    },
+  };
+};
+export const Fetch_years = () => {
+  return {
+    type: FETCH_YEARS,
+    request: {
+      url: `/materiels/getyears/${isAuthenticated().user.Mle}`,
     },
   };
 };
