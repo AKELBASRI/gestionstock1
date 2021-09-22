@@ -22,7 +22,7 @@ import {
   FetchAgencies,
   FetchAgent,
   FetchMateriels,
-  FetchService,
+  FetchServiceHiearchy,
   FetchTotalAvailableMateriels,
   FetchTotalMateriels,
 } from "../../../store/actions";
@@ -45,9 +45,7 @@ function AffecterMaterielModal(Props) {
   const ListAgents = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENTS?.data
   );
-  const ListeService = useSelector(
-    (state) => state.requests?.queries?.FETCH_SERVICE?.data
-  );
+
   const Listagencies = useSelector(
     (state) => state.requests?.queries?.FETCH_AGENCIES?.data
   );
@@ -131,9 +129,8 @@ function AffecterMaterielModal(Props) {
       });
   };
   useEffect(() => {
-    if (!ListeService) {
-      dispatch(FetchService());
-    }
+    dispatch(FetchServiceHiearchy());
+
     if (!ListAgents) {
       dispatch(FetchAgent());
     }
