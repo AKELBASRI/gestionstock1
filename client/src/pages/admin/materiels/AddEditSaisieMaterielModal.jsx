@@ -29,18 +29,25 @@ import { useForm } from "react-hook-form";
 
 import customAxios from "../../../axios/CustomAxios";
 import {
+  FetchAgencies,
+  FetchAgent,
   FetchCategory,
   FetchFournisseur,
   FetchLieu,
   FetchMateriels,
+  FetchServiceHiearchy,
   FetchTotalAvailableMateriels,
   FetchTotalMateriels,
 } from "../../../store/actions";
 import ReactHookFormReactSelect from "../../../core/Components/ReactHookReactSelect";
+import { replaceAll } from "../../../core/util";
+import ReactTreeSelect from "../../../core/Components/TreeSelect";
+import ReactHookFormSwitch from "../../../core/Components/ReactHookFormSwitch";
 
 const AddEditSaisieMaterielModal = (Props) => {
   // const [Numeroinventairecodebar, setnuminventaire] = useState("");
   const [date, setDate] = useState(null);
+  const [value, setvalue] = useState(null);
   const {
     register,
     handleSubmit,
@@ -48,10 +55,12 @@ const AddEditSaisieMaterielModal = (Props) => {
     setValue,
     getValues,
     control,
-
+    watch,
     formState: { errors },
   } = useForm();
-
+  const servicesHiearchy = useSelector(
+    (state) => state.requests?.queries?.FETCH_SERVICE_HIARCHY?.data
+  );
   const categories = useSelector(
     (state) => state.requests?.queries?.FETCH_CATEGORY?.data
   );
@@ -75,20 +84,31 @@ const AddEditSaisieMaterielModal = (Props) => {
         )
       : null
   );
+  const ListAgents = useSelector(
+    (state) => state.requests?.queries?.FETCH_AGENTS?.data
+  );
+
+  const Listagencies = useSelector(
+    (state) => state.requests?.queries?.FETCH_AGENCIES?.data
+  );
   const classes = useStyles();
   useEffect(() => {
-    if (!categories) {
-      dispatch(FetchCategory());
-    }
-    if (!Fournisseurs) {
-      dispatch(FetchFournisseur());
-    }
+    dispatch(FetchServiceHiearchy());
+    // if (!categories) {
+    dispatch(FetchCategory());
+    // }
+    dispatch(FetchAgent());
+    dispatch(FetchAgencies());
+    // if (!Fournisseurs) {
+    dispatch(FetchFournisseur());
+    // }
     dispatch(FetchLieu());
     if (material1) {
       setValue("object", material1);
       LoadDesignations(material1);
     } else {
       reset();
+      setValue("object.Affecter", false);
       setValue("object.datereceptionprovisoire", null);
     }
     if (!Props.show) {
@@ -99,7 +119,7 @@ const AddEditSaisieMaterielModal = (Props) => {
   const handleQte = (e) => {
     setQte(e);
   };
-
+  const servicesHiearchylabel = replaceAll(servicesHiearchy);
   const checkenventoryornot = () => {
     const catselected = categories.find(
       (cat) => cat.id === parseInt(getValues("object.idtype"))
@@ -178,6 +198,18 @@ const AddEditSaisieMaterielModal = (Props) => {
       value: 3,
     },
   ];
+  const optionagent =
+    ListAgents &&
+    ListAgents.map((agent) => ({
+      value: agent.agent_number,
+      label: agent.agent_full_name,
+    }));
+  const optionagency =
+    Listagencies &&
+    Listagencies.map((agency) => ({
+      value: agency.id,
+      label: agency.agency_name,
+    }));
   const UpdateMateriel = (data) => {
     const marque = Designations.current.filter(
       (designation) =>
@@ -479,27 +511,96 @@ const AddEditSaisieMaterielModal = (Props) => {
                 "You must select a fournisseur"}
             </p>
           )}
-
-          <InputLabel htmlFor="age-native-simple" className={classes.label}>
-            Lieu
-          </InputLabel>
-          <ReactHookFormReactSelect
-            options={optionsLienx}
-            className={classes.SelectSearch}
-            id="object.idlieu"
-            Name="object.idlieu"
+          <label className={classes.label}>Affecter</label>
+          <ReactHookFormSwitch
+            name="object.Affecter"
+            id="object.Affecter"
             control={control}
-            reef={register("object.idlieu")}
-            onchange={handleChange}
-            Value=""
-          />
+            reef={register("object.Affecter", {})}
+            Value={getValues("object.Affecter")}
+          ></ReactHookFormSwitch>
+          {watch("object.Affecter") === true ? (
+            <div>
+              <InputLabel htmlFor="age-native-simple" className={classes.label}>
+                Lieu
+              </InputLabel>
+              <ReactHookFormReactSelect
+                options={optionsLienx}
+                className={classes.SelectSearch}
+                id="object.idlieu"
+                Name="object.idlieu"
+                control={control}
+                reef={register("object.idlieu")}
+                onchange={handleChange}
+                Value=""
+              />
 
-          {errors["object"]?.idlieu && (
-            <p className={classes.para}>
-              {errors["object"]?.idtype?.message || "You must select a place"}
-            </p>
+              {errors["object"]?.idlieu && (
+                <p className={classes.para}>
+                  {errors["object"]?.idtype?.message ||
+                    "You must select a place"}
+                </p>
+              )}
+              <InputLabel htmlFor="age-native-simple" className={classes.label}>
+                Service
+              </InputLabel>
+              <ReactTreeSelect
+                className={classes.SelectSearch}
+                control={control}
+                id="object.idservice"
+                Name="object.idservice"
+                data={servicesHiearchylabel}
+                onchange={(value) => {
+                  setvalue(value);
+                  setValue("object.idservice", value);
+                }}
+                Value={getValues("object.idservice") || value || null}
+                reef={register("object.idservice", {
+                  // required: "You must select a service",
+                })}
+              />
+              <InputLabel htmlFor="age-native-simple" className={classes.label}>
+                Agence
+              </InputLabel>
+              <ReactHookFormReactSelect
+                options={optionagency}
+                className={classes.SelectSearch}
+                id="object.idagence"
+                Name="object.idagence"
+                control={control}
+                reef={register("object.idagence", { required: true })}
+                Value=""
+              />
+              {errors["object"]?.idservice && (
+                <p className={classes.para}>
+                  {errors["object"]?.idservice?.message ||
+                    "You must select an agency"}
+                </p>
+              )}
+              <InputLabel htmlFor="age-native-simple" className={classes.label}>
+                Agent
+              </InputLabel>
+              <ReactHookFormReactSelect
+                options={optionagent}
+                className={classes.SelectSearch}
+                id="object.mleagent"
+                Name="object.mleagent"
+                control={control}
+                reef={register("object.mleagent", { required: true })}
+                Value=""
+              />
+              {errors["object"]?.mleagent && (
+                <p className={classes.para}>
+                  {errors["object"]?.mleagent?.message ||
+                    "You must select an agent"}
+                </p>
+              )}
+            </div>
+          ) : (
+            ""
           )}
         </DialogContent>
+
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <DialogActions className={classes.bg}>
             <Button

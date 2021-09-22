@@ -107,7 +107,7 @@ const affectvalueandtitle = (children) => {
 };
 
 export const replaceAll = (str) => {
-  return str.map((service) => ({
+  return str?.map((service) => ({
     value: service.id,
     title: service.service_name,
     children: affectvalueandtitle(service.children),

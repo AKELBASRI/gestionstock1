@@ -22,6 +22,11 @@ exports.saveMateriel = (req, res) => {
     IDFournisseur: req.body.IDFournisseur,
     datesaisie: dateFormat(current, 'yyyy-mm-dd'),
     idtype: req.body.idtype,
+
+    Affecter: req.body.Affecter,
+    idagence: req.body.idagence,
+    mleagent: req.body.mleagent,
+    idservice: req.body.idservice,
     idlieu: req.body.idlieu,
   };
   models.materiel
