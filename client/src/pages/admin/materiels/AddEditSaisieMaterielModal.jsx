@@ -556,7 +556,7 @@ const AddEditSaisieMaterielModal = (Props) => {
                 }}
                 Value={getValues("object.idservice") || value || null}
                 reef={register("object.idservice", {
-                  // required: "You must select a service",
+                  required: "You must select a service",
                 })}
               />
               <InputLabel htmlFor="age-native-simple" className={classes.label}>
