@@ -61,6 +61,7 @@ export const useStyles = makeStyles(() => ({
   },
   bg: {
     background: "#011627",
+    color: "white !important",
     "& h2": {
       color: "white !important",
     },
