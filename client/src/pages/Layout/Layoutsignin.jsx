@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { isAuthenticated } from "../../auth/helpers";
 import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -6,9 +6,7 @@ import "./Layout.css";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-import { useIdleTimer } from "react-idle-timer";
-import DialogCountDown from "./DialogCountDown";
-import reactUsestateref from "react-usestateref";
+
 const useStyles = makeStyles(() => ({
   root: {},
   FooterBackground: {
@@ -24,41 +22,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Layout(Props) {
-  const [open, setOpen] = useState(false);
-  const timeout = 60000 * 15;
-  const [, setRemaining, remaining] = reactUsestateref(timeout);
-  const handleOnIdle = (event) => {
-    localStorage.removeItem("jwt_info");
-    Props.history.push("/signin");
-    console.log("user is idle", event);
-    console.log("last active", getLastActiveTime());
-  };
-
-  const { getRemainingTime, getLastActiveTime } = useIdleTimer({
-    timeout: timeout,
-    onIdle: handleOnIdle,
-
-    debounce: 500,
-  });
-  function millisToMinutesAndSeconds(millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  }
-  const handleClose = () => {
-    setOpen(false);
-  };
-  useEffect(() => {
-    setRemaining(getRemainingTime());
-
-    const timeremaining = setInterval(() => {
-      setRemaining(getRemainingTime());
-
-      remaining.current <= 60000 ? setOpen(true) : setOpen(false);
-    }, 1000);
-    return () => clearInterval(timeremaining);
-  }, []);
+function Layoutsignin(Props) {
   const state = useSelector((state) => state.showorhide);
   const classes = useStyles();
   return (
@@ -78,12 +42,6 @@ function Layout(Props) {
       >
         <Box className={classes.root} mx="10px">
           {Props.children}
-
-          <DialogCountDown
-            open={open}
-            handleClose={handleClose}
-            remaningtime={millisToMinutesAndSeconds(remaining.current)}
-          />
         </Box>
       </Box>
 
@@ -107,4 +65,4 @@ function Layout(Props) {
   );
 }
 
-export default withRouter(Layout);
+export default withRouter(Layoutsignin);

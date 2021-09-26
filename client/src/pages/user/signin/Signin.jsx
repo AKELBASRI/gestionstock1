@@ -5,7 +5,7 @@ import toastr from "toastr";
 import "toastr/build/toastr.css";
 import logo from "../../../logo_radeeo.jpg";
 import hero from "../../../hero.png";
-import Layout from "../../Layout/Layout";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -17,6 +17,7 @@ import { ColorButton } from "../../../core/styleModalForm";
 import axios from "axios";
 import { API_URL } from "../../../config";
 import { showorhide } from "../../../store/actions";
+import Layoutsignin from "../../Layout/Layoutsignin";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -183,7 +184,7 @@ function Signin(Props) {
   const classes = useStyles();
   return (
     <div>
-      <Layout>
+      <Layoutsignin>
         <Box display="flex" flexWrap="wrap">
           <Box className={classes.width}>
             <Box display="flex" alignItems="center">
@@ -260,7 +261,7 @@ function Signin(Props) {
             </Box>
           </form>
         </Box>
-      </Layout>
+      </Layoutsignin>
     </div>
   );
 }
