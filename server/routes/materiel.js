@@ -11,9 +11,10 @@ const {
 
 const { userById } = require('../middleware/admin');
 const { requireSignIn, isAuth } = require('../middleware/auth');
+const { verifytoken } = require('../middleware/checktoken');
 
 const router = express.Router();
-router.get('/all/:mle', requireSignIn, isAuth, getallmateriels);
+router.get('/all/:mle', requireSignIn, isAuth, verifytoken, getallmateriels);
 // router.get('/importMateriel', importmateriel);
 router.post('/create/:mle', requireSignIn, isAuth, saveMateriel);
 router.post('/createbackupMateriel/:mle', requireSignIn, isAuth, createbackupMateriel);

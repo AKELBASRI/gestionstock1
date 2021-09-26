@@ -8,7 +8,7 @@ import storage from "redux-persist/lib/storage";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
 
 import crossBrowserListener from "./reduxpersist-listener";
-import axios from "../axios/CustomAxios";
+import CustomAxios from "../axios/CustomAxios";
 
 const persistConfig = {
   key: "root",
@@ -18,7 +18,7 @@ const persistConfig = {
 
 export const configureStore = () => {
   const { requestsReducer, requestsMiddleware } = handleRequests({
-    driver: createDriver(axios),
+    driver: createDriver(CustomAxios),
   });
 
   const reducers = combineReducers({

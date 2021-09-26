@@ -1,12 +1,13 @@
 import axios from "axios";
 import { isAuthenticated } from "../auth/helpers";
 import { API_URL } from "../config";
+import { createBrowserHistory } from "history";
 // const axios = require('axios');
 
 // Step-1: Create a new Axios instance with a custom config.
 // The timeout is set to 10s. If the request takes longer than
 // that then the request will be aborted.
-
+const browserHistory = createBrowserHistory();
 const customAxios = axios.create({
   baseURL: `${API_URL}`,
   timeout: 10000,
@@ -28,13 +29,18 @@ const requestHandler = (request) => {
 
 const responseHandler = (response) => {
   if (response.status === 401) {
-    window.location = "/";
+    localStorage.removeItem("jwt_info");
+    browserHistory.push("/signin");
   }
 
   return response;
 };
 
 const errorHandler = (error) => {
+  if (error.response.status === 401) {
+    localStorage.removeItem("jwt_info");
+    browserHistory.push("/signin");
+  }
   return Promise.reject(error);
 };
 
